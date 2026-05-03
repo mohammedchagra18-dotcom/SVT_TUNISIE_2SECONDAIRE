@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T2-Ch5 — Notion de Développement Durable</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --e:#1B5E20;--em:#2E7D32;--el:#e8f5e9;--ep:#f1f8e9;
+  --v:#33691E;--vl:#dcedc8;
+  --b:#0277BD;--bl:#e1f5fe;
+  --ar:#37474F;--arl:#eceff1;
+  --sa:#F57F17;--sal:#fffde7;
+  --r:#B71C1C;--rl:#ffebee;
+  --vi:#4A148C;--vil:#f3e5f5;
+  --j:#F9A825;--jl:#fffde7;
+  --o:#E65100;--ol:#fff3e0;
+  --bg:#f1f8e9;--tx:#1a1a1a;--mu:#666;
+  --brd:#c8e6c9;--sh:0 2px 12px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6;}
+header{background:linear-gradient(135deg,#1B5E20,#2E7D32 40%,#0277BD);color:#fff;padding:18px 26px 13px;position:sticky;top:0;z-index:100;box-shadow:0 3px 16px rgba(0,0,0,.25);}
+header h1{font-family:'Playfair Display',serif;font-size:1.35rem;margin-bottom:2px;}
+header p{font-size:.8rem;opacity:.85;}
+.signature-header{font-size:.7rem;opacity:.7;margin-top:3px;font-style:italic;letter-spacing:.6px;color:#A5D6A7;}
+.pb{height:4px;background:rgba(255,255,255,.3);border-radius:2px;margin-top:8px;}
+.pf{height:100%;background:#A5D6A7;border-radius:2px;transition:width .4s;width:10%;}
+.tw{background:#fff;border-bottom:2px solid var(--brd);position:sticky;top:86px;z-index:99;overflow-x:auto;}
+.ts{display:flex;min-width:max-content;}
+.t{padding:10px 11px;font-size:.72rem;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;color:var(--mu);white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;transition:all .2s;}
+.t:hover{color:var(--em);background:var(--el);}
+.t.on{color:var(--em);border-bottom-color:var(--em);}
+.content{max-width:960px;margin:0 auto;padding:18px 18px 60px;}
+.pan{display:none;}.pan.on{display:block;}
+.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:13px;box-shadow:var(--sh);border-left:5px solid var(--em);}
+.card.v{border-left-color:var(--v);}
+.card.r{border-left-color:var(--r);}
+.card.b{border-left-color:var(--b);}
+.card.ar{border-left-color:var(--ar);}
+.card.o{border-left-color:var(--o);}
+h2{font-family:'Playfair Display',serif;font-size:1.08rem;margin-bottom:9px;color:var(--em);}
+h2.v{color:var(--v);}h2.r{color:var(--r);}h2.ar{color:var(--ar);}h2.b{color:var(--b);}
+h3{font-size:.9rem;font-weight:700;margin:9px 0 5px;color:var(--e);}
+.sech{background:linear-gradient(135deg,#1B5E20,#0277BD);color:#fff;padding:10px 15px;border-radius:10px;font-weight:600;margin-bottom:12px;font-size:.88rem;}
+.tip{background:#fdf6ec;border:1.5px solid var(--j);border-radius:10px;margin:8px 0;overflow:hidden;}
+.tip-head{padding:8px 13px;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:.86rem;font-weight:600;color:#7B5800;}
+.tip-head:hover{background:#fff8d6;}
+.tip-body{display:none;padding:10px 13px 12px;font-size:.85rem;line-height:1.7;color:#4a3800;border-top:1px solid #ffe082;}
+.tip-body.on{display:block;}
+.mq{background:linear-gradient(135deg,var(--vil),var(--el));border:2px solid var(--vi);border-radius:10px;padding:13px;margin:10px 0;}
+.mq-title{font-weight:700;color:var(--vi);font-size:.82rem;letter-spacing:.8px;text-transform:uppercase;margin-bottom:9px;}
+.mq p{margin-bottom:7px;font-size:.88rem;line-height:1.85;}
+select.bl{border:2px solid var(--vi);border-radius:5px;padding:2px 6px;font-size:.84rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;}
+select.bl.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.bl.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.mq-fb{font-size:.82rem;padding:6px 10px;border-radius:7px;margin-top:7px;font-weight:600;display:none;}
+.mq-fb.ok{background:#e8f5e9;color:#2E7D32;display:block;}
+.mq-fb.ko{background:#ffebee;color:#c62828;display:block;}
+.bck{background:var(--vi);color:#fff;border:none;padding:6px 13px;border-radius:7px;cursor:pointer;font-weight:700;font-size:.8rem;margin-top:8px;}
+.bck:hover{background:#6A1B9A;}
+.brs{background:var(--brd);color:var(--tx);border:none;padding:6px 11px;border-radius:7px;cursor:pointer;font-size:.8rem;margin-top:8px;margin-left:5px;}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.83rem;}
+th{background:var(--em);color:#fff;padding:7px 9px;text-align:left;}
+th.v{background:var(--v);}th.r{background:var(--r);}th.ar{background:var(--ar);}th.b{background:var(--b);}th.o{background:var(--o);}
+td{padding:6px 9px;border-bottom:1px solid var(--brd);}
+tr:nth-child(even) td{background:var(--ep);}
+tr.hl td{background:#fff8e1 !important;font-weight:700;}
+.gb{background:#fafafa;border:1px solid var(--brd);border-radius:9px;padding:10px;margin:9px 0;text-align:center;}
+.gb canvas{max-width:100%;}
+.gb figcaption{font-size:.74rem;color:var(--mu);margin-top:4px;font-style:italic;}
+.ret{background:var(--jl);border:1.5px solid var(--j);border-radius:9px;padding:10px 13px;margin:10px 0;}
+.ret h4{color:var(--o);font-size:.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.ret p{margin-bottom:4px;font-size:.85rem;}
+.ret dt{font-weight:700;color:var(--o);display:inline;}
+.ret dd{display:inline;margin-left:3px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:9px 0;}
+.al{list-style:none;display:grid;gap:5px;}
+.al li{padding:7px 11px;background:var(--el);border-radius:7px;border-left:4px solid var(--em);font-size:.85rem;}
+.al li::before{content:"✓ ";color:var(--em);font-weight:700;}
+.bstep{background:#fff;border-radius:11px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-top:4px solid var(--em);}
+.bstep.v{border-top-color:var(--v);}
+.bstep.r{border-top-color:var(--r);}
+.bstep.b{border-top-color:var(--b);}
+.bstep.ar{border-top-color:var(--ar);}
+.bstep.o{border-top-color:var(--o);}
+.bnum{display:inline-flex;align-items:center;justify-content:center;background:var(--em);color:#fff;border-radius:50%;width:26px;height:26px;font-weight:700;font-size:.88rem;margin-right:8px;flex-shrink:0;}
+.bnum.v{background:var(--v);}
+.bnum.r{background:var(--r);}
+.bnum.b{background:var(--b);}
+.bnum.ar{background:var(--ar);}
+.bnum.o{background:var(--o);}
+.gfb{font-size:.83rem;padding:7px 11px;border-radius:8px;margin-top:8px;font-weight:600;}
+.gfb.ok{background:#e8f5e9;color:#2E7D32;}
+.gfb.ko{background:#ffebee;color:#c62828;}
+.trous{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--vi);}
+.trous .ctx{background:var(--vil);border-radius:7px;padding:8px 12px;margin-bottom:9px;font-size:.84rem;line-height:1.6;color:#4a0080;}
+.tab-exo{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--ar);}
+.tab-exo .ctx{background:var(--arl);border-radius:7px;padding:8px 12px;margin-bottom:9px;font-size:.84rem;border-left:3px solid var(--ar);}
+select.tcell{border:1.5px solid var(--vi);border-radius:4px;padding:2px 5px;font-size:.81rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;max-width:280px;}
+select.tcell.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.tcell.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.ord-exo{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--sa);}
+.ord-items{display:flex;flex-direction:column;gap:5px;margin:9px 0;}
+.ord-item{padding:8px 12px;background:var(--sal);border-radius:7px;cursor:grab;border:2px solid transparent;font-size:.85rem;display:flex;align-items:center;gap:8px;user-select:none;}
+.ord-item .pos-num{background:var(--sa);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;}
+.ord-item.correct-pos{background:#e8f5e9;border-color:#4CAF50;}
+.ord-item.wrong-pos{background:#ffebee;border-color:#f44336;}
+.ord-item.correct-pos .pos-num{background:#4CAF50;}
+.ord-item.wrong-pos .pos-num{background:#f44336;}
+.fcg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:10px 0;}
+.fcc{background:#fff;border-radius:9px;padding:12px;box-shadow:var(--sh);border-top:4px solid var(--em);}
+.fcp{font-size:.87rem;line-height:1.9;margin-bottom:7px;}
+select.fs{border:2px solid var(--vi);border-radius:5px;padding:2px 6px;font-size:.81rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;}
+select.fs.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.fs.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.fa{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.btn{padding:7px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:.83rem;}
+.bv{background:var(--em);color:#fff;}.bv:hover{background:var(--e);}
+.bg{background:var(--brd);color:var(--tx);}
+.qi{background:#fff;border-radius:10px;padding:13px;margin-bottom:10px;box-shadow:var(--sh);}
+.qq{font-weight:600;margin-bottom:8px;font-size:.89rem;}
+.qo{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:6px;margin-bottom:4px;cursor:pointer;font-size:.86rem;border:1.5px solid transparent;transition:background .15s;}
+.qo:hover:not(.locked){background:var(--el);}
+.qo input{accent-color:var(--em);margin-top:3px;flex-shrink:0;}
+.qo.correct{background:#e8f5e9;border-color:#4CAF50;}
+.qo.wrong{background:#ffebee;border-color:#f44336;}
+.qo.missed{background:#fff8e1;border-color:#FF9800;}
+.fb-txt{font-size:.8rem;margin-top:3px;display:none;line-height:1.5;}
+.qo.correct .fb-txt,.qo.wrong .fb-txt,.qo.missed .fb-txt{display:block;}
+.qo.correct .fb-txt{color:#2E7D32;}
+.qo.wrong .fb-txt{color:#c62828;}
+.qo.missed .fb-txt{color:#E65100;}
+img.manuel{width:100%;border-radius:8px;margin:9px 0;box-shadow:var(--sh);border:2px solid var(--brd);}
+.img-placeholder{width:100%;aspect-ratio:16/10;background:linear-gradient(135deg,var(--el),var(--arl));border-radius:8px;display:flex;align-items:center;justify-content:center;margin:9px 0;border:2px dashed var(--brd);flex-direction:column;gap:6px;}
+.img-placeholder span{font-size:.82rem;color:var(--mu);font-weight:600;}
+.img-placeholder small{font-size:.7rem;color:var(--mu);opacity:.7;}
+.pourquoi-box{background:linear-gradient(135deg,#1B5E20,#2E7D32 40%,#0277BD);color:#fff;border-radius:14px;padding:22px;margin-bottom:16px;}
+.pourquoi-box h2{color:#A5D6A7;font-size:1.18rem;margin-bottom:12px;}
+.pourquoi-box .obj-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.pourquoi-box .obj-item{background:rgba(255,255,255,.1);padding:10px 13px;border-radius:8px;font-size:.84rem;line-height:1.6;border-left:3px solid #A5D6A7;}
+.pourquoi-box .obj-num{display:inline-flex;align-items:center;justify-content:center;background:#A5D6A7;color:#1B5E20;border-radius:50%;width:22px;height:22px;font-weight:700;font-size:.76rem;margin-right:6px;flex-shrink:0;}
+.qcm-ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.qcm-ctrl .btn{font-size:.78rem;}
+.qcm-score{font-size:.82rem;padding:6px 10px;border-radius:7px;font-weight:600;display:inline-block;margin-left:8px;}
+.man-p168{background:var(--arl);border-radius:9px;padding:12px;margin-bottom:9px;border-left:4px solid #37474F;}
+.man-p168 .mpq{font-size:.86rem;font-weight:600;margin-bottom:6px;color:#37474F;}
+.man-p168 .cbox-group{display:flex;flex-direction:column;gap:4px;margin:5px 0;}
+.man-p168 label{display:flex;align-items:flex-start;gap:7px;font-size:.84rem;cursor:pointer;padding:4px 6px;border-radius:5px;}
+.man-p168 label:hover{background:rgba(0,0,0,.03);}
+.man-p168 input[type="checkbox"]{accent-color:#37474F;margin-top:2px;flex-shrink:0;}
+footer{background:linear-gradient(135deg,#1B5E20,#2E7D32 40%,#0277BD);color:#fff;text-align:center;padding:14px 18px;font-size:.78rem;opacity:.9;margin-top:30px;border-radius:12px 12px 0 0;}
+footer .ft-sig{font-size:.76rem;opacity:.75;font-style:italic;letter-spacing:.6px;margin-top:4px;}
+.resume-hero{background:linear-gradient(135deg,#1B5E20,#2E7D32 40%,#0277BD);color:#fff;border-radius:14px;padding:22px;margin-bottom:16px;}
+.resume-hero h2{color:#A5D6A7;font-size:1.18rem;margin-bottom:8px;}
+.resume-hero p{font-size:.9rem;line-height:1.75;opacity:.92;}
+.resume-hero .sub{font-size:.8rem;opacity:.7;margin-top:6px;font-style:italic;}
+.concept-map{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+.cnode{border-radius:11px;padding:14px;cursor:pointer;transition:all .25s;border:2px solid transparent;}
+.cnode:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15);}
+.cnode.active{border-color:rgba(255,255,255,.6);}
+.cnode .cn-icon{font-size:1.55rem;margin-bottom:6px;}
+.cnode .cn-title{font-size:.86rem;font-weight:700;margin-bottom:3px;}
+.cnode .cn-sub{font-size:.75rem;opacity:.85;line-height:1.4;}
+.cn-a{background:linear-gradient(135deg,#B71C1C,#C62828);color:#fff;}
+.cn-b{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;}
+.cn-c{background:linear-gradient(135deg,#0277BD,#0288D1);color:#fff;}
+.cn-d{background:linear-gradient(135deg,#B71C1C,#C62828);color:#fff;}
+.cn-e{background:linear-gradient(135deg,#4A148C,#6A1B9A);color:#fff;}
+.cn-panel{display:none;background:#fff;border-radius:11px;padding:16px;margin-bottom:12px;box-shadow:var(--sh);}
+.cn-panel.on{display:block;}
+.cn-panel.a{border-left:5px solid var(--r);}
+.cn-panel.b{border-left:5px solid var(--v);}
+.cn-panel.c{border-left:5px solid var(--b);}
+.cn-panel.d{border-left:5px solid var(--r);}
+.cn-panel.e{border-left:5px solid var(--vi);}
+.connexion-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:11px 0;}
+.conn-item{border-radius:9px;padding:12px;border:2px solid;font-size:.84rem;line-height:1.6;}
+.conn-item .conn-ch{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;opacity:.75;}
+.conn-item .conn-notion{font-weight:700;margin-bottom:3px;}
+.piege-item{border-radius:10px;padding:13px;margin-bottom:9px;border:2px solid var(--r);background:var(--rl);overflow:hidden;}
+.piege-head{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:.88rem;font-weight:700;color:var(--r);}
+.piege-body{display:none;padding-top:10px;font-size:.86rem;line-height:1.7;color:var(--tx);}
+.piege-body.on{display:block;}
+.piege-body strong{color:var(--r);}
+.reflex{background:linear-gradient(135deg,var(--vil),var(--el));border:2px solid var(--vi);border-radius:11px;padding:14px;margin:12px 0;}
+.reflex h4{color:var(--vi);font-size:.85rem;font-weight:700;margin-bottom:10px;}
+.reflex-q{background:#fff;border-radius:8px;padding:11px;margin-bottom:8px;}
+.reflex-q .rq{font-size:.88rem;line-height:1.7;font-weight:600;margin-bottom:7px;}
+.rev-btn{background:var(--vi);color:#fff;border:none;padding:5px 11px;border-radius:6px;cursor:pointer;font-size:.79rem;font-weight:600;}
+.reflex-ans{display:none;margin-top:8px;padding:9px 12px;background:var(--vil);border-radius:7px;font-size:.85rem;line-height:1.7;color:#4a0080;}
+.reflex-ans.on{display:block;}
+@media(max-width:600px){
+  .g2,.concept-map,.connexion-grid,.pourquoi-box .obj-list{grid-template-columns:1fr;}
+  header h1{font-size:.92rem;}.t{padding:8px 4px;font-size:.66rem;}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Chapitre 5 — Notion de Développement Durable</h1>
+  <p>2ème Secondaire SVT · Thème 2 · Pages 155–168 · 2 Activités</p>
+  <div class="signature-header">INGÉNIEUR Mohamed CHAGRAOUI / ENSEIGNANT SVT · CANDIDAT CAPES SVT 2026 · TUNISIE</div>
+  <div class="pb"><div class="pf" id="pf"></div></div>
+</header>
+
+<div class="tw"><div class="ts">
+  <button class="t on"  onclick="showTab(0)">📚 Acquis</button>
+  <button class="t"     onclick="showTab(1)">🧠 Résumé</button>
+  <button class="t"     onclick="showTab(2)">⚠️ Act.1 — Actions négatives</button>
+  <button class="t"     onclick="showTab(3)">✅ Act.2 — Actions positives</button>
+  <button class="t"     onclick="showTab(4)">📋 Bilan</button>
+  <button class="t"     onclick="showTab(5)">🃏 Flashcards</button>
+  <button class="t"     onclick="showTab(6)">✏️ QCM</button>
+  <button class="t"     onclick="showTab(7)">📝 Exercices</button>
+</div></div>
+
+<div class="content">
+
+<!-- ══ 0 ACQUIS ══ -->
+<div class="pan on" id="p0">
+  <div class="pourquoi-box">
+    <h2>🎯 Pourquoi ce chapitre ?</h2>
+    <p style="font-size:.88rem;line-height:1.7;margin-bottom:12px;opacity:.92;">
+      D'après le <strong>programme officiel tunisien</strong> (Thème 2, Objectif 5 — p.18), ce chapitre vise à :
+    </p>
+    <div class="obj-list">
+      <div class="obj-item"><span class="obj-num">1</span> Identifier les <strong>facteurs de dégradation</strong> de l'écosystème</div>
+      <div class="obj-item"><span class="obj-num">2</span> Proposer des <strong>solutions appropriées</strong> pour la préservation de l'environnement</div>
+      <div class="obj-item"><span class="obj-num">3</span> Reconnaître les <strong>préjudices à l'environnement</strong> résultant des activités de l'Homme</div>
+      <div class="obj-item"><span class="obj-num">4</span> Proposer des solutions pour la <strong>sauvegarde ou la restauration</strong> des écosystèmes</div>
+      <div class="obj-item"><span class="obj-num">5</span> Définir la notion de <strong>développement durable</strong> et ses 3 piliers</div>
+      <div class="obj-item"><span class="obj-num">6</span> Réaliser un <strong>projet écologique</strong> (recyclage, biodiversité, fixation des dunes, reboisement...)</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>📚 Préacquis</h2>
+    <ul class="al">
+      <li><strong>Ch.1 —</strong> L'écosystème = Biotope + Biocénose en interaction constante.</li>
+      <li><strong>Ch.3 —</strong> La végétation tunisienne suit un gradient pluvio-thermique Nord→Sud.</li>
+      <li><strong>Ch.4 —</strong> Les chaînes et réseaux trophiques sont en équilibre. Toute perturbation a des conséquences en cascade.</li>
+      <li>Les <strong>décomposeurs</strong> minéralisent la matière organique → cycle de la matière.</li>
+      <li>La <strong>photosynthèse</strong> des végétaux absorbe le CO₂ et régule l'atmosphère.</li>
+      <li>En Tunisie, les forêts ont chuté de 3 000 000 ha (époque romaine) à <strong>386 000 ha</strong> en 1997.</li>
+    </ul>
+  </div>
+  <div class="card ar">
+    <h2 class="ar">❓ 2 Questions directrices</h2>
+    <ol style="margin-left:17px;line-height:2.4;font-size:.92rem">
+      <li>Quelles sont les <strong>activités humaines</strong> entraînant un déséquilibre des écosystèmes ?</li>
+      <li>Comment l'Homme peut-il <strong>agir positivement</strong> pour préserver les écosystèmes ?</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══ 1 RÉSUMÉ ══ -->
+<div class="pan" id="p1">
+  <div class="resume-hero">
+    <h2>🧠 Comprendre avant de mémoriser</h2>
+    <p>Ce chapitre est la synthèse de tout le Thème 2. Il articule deux axes symétriques : <strong>actions négatives</strong> de l'Homme (déforestation, désertification, salinisation, pollution) et <strong>actions positives</strong> (reboisement, fixation des dunes, protection faune/flore, épuration). La notion de <strong>développement durable</strong> est la réponse à la question : comment exploiter les ressources naturelles sans compromettre leur disponibilité pour les générations futures ?</p>
+    <p class="sub">Clique sur chaque notion · Pièges CAPES et connexions révélés</p>
+  </div>
+
+  <div class="concept-map">
+    <div class="cnode cn-a" onclick="showCN('a')"><div class="cn-icon">🪓</div><div class="cn-title">Actions négatives</div><div class="cn-sub">Déforestation · Désertification · Pollution</div></div>
+    <div class="cnode cn-b" onclick="showCN('b')"><div class="cn-icon">🌱</div><div class="cn-title">Actions positives</div><div class="cn-sub">Reboisement · Protection · Épuration</div></div>
+    <div class="cnode cn-c" onclick="showCN('c')"><div class="cn-icon">♻️</div><div class="cn-title">Développement durable</div><div class="cn-sub">Définition · 3 piliers · UNESCO 1988</div></div>
+    <div class="cnode cn-d" onclick="showCN('d')"><div class="cn-icon">⚠️</div><div class="cn-title">3 Pièges classiques</div><div class="cn-sub">Erreurs fréquentes CAPES</div></div>
+    <div class="cnode cn-e" onclick="showCN('e')"><div class="cn-icon">🔗</div><div class="cn-title">Connexions manuel</div><div class="cn-sub">Ch.1 · Ch.3 · Ch.4 Thème 2</div></div>
+  </div>
+
+  <!-- Panneaux (conservés de l'original avec les images) -->
+  <div class="cn-panel a" id="cn-a">
+    <h3 style="color:var(--r)">🪓 Les 4 actions négatives de l'Homme</h3>
+    <table>
+      <tr><th class="r">Action négative</th><th class="r">Cause principale</th><th class="r">Conséquences</th></tr>
+      <tr class="hl"><td><strong>Déforestation</strong></td><td>Agriculture, urbanisation, coupes de bois</td><td>Érosion des sols · Disparition biotope · Perte biodiversité</td></tr>
+      <tr><td><strong>Désertification</strong></td><td>Surpâturage + changements climatiques</td><td>Désert gagne 16 km²/an dans zones arides · Oasis englouties</td></tr>
+      <tr class="hl"><td><strong>Salinisation des sols</strong></td><td>Irrigation avec eaux saumâtres sans drainage</td><td>Sécheresse physiologique des plantes · Désertification</td></tr>
+      <tr><td><strong>Pollution</strong></td><td>Industrie, transport, agriculture intensive</td><td>Dégradation air, eau, sols · Impact santé humaine</td></tr>
+    </table>
+  </div>
+
+  <div class="cn-panel b" id="cn-b">
+    <h3 style="color:var(--v)">🌱 Les 4 actions positives de l'Homme</h3>
+    <table>
+      <tr><th class="v">Action positive</th><th class="v">Méthode</th><th class="v">Bénéfices</th></tr>
+      <tr class="hl"><td><strong>Reboisement</strong></td><td>264 000 ha (1993–2003) · Parcs urbains</td><td>Régénération flore/faune · Lutte érosion · Absorption CO₂</td></tr>
+      <tr><td><strong>Fixation des dunes</strong></td><td>Barrières + plantation d'Oyat</td><td>Lutte contre désertification · Réduction érosion éolienne</td></tr>
+      <tr class="hl"><td><strong>Protection faune/flore</strong></td><td>Réglementation chasse/pêche · Réserves · Réintroduction</td><td>Préservation biodiversité · Équilibre écologique</td></tr>
+      <tr><td><strong>Assainissement eaux usées</strong></td><td>Stations d'épuration</td><td>Élimine 80% matière organique · Eau réutilisable</td></tr>
+    </table>
+  </div>
+
+  <div class="cn-panel c" id="cn-c">
+    <h3 style="color:var(--b)">♻️ La notion de Développement Durable</h3>
+    <div style="background:linear-gradient(135deg,var(--bl),var(--el));border:2px solid var(--b);border-radius:10px;padding:14px;margin-bottom:12px;">
+      <p style="font-size:.9rem;font-style:italic;color:var(--ar);text-align:center;line-height:1.8">"Il n'existe pas de plus grande contribution... que l'éducation et la formation en matière d'environnement."</p>
+      <p style="font-size:.8rem;color:var(--b);text-align:right;margin-top:6px">— UNESCO, 1988</p>
+    </div>
+    <div class="g2">
+      <div>
+        <table><tr><th class="b">Pilier</th><th class="b">Objectif</th></tr>
+          <tr class="hl"><td>🌿 Environnemental</td><td>Préserver les ressources naturelles et les écosystèmes</td></tr>
+          <tr><td>💰 Économique</td><td>Assurer un développement économique durable</td></tr>
+          <tr class="hl"><td>👥 Social</td><td>Garantir l'équité sociale et la qualité de vie</td></tr>
+        </table>
+      </div>
+      <div><div class="gb"><canvas id="cgDD" width="280" height="180"></canvas><figcaption>Les 3 piliers du développement durable</figcaption></div></div>
+    </div>
+  </div>
+
+  <div class="cn-panel d" id="cn-d">
+    <h3 style="color:var(--r)">⚠️ 3 Pièges classiques CAPES</h3>
+    <div class="piege-item"><div class="piege-head" onclick="togPiege(this)">⚠️ Piège 1 — Eutrophisation ≠ Pollution chimique <span style="margin-left:auto">▼</span></div><div class="piege-body">L'<strong>eutrophisation</strong> est une pollution ORGANIQUE : excès de matière organique → prolifération bactéries aérobies → baisse O₂ → mort faune aquatique. ≠ pollution chimique (nitrates, pesticides, métaux lourds).</div></div>
+    <div class="piege-item"><div class="piege-head" onclick="togPiege(this)">⚠️ Piège 2 — Bioaccumulation ×1500 <span style="margin-left:auto">▼</span></div><div class="piege-body">Les pesticides se concentrent à chaque niveau trophique : Phytoplancton (0,001 mg/kg) → Cormoran (1,5 mg/kg) = facteur <strong>×1500</strong> !</div></div>
+    <div class="piege-item"><div class="piege-head" onclick="togPiege(this)">⚠️ Piège 3 — Reboisement ≠ Restauration immédiate <span style="margin-left:auto">▼</span></div><div class="piege-body">Le reboisement est une reconstitution <strong>PROGRESSIVE</strong> sur des dizaines à centaines d'années. Planter une seule espèce ≠ reconstituer la biodiversité d'une forêt naturelle.</div></div>
+  </div>
+
+  <div class="cn-panel e" id="cn-e">
+    <h3 style="color:var(--vi)">🔗 Connexions avec le manuel</h3>
+    <div class="connexion-grid">
+      <div class="conn-item" style="border-color:var(--em);background:var(--el)"><div class="conn-ch" style="color:var(--em)">← Chapitre 1 — Écosystème</div><p style="font-size:.82rem;margin-top:3px">La déforestation détruit le biotope → la biocénose disparaît.</p></div>
+      <div class="conn-item" style="border-color:var(--b);background:var(--bl)"><div class="conn-ch" style="color:var(--b)">← Chapitre 3 — Répartition végétaux</div><p style="font-size:.82rem;margin-top:3px">La déforestation menace les étages bioclimatiques.</p></div>
+      <div class="conn-item" style="border-color:var(--r);background:var(--rl)"><div class="conn-ch" style="color:var(--r)">← Chapitre 4 — Relations trophiques</div><p style="font-size:.82rem;margin-top:3px">Bioaccumulation des pesticides illustre les chaînes alimentaires.</p></div>
+      <div class="conn-item" style="border-color:var(--ar);background:var(--arl)"><div class="conn-ch" style="color:var(--ar)">← Thème 1 — Eau (Ch.4)</div><p style="font-size:.82rem;margin-top:3px">Pollution des nappes = problème central de T1Ch4.</p></div>
+    </div>
+  </div>
+
+  <div class="reflex"><h4>💭 Questions de réflexion</h4>
+    <div class="reflex-q"><div class="rq">1. Dans le doc.21, les pesticides s'accumulent : Phytoplancton (0,001) → Cormoran (1,5 mg/kg). Facteur d'amplification = ?</div><button class="rev-btn" onclick="togAns(this)">Voir</button><div class="reflex-ans"><strong>×1500</strong> — Les super-prédateurs sont les plus menacés par la bioaccumulation.</div></div>
+    <div class="reflex-q"><div class="rq">2. La Tunisie a perdu 87% de ses forêts. Le reboisement compense-t-il ?</div><button class="rev-btn" onclick="togAns(this)">Voir</button><div class="reflex-ans">264 000 ha reboisés = seulement 10% de la perte historique (2 614 000 ha). Le reboisement est nécessaire mais insuffisant seul.</div></div>
+  </div>
+</div>
+
+<!-- ══ 2 ACTIVITÉ 1 — ACTIONS NÉGATIVES ══ -->
+<div class="pan" id="p2">
+  <div class="sech">⚠️ Activité 1 — Les actions négatives de l'Homme sur l'écosystème (p.156–164)</div>
+
+  <div class="card r">
+    <h2 class="r">1. La Déforestation</h2>
+
+    <!-- ══ IMAGES Déforestation ══ -->
+    <img class="manuel" src="images/T2Ch5_Fig1_champs_cultives_defrichement.PNG" alt="Fig.1 — Champs cultivés aux dépens de la forêt (p.156)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none"><span>📷 Fig.1 — Champs cultivés aux dépens de la forêt</span><small>p.156</small></div>
+
+    <div class="g2">
+      <div>
+        <table>
+          <tr><th class="r">Période</th><th class="r">Superficie forêts (ha)</th></tr>
+          <tr class="hl"><td>Époque romaine</td><td>3 000 000</td></tr>
+          <tr><td>1996/1997</td><td><strong style="color:var(--r)">386 000</strong></td></tr>
+          <tr class="hl"><td>Perte</td><td><strong style="color:var(--r)">− 2 614 000 ha (−87%)</strong></td></tr>
+        </table>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig3_coupure_bois_foret.PNG" alt="Fig.3 — Coupure de bois dans la forêt (p.156)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.3 — Coupure de bois</span><small>p.156</small></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig4_deboisement_liege.PNG" alt="Fig.4 — Double exploitation des forêts (p.156)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.4 — Exploitation forêts</span><small>p.156</small></div>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig5_sol_degrade_erosion.PNG" alt="Fig.5 — Sol dégradé favorise l'érosion (p.157)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.5 — Sol dégradé</span><small>p.157</small></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig6_urbanisation_ariana.PNG" alt="Fig.6 — Urbanisation Ariana (p.157)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.6 — Urbanisation Ariana</span><small>p.157</small></div>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig7_sequences_degradation_foret.PNG" alt="Fig.7 — Séquences de dégradation (p.158)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.7 — Séquences dégradation</span><small>p.158</small></div>
+      </div>
+    </div>
+
+    <p style="font-size:.88rem;line-height:1.8;margin-top:8px"><strong>Causes :</strong> Agriculture · Coupe de bois · Urbanisation (4000 ha/an perdus). <strong>Conséquences :</strong> Réduction couvert végétal → ruissellement accru → érosion intense → disparition biotopes → perte faune.</p>
+
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz — Déforestation</div>
+      <div id="mq1-q">
+        <p>1. La superficie des forêts tunisiennes est passée de 3 000 000 ha (époque romaine) à <select class="bl" data-rep="386 000 ha en 1997 (réduction de 87%)"><option value="">—</option><option>1 000 000 ha en 1997</option><option>386 000 ha en 1997 (réduction de 87%)</option></select>.</p>
+        <p>2. La déforestation entraîne une intensification de l'<select class="bl" data-rep="érosion du sol (ruissellement accru sur les pentes dénudées)"><option value="">—</option><option>humidité du sol (moins d'évaporation)</option><option>érosion du sol (ruissellement accru sur les pentes dénudées)</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq1')">✓ Vérifier</button><button class="brs" onclick="rsMQ('mq1')">↺</button><div class="mq-fb" id="mq1-fb"></div>
+    </div>
+  </div>
+
+  <div class="card o">
+    <h2>2. La Désertification et la Salinisation</h2>
+
+    <!-- ══ IMAGES Désertification/Salinisation ══ -->
+    <div class="g2">
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig8_oasis_engloutie_sable.PNG" alt="Fig.8 — Vestige d'une oasis engloutie (p.158)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.8 — Oasis engloutie</span><small>p.158</small></div>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig9_surpaturage_gabes.PNG" alt="Fig.9 — Effet du surpâturage (p.158)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.9 — Surpâturage</span><small>p.158</small></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig10_salinisation_sols.PNG" alt="Fig.10 — Absence de drainage (p.159)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.10 — Salinisation</span><small>p.159</small></div>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig11_salinisation_desertification.PNG" alt="Fig.11 — Salinisation → désertification (p.159)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.11 — Salinisation désertification</span><small>p.159</small></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div>
+        <h3>Désertification</h3>
+        <table>
+          <tr><th class="o">Nbre ruminants/surface</th><th class="o">Couverture végétale</th><th class="o">Production (kg/ha/an)</th></tr>
+          <tr class="hl"><td>Faible</td><td>25%</td><td>1069</td></tr>
+          <tr><td>Moyenne</td><td>8%</td><td>614</td></tr>
+          <tr class="hl"><td>Forte</td><td>4%</td><td><strong style="color:var(--r)">415</strong></td></tr>
+        </table>
+        <p style="font-size:.85rem;margin-top:4px;color:var(--r)">→ Surpâturage fort : couverture végétale ÷ 6, production −61% !</p>
+      </div>
+      <div>
+        <h3>Salinisation</h3>
+        <table>
+          <tr><th class="o">Cause</th><th class="o">Mécanisme</th><th class="o">Conséquence</th></tr>
+          <tr class="hl"><td>Irrigation eaux saumâtres sans drainage</td><td>Évaporation → accumulation sels en surface</td><td>Sécheresse physiologique des plantes</td></tr>
+        </table>
+        <div class="tip"><div class="tip-head" onclick="togTip(this)">💡 Sécheresse physiologique</div><div class="tip-body">Sol trop salé → concentration sels > plante → osmose inverse → racines perdent eau → plante se déshydrate même si sol humide.</div></div>
+      </div>
+    </div>
+
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz — Désertification</div>
+      <div id="mq2-q">
+        <p>1. Le surpâturage intense réduit la couverture végétale à <select class="bl" data-rep="4% (contre 25% avec faible pâturage)"><option value="">—</option><option>25% (identique à faible pâturage)</option><option>4% (contre 25% avec faible pâturage)</option></select>.</p>
+        <p>2. La salinisation provoque une sécheresse <select class="bl" data-rep="physiologique (la plante perd son eau par osmose inverse)"><option value="">—</option><option>climatique (absence de pluie)</option><option>physiologique (la plante perd son eau par osmose inverse)</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq2')">✓ Vérifier</button><button class="brs" onclick="rsMQ('mq2')">↺</button><div class="mq-fb" id="mq2-fb"></div>
+    </div>
+  </div>
+
+  <div class="card ar">
+    <h2 class="ar">3. La Pollution</h2>
+
+    <!-- ══ IMAGES Pollution ══ -->
+    <div class="g2">
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig12_transports_pollution.PNG" alt="Fig.12 — Transports pollution (p.160)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.12 — Transports</span><small>p.160</small></div>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig14_industries_fumees.PNG" alt="Fig.14 — Industries fumées (p.160)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.14 — Industries</span><small>p.160</small></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig15_evolution_oxydes_azote.PNG" alt="Fig.15 — Évolution NOx (p.161)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.15 — Évolution NOx</span><small>p.161</small></div>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig16_evolution_ozone.PNG" alt="Fig.16 — Évolution O₃ (p.161)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.16 — Évolution O₃</span><small>p.161</small></div>
+      </div>
+    </div>
+
+    <h3>a. Pollution de l'air</h3>
+    <table>
+      <tr><th class="ar">Polluant</th><th class="ar">Origine</th><th class="ar">Effets écosystème</th><th class="ar">Effets santé</th></tr>
+      <tr class="hl"><td>CO₂, CO</td><td>Combustions</td><td>Effet de serre</td><td>Asphyxie (CO)</td></tr>
+      <tr><td>NO, NO₂</td><td>Véhicules, industries</td><td>Dépérissement forêts</td><td>Troubles respiratoires</td></tr>
+      <tr class="hl"><td>SO₂</td><td>Industries</td><td>Pluies acides</td><td>Troubles cardiovasculaires</td></tr>
+      <tr><td>Métaux lourds</td><td>Industries, déchets</td><td>Bioaccumulation</td><td>Empoisonnements</td></tr>
+    </table>
+
+    <!-- ══ IMAGES Pollution eau ══ -->
+    <div class="g2">
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig18_dechets_lacs.PNG" alt="Fig.18 — Déchets lacs (p.163)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.18 — Déchets lacs</span><small>p.163</small></div>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig19_evolution_o2_cours_eau.PNG" alt="Fig.19 — Évolution O₂ (p.163)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.19 — Évolution O₂</span><small>p.163</small></div>
+      </div>
+    </div>
+    <img class="manuel" src="images/T2Ch5_Fig20_lac_algues_vertes.PNG" alt="Fig.20 — Lac algues vertes (p.163)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none"><span>📷 Fig.20 — Lac algues vertes</span><small>p.163</small></div>
+
+    <h3 style="margin-top:12px">b. Pollution de l'eau</h3>
+    <table>
+      <tr><th class="ar">Type</th><th class="ar">Origine</th><th class="ar">Conséquences</th></tr>
+      <tr class="hl"><td><strong>Polluants organiques</strong></td><td>Eaux usées, élevages</td><td><strong>Eutrophisation</strong> : bactéries → baisse O₂ → mort faune → algues</td></tr>
+      <tr><td><strong>Nitrates, phosphates</strong></td><td>Engrais excessifs</td><td>Asphyxie nourrisson · Eutrophisation</td></tr>
+      <tr class="hl"><td><strong>Pesticides</strong></td><td>Agriculture intensive</td><td><strong>Bioaccumulation</strong> ×1500</td></tr>
+      <tr><td><strong>Métaux lourds</strong></td><td>Déchets industriels</td><td>Intoxications · Bioaccumulation</td></tr>
+    </table>
+
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz — Pollution</div>
+      <div id="mq3-q">
+        <p>1. L'eutrophisation est causée par <select class="bl" data-rep="un excès de matière organique → prolifération bactéries → baisse O₂ → mort faune aquatique"><option value="">—</option><option>des pesticides non dégradables dans l'eau</option><option>un excès de matière organique → prolifération bactéries → baisse O₂ → mort faune aquatique</option></select>.</p>
+        <p>2. Les pesticides non dégradables se <select class="bl" data-rep="concentrent (bioaccumulent) à chaque niveau trophique (×1500 du phytoplancton au cormoran)"><option value="">—</option><option>diluent progressivement</option><option>concentrent (bioaccumulent) à chaque niveau trophique (×1500 du phytoplancton au cormoran)</option></select>.</p>
+        <p>3. Le CO₂ des combustions contribue à <select class="bl" data-rep="l'effet de serre et au réchauffement climatique"><option value="">—</option><option>l'appauvrissement de la couche d'ozone uniquement</option><option>l'effet de serre et au réchauffement climatique</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq3')">✓ Vérifier</button><button class="brs" onclick="rsMQ('mq3')">↺</button><div class="mq-fb" id="mq3-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 3 ACTIVITÉ 2 — ACTIONS POSITIVES ══ -->
+<div class="pan" id="p3">
+  <div class="sech">✅ Activité 2 — Les actions positives de l'Homme sur l'écosystème (p.165–166)</div>
+
+  <div class="card v">
+    <h2 class="v">Les 4 stratégies de préservation des écosystèmes</h2>
+
+    <!-- ══ IMAGES Actions positives ══ -->
+    <div class="g2">
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig1_parc_bouhedma.PNG" alt="Fig.1 — Parc national de Bouhedma (p.165)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.1 — Parc Bouhedma</span><small>p.165</small></div>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig2_fixation_dunes.PNG" alt="Fig.2 — Fixation des dunes (p.166)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.2 — Fixation dunes</span><small>p.166</small></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig3_reserve_naturelle.PNG" alt="Fig.3 — Réserve naturelle (p.166)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.3 — Réserve naturelle</span><small>p.166</small></div>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch5_Fig4_station_epuration.PNG" alt="Fig.4 — Station d'épuration (p.166)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.4 — Station épuration</span><small>p.166</small></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div>
+        <table>
+          <tr><th class="v">Action</th><th class="v">Méthodes / Données Tunisie</th><th class="v">Effets</th></tr>
+          <tr class="hl"><td><strong>Reboisement</strong></td><td>264 000 ha (1993–2003) · Parcs urbains · Bouhedma</td><td>Régénération flore/faune · Lutte érosion · Absorption CO₂</td></tr>
+          <tr><td><strong>Fixation des dunes</strong></td><td>Barrières + plantation Oyat</td><td>Lutte désertification · Réduction érosion éolienne</td></tr>
+          <tr class="hl"><td><strong>Protection faune/flore</strong></td><td>Réglementation chasse/pêche · Réserves · Réintroduction Cerf</td><td>Préservation biodiversité · Équilibre trophique</td></tr>
+          <tr><td><strong>Assainissement eaux usées</strong></td><td>Stations épuration : rétention + aération</td><td>Élimine 80% MO · Réduit eutrophisation · Eau réutilisable</td></tr>
+        </table>
+      </div>
+      <div><div class="gb"><canvas id="cgActions" width="280" height="220"></canvas><figcaption>Les 4 actions positives</figcaption></div></div>
+    </div>
+
+    <div class="tip"><div class="tip-head" onclick="togTip(this)">💡 Reboisement et CO₂ — lien avec le cycle du carbone</div><div class="tip-body">Par la photosynthèse, les arbres absorbent le CO₂ → "puits de carbone". 1 ha de forêt adulte absorbe ~5–10 tonnes de CO₂/an.</div></div>
+
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz — Actions positives</div>
+      <div id="mq4-q">
+        <p>1. Entre 1993 et 2003, la Tunisie a reboisé <select class="bl" data-rep="264 000 hectares"><option value="">—</option><option>386 000 hectares</option><option>264 000 hectares</option><option>3 000 000 hectares</option></select>.</p>
+        <p>2. La fixation des dunes utilise principalement <select class="bl" data-rep="l'Oyat (Psamma arenaria) — graminée côtière aux racines développées"><option value="">—</option><option>le Thuya de berbérie</option><option>l'Oyat (Psamma arenaria) — graminée côtière aux racines développées</option></select>.</p>
+        <p>3. Une station d'épuration élimine environ <select class="bl" data-rep="80% de la matière organique des eaux usées"><option value="">—</option><option>20% de la matière organique</option><option>80% de la matière organique des eaux usées</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq4')">✓ Vérifier</button><button class="brs" onclick="rsMQ('mq4')">↺</button><div class="mq-fb" id="mq4-fb"></div>
+    </div>
+    <div class="ret"><h4>📌 Retenons — Développement durable</h4>
+      <p><dt>Développement durable :</dt><dd>utilisation durable des ressources en équilibre avec le développement économique, pour répondre aux besoins présents sans compromettre ceux des générations futures.</dd></p>
+      <p><dt>Désertification :</dt><dd>dégradation des sols arides sous l'effet combiné des changements climatiques et des activités humaines.</dd></p>
+      <p><dt>Eutrophisation :</dt><dd>prolifération d'algues et baisse en O₂ dissous due à un excès de matière organique dans l'eau.</dd></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 4 BILAN ══ -->
+<div class="pan" id="p4">
+  <div class="sech">📋 Bilan (p.167)</div>
+
+  <div class="bstep r"><p style="font-size:.92rem"><span class="bnum r">1</span>La <strong>déforestation</strong> → intensification de l'<select class="bl" data-rep="érosion des sols"><option value="">—</option><option>humidité des sols</option><option>érosion des sols</option></select> et disparition des <select class="bl" data-rep="biotopes naturels de nombreuses espèces animales"><option value="">—</option><option>zones agricoles fertiles uniquement</option><option>biotopes naturels de nombreuses espèces animales</option></select>. L'urbanisation fait perdre <select class="bl" data-rep="4000 hectares de terres agricoles par an"><option value="">—</option><option>40 000 hectares de forêts par an</option><option>4000 hectares de terres agricoles par an</option></select>.</p></div>
+
+  <div class="bstep o"><p style="font-size:.92rem"><span class="bnum" style="background:var(--o)">2</span>Le <strong>surpâturage</strong> et le <strong>déboisement</strong> accélèrent la <select class="bl" data-rep="désertification"><option value="">—</option><option>reboisement</option><option>désertification</option></select>. L'irrigation avec des eaux <select class="bl" data-rep="saumâtres (salées) sans drainage"><option value="">—</option><option>douces en excès</option><option>saumâtres (salées) sans drainage</option></select> entraîne la <select class="bl" data-rep="salinisation des sols"><option value="">—</option><option>fertilisation des sols</option><option>salinisation des sols</option></select>, provoquant une sécheresse <select class="bl" data-rep="physiologique"><option value="">—</option><option>climatique</option><option>physiologique</option></select>.</p></div>
+
+  <div class="bstep ar"><p style="font-size:.92rem"><span class="bnum ar">3</span>La <strong>pollution</strong> atmosphérique est due aux activités <select class="bl" data-rep="industrielles et les transports"><option value="">—</option><option>agricoles uniquement</option><option>industrielles et les transports</option></select>. Les déchets organiques dans l'eau → <select class="bl" data-rep="eutrophisation"><option value="">—</option><option>désertification aquatique</option><option>eutrophisation</option></select>. Les pesticides se concentrent dans les <select class="bl" data-rep="chaînes alimentaires (bioaccumulation)"><option value="">—</option><option>nappes phréatiques uniquement</option><option>chaînes alimentaires (bioaccumulation)</option></select>.</p></div>
+
+  <div class="bstep v"><p style="font-size:.92rem"><span class="bnum v">4</span>Le <strong>reboisement</strong> régénère la flore/faune et diminue l'<select class="bl" data-rep="érosion"><option value="">—</option><option>eutrophisation</option><option>érosion</option></select>. Les forêts absorbent le <select class="bl" data-rep="CO₂ atmosphérique (par photosynthèse)"><option value="">—</option><option>O₂ atmosphérique</option><option>CO₂ atmosphérique (par photosynthèse)</option></select>. La <strong>fixation des dunes</strong> ralentit la <select class="bl" data-rep="désertification et de l'érosion éolienne"><option value="">—</option><option>salinisation des sols</option><option>désertification et de l'érosion éolienne</option></select>.</p></div>
+
+  <div class="bstep b"><p style="font-size:.92rem"><span class="bnum b">5</span>Le <strong>développement durable</strong> = utilisation <select class="bl" data-rep="durable des ressources en équilibre avec le développement économique"><option value="">—</option><option>maximale des ressources</option><option>durable des ressources en équilibre avec le développement économique</option></select> sans <select class="bl" data-rep="compromettre les besoins des générations futures"><option value="">—</option><option>réduire les activités</option><option>compromettre les besoins des générations futures</option></select>. L'<select class="bl" data-rep="assainissement des eaux usées"><option value="">—</option><option>irrigation intensive</option><option>assainissement des eaux usées</option></select> atténue la pollution.</p></div>
+
+  <div style="margin-top:14px"><button class="bck" onclick="ckBilan()">✓ Vérifier tout le bilan</button><button class="brs" onclick="rsBilan()">↺</button><div class="gfb" id="bilan-fb"></div></div>
+</div>
+
+<!-- ══ 5 FLASHCARDS ══ -->
+<div class="pan" id="p5">
+  <h2 style="margin-bottom:12px">🃏 Flashcards</h2>
+  <div class="fa"><button class="btn bv" onclick="chkFC()">✓ Vérifier tout</button><button class="btn bg" onclick="rstFC()">↺</button><span id="fcs" style="display:none;padding:7px 12px;border-radius:8px;font-weight:700"></span></div>
+  <div class="fcg" id="fcg"></div>
+</div>
+
+<!-- ══ 6 QCM — Question par question ══ -->
+<div class="pan" id="p6">
+  <h2 style="margin-bottom:6px">✏️ QCM — Format CAPES (1 à 3 bonnes réponses)</h2>
+  <p style="margin-bottom:6px;font-size:.85rem;color:var(--mu)">Questions du manuel (p.168) et complémentaires</p>
+  <div class="qcm-ctrl"><button class="btn bg" onclick="corrAllQ()" style="font-size:.78rem;">📋 Tout corriger</button><button class="btn bg" onclick="rstAllQ()" style="font-size:.78rem;">↺ Tout réinitialiser</button><span id="qcm-global-score" class="qcm-score" style="display:none;"></span></div>
+  <div id="qcm-c"></div>
+</div>
+
+<!-- ══ 7 EXERCICES ══ -->
+<div class="pan" id="p7">
+  <h2 style="margin-bottom:14px">📝 Exercices interactifs</h2>
+
+  <!-- ══ Questions du manuel p.168 en cases à cocher ══ -->
+  <div class="man-p168">
+    <div class="mpq">📖 Questions du manuel (p.168) — Cochez la (ou les) bonne(s) réponse(s)</div>
+
+    <p style="font-weight:700;margin:8px 0 4px;color:#37474F">Q1. Le déboisement favorise :</p>
+    <div class="cbox-group" id="man-q1">
+      <label><input type="checkbox" value="0" data-correct="true"> a- la désertification</label>
+      <label><input type="checkbox" value="1"> b- l'effet de serre</label>
+      <label><input type="checkbox" value="2" data-correct="true"> c- l'érosion du sol</label>
+      <label><input type="checkbox" value="3"> d- la fixation des dunes</label>
+    </div>
+    <button class="btn bg" onclick="ckManQ('man-q1')" style="font-size:.76rem;margin-top:4px;">Vérifier Q1</button><span class="gfb" id="man-q1-fb" style="display:inline-block;margin-left:6px;"></span>
+
+    <p style="font-weight:700;margin:12px 0 4px;color:#37474F">Q2. La pollution des sols peut être due à :</p>
+    <div class="cbox-group" id="man-q2">
+      <label><input type="checkbox" value="0" data-correct="true"> a- un épandage excessif d'engrais chimiques</label>
+      <label><input type="checkbox" value="1"> b- une irrigation par des eaux usées mais traitées</label>
+      <label><input type="checkbox" value="2"> c- un déboisement</label>
+      <label><input type="checkbox" value="3" data-correct="true"> d- des émissions de déchets industriels, agricoles ou domestiques</label>
+    </div>
+    <button class="btn bg" onclick="ckManQ('man-q2')" style="font-size:.76rem;margin-top:4px;">Vérifier Q2</button><span class="gfb" id="man-q2-fb" style="display:inline-block;margin-left:6px;"></span>
+
+    <p style="font-weight:700;margin:12px 0 4px;color:#37474F">Q3. Mot caché — Espace naturel protégé pour la faune et la flore :</p>
+    <div class="cbox-group" id="man-q3">
+      <label><input type="checkbox" value="0" data-correct="true"> a- Réserve naturelle (ou Parc national)</label>
+      <label><input type="checkbox" value="1"> b- Zone industrielle</label>
+    </div>
+    <button class="btn bg" onclick="ckManQ('man-q3')" style="font-size:.76rem;margin-top:4px;">Vérifier Q3</button><span class="gfb" id="man-q3-fb" style="display:inline-block;margin-left:6px;"></span>
+  </div>
+
+  <!-- EX 1 : Associer action → conséquence -->
+  <div class="tab-exo"><h3 style="color:var(--ar);margin-bottom:8px">🌍 Ex.1 — Associer chaque action humaine à ses conséquences</h3>
+    <div class="ctx">Pour chaque action humaine, sélectionner la conséquence directe sur l'écosystème.</div>
+    <table><tr><th class="ar">Action humaine</th><th class="ar">Conséquence principale</th></tr>
+      <tr><td>Coupe intensive des forêts</td><td><select class="tcell" data-rep="Érosion des sols + disparition des biotopes naturels"><option value="">—</option><option>Augmentation de la production agricole</option><option>Érosion des sols + disparition des biotopes naturels</option></select></td></tr>
+      <tr><td>Surpâturage dans les zones arides</td><td><select class="tcell" data-rep="Réduction couverture végétale → désertification accélérée"><option value="">—</option><option>Amélioration de la fertilité des sols</option><option>Réduction couverture végétale → désertification accélérée</option></select></td></tr>
+      <tr><td>Irrigation avec eaux saumâtres sans drainage</td><td><select class="tcell" data-rep="Salinisation des sols → sécheresse physiologique des plantes"><option value="">—</option><option>Augmentation de la fertilité</option><option>Salinisation des sols → sécheresse physiologique des plantes</option></select></td></tr>
+      <tr><td>Rejet massif d'eaux usées organiques dans un lac</td><td><select class="tcell" data-rep="Eutrophisation → baisse O₂ → mort faune aquatique + algues"><option value="">—</option><option>Fertilisation naturelle du lac</option><option>Eutrophisation → baisse O₂ → mort faune aquatique + algues</option></select></td></tr>
+      <tr><td>Utilisation excessive de pesticides agricoles</td><td><select class="tcell" data-rep="Bioaccumulation dans les chaînes alimentaires (×1500)"><option value="">—</option><option>Enrichissement des nappes en minéraux</option><option>Bioaccumulation dans les chaînes alimentaires (×1500)</option></select></td></tr>
+    </table>
+    <button class="bck" onclick="ckTabExo('ex1tab')">✓ Vérifier</button><button class="brs" onclick="rsTabExo('ex1tab')">↺</button><div class="gfb" id="ex1tab-fb"></div>
+  </div>
+
+  <!-- EX 2 : Texte à trous -->
+  <div class="trous"><h3 style="color:var(--vi);margin-bottom:8px">♻️ Ex.2 — Compléter le texte sur le développement durable</h3>
+    <div class="ctx">Mots : développement durable · reboisement · désertification · eutrophisation · érosion · bioaccumulation · assainissement · CO₂</div>
+    <div id="ex2-q"><p>La déforestation accélère l'<select class="bl" data-rep="érosion"><option value="">—</option><option>eutrophisation</option><option>érosion</option><option>désertification</option></select>. Le surpâturage accélère la <select class="bl" data-rep="désertification"><option value="">—</option><option>salinisation</option><option>désertification</option><option>bioaccumulation</option></select>. Les rejets organiques → <select class="bl" data-rep="eutrophisation"><option value="">—</option><option>érosion</option><option>eutrophisation</option><option>désertification</option></select>. Pesticides → <select class="bl" data-rep="bioaccumulation"><option value="">—</option><option>eutrophisation</option><option>bioaccumulation</option></select>. Le <select class="bl" data-rep="reboisement"><option value="">—</option><option>surpâturage</option><option>reboisement</option></select> absorbe le <select class="bl" data-rep="CO₂"><option value="">—</option><option>O₂</option><option>CO₂</option></select>. L'<select class="bl" data-rep="assainissement"><option value="">—</option><option>eutrophisation</option><option>assainissement</option></select> élimine 80% MO. Ensemble = <select class="bl" data-rep="développement durable"><option value="">—</option><option>surpâturage durable</option><option>développement durable</option></select>.</p></div>
+    <button class="bck" onclick="ckMQ('ex2')">✓ Vérifier</button><button class="brs" onclick="rsMQ('ex2')">↺</button><div class="mq-fb" id="ex2-fb"></div>
+  </div>
+
+  <!-- EX 3 : Ordre des séquences de dégradation -->
+  <div class="ord-exo"><h3 style="color:var(--sa);margin-bottom:8px">🔢 Ex.3 — Séquences de dégradation d'une forêt (doc.7, p.158)</h3>
+    <p style="font-size:.85rem;margin-bottom:9px;color:var(--mu)">Ordonner du stade initial (1) au stade final (5) :</p>
+    <div class="ord-items" id="ord1" ondragover="event.preventDefault()" ondrop="dropOrd(event,'ord1')">
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="5" data-id="o5"><div class="pos-num">?</div><span>⠿</span> Désertification — sol nu et stérile</div>
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="1" data-id="o1"><div class="pos-num">?</div><span>⠿</span> Forêt climacique équilibrée</div>
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="3" data-id="o3"><div class="pos-num">?</div><span>⠿</span> Garrigue ou maquis dégradé</div>
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="2" data-id="o2"><div class="pos-num">?</div><span>⠿</span> Déforestation — coupes, incendies, surpâturage</div>
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="4" data-id="o4"><div class="pos-num">?</div><span>⠿</span> Érosion intense — ruissellement, emportement du sol</div>
+    </div>
+    <button class="bck" onclick="ckOrd('ord1')">✓ Vérifier</button><button class="brs" onclick="rsOrd('ord1')">↺ Mélanger</button><div class="gfb" id="ord1-fb"></div>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  <p>Chapitre 5 — Notion de Développement Durable · 2ème année Secondaire SVT · Programme Tunisien</p>
+  <p class="ft-sig">INGÉNIEUR Mohamed CHAGRAOUI / ENSEIGNANT SVT · CANDIDAT CAPES SVT 2026 · TUNISIE</p>
+</footer>
+
+<script>
+const panels=document.querySelectorAll('.pan'),tabs=document.querySelectorAll('.t');
+const pf=document.getElementById('pf');let vis=new Set([0]);
+function showTab(n){
+  panels.forEach(p=>p.classList.remove('on'));tabs.forEach(t=>t.classList.remove('on'));
+  panels[n].classList.add('on');tabs[n].classList.add('on');
+  vis.add(n);pf.style.width=Math.round(vis.size/tabs.length*100)+'%';
+  localStorage.setItem('t2ch5tab',n);window.scrollTo({top:0,behavior:'smooth'});
+  if(n===1)setTimeout(drawDD,80);
+  if(n===3)setTimeout(drawActions,80);
+}
+const sv=localStorage.getItem('t2ch5tab');
+if(sv){const n=parseInt(sv);if(n>0){panels[n].classList.add('on');panels[0].classList.remove('on');tabs[n].classList.add('on');tabs[0].classList.remove('on');vis.add(n);pf.style.width=Math.round(vis.size/tabs.length*100)+'%';}}
+
+function togTip(h){h.nextElementSibling.classList.toggle('on');}
+function showCN(id){
+  const panel=document.getElementById('cn-'+id),isOn=panel.classList.contains('on');
+  document.querySelectorAll('.cn-panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.cnode').forEach(c=>c.classList.remove('active'));
+  if(!isOn){panel.classList.add('on');const cn=document.querySelector('.cnode.cn-'+id);if(cn)cn.classList.add('active');}
+}
+function togPiege(h){const b=h.nextElementSibling;b.classList.toggle('on');h.querySelector('span').textContent=b.classList.contains('on')?'▲':'▼';}
+function togAns(btn){btn.nextElementSibling.classList.toggle('on');}
+function ckMQ(id){
+  const sels=document.querySelectorAll('#'+id+'-q select.bl');let ok=0,tot=sels.length;
+  sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  const fb=document.getElementById(id+'-fb');fb.className='mq-fb '+(ok===tot?'ok':'ko');
+  fb.textContent=ok===tot?'Parfait ! '+ok+'/'+tot:ok+'/'+tot+' — revois les réponses en rouge.';
+}
+function rsMQ(id){
+  document.querySelectorAll('#'+id+'-q select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  const fb=document.getElementById(id+'-fb');fb.className='mq-fb';fb.textContent='';
+}
+function ckTabExo(id){
+  const fb=document.getElementById(id+'-fb');if(!fb)return;const block=fb.closest('.tab-exo');if(!block)return;
+  const cells=block.querySelectorAll('.tcell');let ok=0,tot=cells.length;
+  cells.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  fb.className='gfb '+(ok===tot?'ok':'ko');fb.textContent=ok===tot?'Parfait ! '+ok+'/'+tot:ok+'/'+tot+' — revois les cellules en rouge.';
+}
+function rsTabExo(id){
+  const fb=document.getElementById(id+'-fb');if(!fb)return;const block=fb.closest('.tab-exo');if(!block)return;
+  block.querySelectorAll('.tcell').forEach(s=>{s.value='';s.classList.remove('ok','ko');});fb.className='gfb';fb.textContent='';
+}
+function ckBilan(){
+  const sels=document.querySelectorAll('#p4 select.bl');let ok=0,tot=sels.length;
+  sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  const fb=document.getElementById('bilan-fb');fb.className='gfb '+(ok===tot?'ok':'ko');
+  fb.textContent=ok===tot?'Bilan complet ! '+ok+'/'+tot:ok+'/'+tot+' — Revois les trous en rouge.';
+}
+function rsBilan(){
+  document.querySelectorAll('#p4 select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  const fb=document.getElementById('bilan-fb');fb.className='gfb';fb.textContent='';
+}
+let dragItem=null;
+function dragOrd(ev){dragItem=ev.currentTarget;ev.dataTransfer.effectAllowed='move';}
+function dropOrd(ev,listId){
+  ev.preventDefault();const list=document.getElementById(listId),items=[...list.querySelectorAll('.ord-item')];
+  const target=ev.target.closest('.ord-item');if(!target||target===dragItem)return;
+  list.insertBefore(dragItem,items.indexOf(target)>items.indexOf(dragItem)?target.nextSibling:target);updOrd(listId);
+}
+function updOrd(id){document.getElementById(id).querySelectorAll('.ord-item').forEach((item,i)=>{item.querySelector('.pos-num').textContent=i+1;item.classList.remove('correct-pos','wrong-pos');});}
+function ckOrd(id){
+  const items=document.getElementById(id).querySelectorAll('.ord-item');let ok=0;
+  items.forEach((item,i)=>{item.classList.remove('correct-pos','wrong-pos');const cor=parseInt(item.dataset.order)===i+1;item.classList.add(cor?'correct-pos':'wrong-pos');item.querySelector('.pos-num').textContent=i+1;if(cor)ok++;});
+  const fb=document.getElementById(id+'-fb');fb.className='gfb '+(ok===items.length?'ok':'ko');fb.textContent=ok===items.length?'Ordre parfait !':ok+'/'+items.length+' correctes.';
+}
+function rsOrd(id){
+  const list=document.getElementById(id),items=[...list.querySelectorAll('.ord-item')];
+  items.sort(()=>Math.random()-.5);items.forEach(i=>{i.classList.remove('correct-pos','wrong-pos');list.appendChild(i);});updOrd(id);
+  const fb=document.getElementById(id+'-fb');fb.className='gfb';fb.textContent='';
+}
+function ckManQ(id){
+  const block=document.getElementById(id),cbs=block.querySelectorAll('input[type="checkbox"]');let ok=!0;
+  cbs.forEach(cb=>{const isCorrect=cb.dataset.correct==='true',checked=cb.checked;if(isCorrect&&!checked)ok=!1;if(!isCorrect&&checked)ok=!1;});
+  const fb=document.getElementById(id+'-fb');fb.className='gfb '+(ok?'ok':'ko');fb.textContent=ok?'✓ Correct !':'✗ Incorrect — révise la réponse';
+}
+
+function mkC(id,w,h){const c=document.getElementById(id);if(!c)return null;c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.clearRect(0,0,w,h);return ctx;}
+
+function drawDD(){
+  const ctx=mkC('cgDD',280,180);if(!ctx)return;
+  ctx.fillStyle='#f1f8e9';ctx.fillRect(0,0,280,180);
+  ctx.font='bold 9px sans-serif';ctx.fillStyle='#1B5E20';ctx.textAlign='center';ctx.fillText('Les 3 piliers du Développement Durable',140,14);
+  const circles=[{x:140,y:70,r:50,color:'rgba(27,94,32,0.3)',label:'🌿 Environnement',lx:140,ly:45},{x:105,y:120,r:50,color:'rgba(2,119,189,0.3)',label:'💰 Économie',lx:80,ly:150},{x:175,y:120,r:50,color:'rgba(229,57,53,0.3)',label:'👥 Social',lx:210,ly:150}];
+  circles.forEach(c=>{ctx.fillStyle=c.color;ctx.strokeStyle='#555';ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#333';ctx.font='bold 8px sans-serif';ctx.textAlign='center';ctx.fillText(c.label,c.lx,c.ly);});
+  ctx.fillStyle='rgba(255,255,255,0.9)';ctx.beginPath();ctx.arc(140,107,22,0,Math.PI*2);ctx.fill();ctx.fillStyle='#1B5E20';ctx.font='bold 8px sans-serif';ctx.textAlign='center';ctx.fillText('DD',140,104);ctx.fillText('♻️',140,115);
+}
+
+function drawActions(){
+  const ctx=mkC('cgActions',280,220);if(!ctx)return;
+  ctx.fillStyle='#e8f5e9';ctx.fillRect(0,0,280,220);
+  ctx.font='bold 9px sans-serif';ctx.fillStyle='#1B5E20';ctx.textAlign='center';ctx.fillText('Actions positives pour préserver les écosystèmes',140,14);
+  const actions=[{icon:'🌳',label:'Reboisement',sub:'264 000 ha',color:'#1B5E20',x:70,y:60},{icon:'🏖️',label:'Fixation dunes',sub:'Oyat + barrières',color:'#F57F17',x:210,y:60},{icon:'🦁',label:'Protection',sub:'Réserves + Réintroduction',color:'#0277BD',x:70,y:155},{icon:'💧',label:'Épuration',sub:'80% matière organique',color:'#9C27B0',x:210,y:155}];
+  actions.forEach(a=>{ctx.fillStyle=a.color;ctx.beginPath();ctx.roundRect(a.x-55,a.y-25,110,60,8);ctx.fill();ctx.fillStyle='#fff';ctx.font='20px sans-serif';ctx.textAlign='center';ctx.fillText(a.icon,a.x,a.y-4);ctx.font='bold 8px sans-serif';ctx.fillText(a.label,a.x,a.y+12);ctx.font='7px sans-serif';ctx.fillText(a.sub,a.x,a.y+24);});
+  ctx.fillStyle='#2E7D32';ctx.beginPath();ctx.roundRect(100,100,80,30,8);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 8px sans-serif';ctx.textAlign='center';ctx.fillText('♻️ Dév. Durable',140,119);
+  [[70,85,115,105],[210,85,165,105],[70,130,115,115],[210,130,165,115]].forEach(([x1,y1,x2,y2])=>{ctx.strokeStyle='#A5D6A7';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();});
+}
+
+const FC=[{t:'Développement durable',d:'Mode de développement qui répond aux besoins du présent sans compromettre la capacité des générations futures à répondre aux leurs. Repose sur 3 piliers : environnement, économie, social.'},{t:'Déforestation',d:'Destruction des forêts par coupe, agriculture ou urbanisation. Tunisie : de 3 000 000 ha (romain) à 386 000 ha (1997). Entraîne érosion et perte de biodiversité.'},{t:'Désertification',d:'Dégradation des sols arides sous l\'effet combiné des changements climatiques ET des activités humaines (surpâturage, déforestation).'},{t:'Salinisation',d:'Accumulation de sels dans le sol due à l\'irrigation avec eaux saumâtres sans drainage. Provoque une sécheresse physiologique des plantes.'},{t:'Eutrophisation',d:'Dégradation aquatique par excès de matière organique : prolifération bactéries → baisse O₂ → mort faune → algues vertes + odeurs.'},{t:'Bioaccumulation',d:'Concentration progressive de substances non dégradables (pesticides, métaux lourds) à chaque niveau trophique. ×1500 du phytoplancton au cormoran.'},{t:'Reboisement',d:'Plantation d\'arbres sur terrains déboisés. Tunisie : 264 000 ha (1993–2003). Bénéfices : régénération écosystème, lutte érosion, absorption CO₂.'},{t:'Fixation des dunes',d:'Stabilisation des dunes par barrières et plantation d\'Oyat. Lutte contre la désertification et l\'érosion éolienne.'},{t:'Surpâturage',d:'Exploitation excessive des pâturages. Réduit la couverture végétale de 25% à 4% et accélère la désertification.'},{t:'Station d\'épuration',d:'Installation traitant les eaux usées : rétention + dégradation bactérienne + aération. Élimine 80% de la matière organique.'},{t:'Effet de serre',d:'Réchauffement dû à l\'accumulation de gaz (CO₂, CH₄) retenant la chaleur. Amplifié par combustions industrielles et transports.'},{t:'Sécheresse physiologique',d:'Déshydratation d\'une plante malgré la présence d\'eau. Causée par un sol trop salé → osmose inverse → racines perdent leur eau.'}];
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const fcg=document.getElementById('fcg'),defs=FC.map(c=>c.d);
+  FC.forEach((c,i)=>{const shuffled=[...defs].sort(()=>Math.random()-.5).slice(0,3);if(!shuffled.includes(c.d)){shuffled[0]=c.d;shuffled.sort(()=>Math.random()-.5);}const opts=shuffled.map(d=>`<option value="${d.replace(/"/g,'&quot;')}">${d.length>65?d.slice(0,65)+'…':d}</option>`).join('');fcg.innerHTML+=`<div class="fcc"><div class="fcp"><strong style="color:var(--em)">${c.t} :</strong><br><select class="fs" data-rep="${c.d.replace(/"/g,'&quot;')}"><option value="">— Choisir la définition</option>${opts}</select></div></div>`;});
+  const qcmc=document.getElementById('qcm-c');
+  QS.forEach((q,qi)=>{qcmc.innerHTML+=`<div class="qi" id="qi${qi}"><div class="qq">Q${qi+1}. ${q.q}</div>${q.o.map((o,oi)=>`<label class="qo" id="qo${qi}-${oi}"><input type="checkbox" name="q${qi}" value="${oi}"> <span>${o}</span><span class="fb-txt">${q.c.includes(oi)?'✓ Bonne réponse':'✗ Mauvaise réponse'}</span></label>`).join('')}<button class="btn bg" onclick="corrOneQ(${qi})" style="font-size:.76rem;margin-top:6px;">Vérifier Q${qi+1}</button></div>`;});
+});
+
+function chkFC(){let ok=0,tot=0;document.querySelectorAll('.fs').forEach(s=>{tot++;s.classList.remove('ok','ko');if(!s.value)return;if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else s.classList.add('ko');});const sc=document.getElementById('fcs');sc.style.display='inline-block';sc.style.background=ok===tot?'#e8f5e9':'#ffebee';sc.style.color=ok===tot?'#2E7D32':'#c62828';sc.textContent=ok+'/'+tot+' correctes';}
+function rstFC(){document.querySelectorAll('.fs').forEach(s=>{s.value='';s.classList.remove('ok','ko');});document.getElementById('fcs').style.display='none';}
+
+const QS=[{q:'Le déboisement favorise :',o:['La désertification','L\'effet de serre','L\'érosion du sol','La fixation des dunes'],c:[0,2],fb:'Déboisement → désertification (a) et érosion (c). L\'effet de serre (b) est lié aux émissions CO₂. Fixation dunes (d) = action positive.'},{q:'La pollution des sols peut être due à :',o:['Un épandage excessif d\'engrais chimiques','Une irrigation par des eaux usées bien traitées','Un déboisement','Des émissions de déchets industriels, agricoles ou domestiques'],c:[0,3],fb:'Pollution = engrais excessifs (a) + déchets divers (d). Irrigation eaux traitées (b) = bénéfique. Déboisement (c) = érosion, pas pollution chimique.'},{q:'L\'eutrophisation est causée par :',o:['Un excès de matière organique','Une pollution aux pesticides','La prolifération de bactéries aérobies consommant O₂','La disparition des algues vertes'],c:[0,2],fb:'Eutrophisation = excès MO (a) → bactéries aérobies (c) → baisse O₂. Pesticides (b) = bioaccumulation. Algues vertes PROLIFÈRENT (d faux).'},{q:'La désertification est :',o:['Dégradation des sols uniquement par le climat','Dégradation des sols sous l\'effet combiné du climat ET des activités humaines','Transformation d\'une forêt en steppe uniquement par surpâturage','La salinisation des sols côtiers'],c:[1],fb:'Désertification = climat + activités humaines (b). Pas uniquement climat (a) ni uniquement surpâturage (c).'},{q:'Les actions positives de l\'Homme comprennent :',o:['Le reboisement (264 000 ha en Tunisie)','L\'intensification de l\'irrigation','La fixation des dunes par l\'Oyat','La création de réserves naturelles'],c:[0,2,3],fb:'Reboisement (a), fixation dunes (c), réserves (d) = actions positives. Intensification irrigation (b) → salinisation si eaux saumâtres.'},{q:'La bioaccumulation signifie :',o:['Les pesticides se diluent à chaque niveau','Les pesticides se concentrent (×1500 du phytoplancton au cormoran)','Seuls les végétaux accumulent','Les animaux aquatiques sont immunisés'],c:[1],fb:'Bioaccumulation = concentration à chaque niveau trophique (b). ×1500 entre phytoplancton et cormoran.'},{q:'Le reboisement contribue à :',o:['Augmenter les émissions de CO₂','Diminuer le CO₂ par photosynthèse','Lutter contre l\'érosion','Régénérer progressivement l\'écosystème'],c:[1,2,3],fb:'Reboisement = diminue CO₂ (b), lutte érosion (c), régénère écosystème (d). N\'augmente PAS les émissions CO₂ (a).'},{q:'La salinisation provoque :',o:['Une amélioration de la fertilité','Une sécheresse physiologique','L\'accumulation de sels en surface','La disparition des plantes exigeantes en eau'],c:[1,2,3],fb:'Salinisation = sécheresse physiologique (b), accumulation sels (c), disparition plantes (d). N\'améliore PAS la fertilité (a).'}];
+
+function corrOneQ(qi){const q=QS[qi],div=document.getElementById('qi'+qi),checked=[...div.querySelectorAll('input:checked')].map(c=>parseInt(c.value));div.querySelectorAll('.qo').forEach((opt,oi)=>{opt.classList.add('locked');const inp=opt.querySelector('input');if(q.c.includes(oi)&&checked.includes(oi))opt.classList.add('correct');else if(q.c.includes(oi)&&!checked.includes(oi))opt.classList.add('missed');else if(!q.c.includes(oi)&&checked.includes(oi))opt.classList.add('wrong');inp.disabled=!0;});const existingFb=div.querySelector('.q-feedback');if(existingFb)existingFb.remove();div.insertAdjacentHTML('beforeend','<div class="q-feedback" style="margin-top:8px;padding:8px 12px;background:#e8f5e9;border-radius:7px;font-size:.82rem;color:#2E7D32;font-weight:600">💡 '+q.fb+'</div>');updQcmScore();}
+function corrAllQ(){QS.forEach((q,i)=>corrOneQ(i));}
+function rstAllQ(){document.querySelectorAll('#qcm-c .qi').forEach(qi=>{qi.querySelectorAll('input').forEach(inp=>{inp.checked=!1;inp.disabled=!1;});qi.querySelectorAll('.qo').forEach(o=>o.classList.remove('correct','wrong','missed','locked'));const fb=qi.querySelector('.q-feedback');if(fb)fb.remove();});document.getElementById('qcm-global-score').style.display='none';}
+function updQcmScore(){let sc=0;QS.forEach((q,i)=>{const qi=document.getElementById('qi'+i),checked=[...qi.querySelectorAll('input:checked')].map(c=>parseInt(c.value));if(q.c.length===checked.length&&q.c.every(r=>checked.includes(r)))sc++;});const gs=document.getElementById('qcm-global-score');gs.style.display='inline-block';const p=Math.round(sc/QS.length*100);gs.style.background=p>=80?'#e8f5e9':p>=50?'#fff8e1':'#ffebee';gs.style.color=p>=80?'#2E7D32':p>=50?'#E65100':'#c62828';gs.textContent='Score : '+sc+'/'+QS.length+' ('+p+'%)';}
+</script>
+</body>
+</html>
