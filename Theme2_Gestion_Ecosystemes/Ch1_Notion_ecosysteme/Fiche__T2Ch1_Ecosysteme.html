@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T2-Ch1 — Notion d'Écosystème</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --e:#1B5E20;--em:#2E7D32;--el:#e8f5e9;--ep:#f1f8e9;
+  --v:#33691E;--vl:#dcedc8;
+  --b:#0277BD;--bl:#e1f5fe;
+  --ar:#37474F;--arl:#eceff1;
+  --sa:#F57F17;--sal:#fffde7;
+  --r:#B71C1C;--rl:#ffebee;
+  --vi:#4A148C;--vil:#f3e5f5;
+  --j:#F9A825;--jl:#fffde7;
+  --o:#E65100;--ol:#fff3e0;
+  --bg:#f1f8e9;--tx:#1a1a1a;--mu:#666;
+  --brd:#c8e6c9;--sh:0 2px 12px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6;}
+header{background:linear-gradient(135deg,#1B5E20,#2E7D32 50%,#388E3C);color:#fff;padding:18px 26px 13px;position:sticky;top:0;z-index:100;box-shadow:0 3px 16px rgba(0,0,0,.25);}
+header h1{font-family:'Playfair Display',serif;font-size:1.35rem;margin-bottom:2px;}
+header p{font-size:.8rem;opacity:.85;}
+.pb{height:4px;background:rgba(255,255,255,.3);border-radius:2px;margin-top:8px;}
+.pf{height:100%;background:#A5D6A7;border-radius:2px;transition:width .4s;width:10%;}
+.tw{background:#fff;border-bottom:2px solid var(--brd);position:sticky;top:86px;z-index:99;overflow-x:auto;}
+.ts{display:flex;min-width:max-content;}
+.t{padding:10px 11px;font-size:.72rem;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;color:var(--mu);white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;transition:all .2s;}
+.t:hover{color:var(--em);background:var(--el);}
+.t.on{color:var(--em);border-bottom-color:var(--em);}
+.content{max-width:960px;margin:0 auto;padding:18px 18px 60px;}
+.pan{display:none;}.pan.on{display:block;}
+.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:13px;box-shadow:var(--sh);border-left:5px solid var(--em);}
+.card.v{border-left-color:var(--v);}.card.r{border-left-color:var(--r);}
+.card.b{border-left-color:var(--b);}.card.ar{border-left-color:var(--ar);}
+h2{font-family:'Playfair Display',serif;font-size:1.08rem;margin-bottom:9px;color:var(--em);}
+h2.v{color:var(--v);}h2.r{color:var(--r);}h2.ar{color:var(--ar);}h2.b{color:var(--b);}
+h3{font-size:.9rem;font-weight:700;margin:9px 0 5px;color:var(--e);}
+.sech{background:linear-gradient(135deg,#1B5E20,#388E3C);color:#fff;padding:10px 15px;border-radius:10px;font-weight:600;margin-bottom:12px;font-size:.88rem;}
+.tip{background:#fdf6ec;border:1.5px solid var(--j);border-radius:10px;margin:8px 0;overflow:hidden;}
+.tip-head{padding:8px 13px;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:.86rem;font-weight:600;color:#7B5800;}
+.tip-head:hover{background:#fff8d6;}
+.tip-body{display:none;padding:10px 13px 12px;font-size:.85rem;line-height:1.7;color:#4a3800;border-top:1px solid #ffe082;}
+.tip-body.on{display:block;}
+.mq{background:linear-gradient(135deg,var(--vil),var(--el));border:2px solid var(--vi);border-radius:10px;padding:13px;margin:10px 0;}
+.mq-title{font-weight:700;color:var(--vi);font-size:.82rem;letter-spacing:.8px;text-transform:uppercase;margin-bottom:9px;}
+.mq p{margin-bottom:7px;font-size:.88rem;line-height:1.85;}
+select.bl{border:2px solid var(--vi);border-radius:5px;padding:2px 6px;font-size:.84rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;}
+select.bl.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.bl.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.mq-fb{font-size:.82rem;padding:6px 10px;border-radius:7px;margin-top:7px;font-weight:600;display:none;}
+.mq-fb.ok{background:#e8f5e9;color:#2E7D32;display:block;}
+.mq-fb.ko{background:#ffebee;color:#c62828;display:block;}
+.bck{background:var(--vi);color:#fff;border:none;padding:6px 13px;border-radius:7px;cursor:pointer;font-weight:700;font-size:.8rem;margin-top:8px;}
+.bck:hover{background:#6A1B9A;}
+.brs{background:var(--brd);color:var(--tx);border:none;padding:6px 11px;border-radius:7px;cursor:pointer;font-size:.8rem;margin-top:8px;margin-left:5px;}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.83rem;}
+th{background:var(--em);color:#fff;padding:7px 9px;text-align:left;}
+th.v{background:var(--v);}th.r{background:var(--r);}th.ar{background:var(--ar);}th.b{background:var(--b);}
+td{padding:6px 9px;border-bottom:1px solid var(--brd);}
+tr:nth-child(even) td{background:var(--ep);}
+tr.hl td{background:#fff8e1 !important;font-weight:700;}
+.gb{background:#fafafa;border:1px solid var(--brd);border-radius:9px;padding:10px;margin:9px 0;text-align:center;}
+.gb canvas{max-width:100%;}
+.gb figcaption{font-size:.74rem;color:var(--mu);margin-top:4px;font-style:italic;}
+figure{margin:12px 0;text-align:center;}
+figure img{width:100%;border-radius:8px;box-shadow:var(--sh);}
+figure figcaption{font-size:.78rem;color:var(--mu);margin-top:4px;font-style:italic;}
+.ret{background:var(--jl);border:1.5px solid var(--j);border-radius:9px;padding:10px 13px;margin:10px 0;}
+.ret h4{color:var(--o);font-size:.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.ret p{margin-bottom:4px;font-size:.85rem;}
+.ret dt{font-weight:700;color:var(--o);display:inline;}
+.ret dd{display:inline;margin-left:3px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:9px 0;}
+.al{list-style:none;display:grid;gap:5px;}
+.al li{padding:7px 11px;background:var(--el);border-radius:7px;border-left:4px solid var(--em);font-size:.85rem;}
+.al li::before{content:"✓ ";color:var(--em);font-weight:700;}
+.bstep{background:#fff;border-radius:11px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-top:4px solid var(--em);}
+.bstep.v{border-top-color:var(--v);}.bstep.r{border-top-color:var(--r);}
+.bstep.ar{border-top-color:var(--ar);}.bstep.b{border-top-color:var(--b);}
+.bnum{display:inline-flex;align-items:center;justify-content:center;background:var(--em);color:#fff;border-radius:50%;width:26px;height:26px;font-weight:700;font-size:.88rem;margin-right:8px;flex-shrink:0;}
+.bnum.v{background:var(--v);}.bnum.r{background:var(--r);}.bnum.ar{background:var(--ar);}
+.gfb{font-size:.83rem;padding:7px 11px;border-radius:8px;margin-top:8px;font-weight:600;}
+.gfb.ok{background:#e8f5e9;color:#2E7D32;}
+.gfb.ko{background:#ffebee;color:#c62828;}
+.trous{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--vi);}
+.trous .ctx{background:var(--vil);border-radius:7px;padding:8px 12px;margin-bottom:9px;font-size:.84rem;line-height:1.6;color:#4a0080;}
+.tab-exo{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--ar);}
+.tab-exo .ctx{background:var(--arl);border-radius:7px;padding:8px 12px;margin-bottom:9px;font-size:.84rem;border-left:3px solid var(--ar);}
+select.tcell{border:1.5px solid var(--vi);border-radius:4px;padding:2px 5px;font-size:.81rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;max-width:260px;}
+select.tcell.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.tcell.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.ord-exo{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--sa);}
+.ord-items{display:flex;flex-direction:column;gap:5px;margin:9px 0;}
+.ord-item{padding:8px 12px;background:var(--sal);border-radius:7px;cursor:grab;border:2px solid transparent;font-size:.85rem;display:flex;align-items:center;gap:8px;user-select:none;}
+.ord-item .pos-num{background:var(--sa);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;}
+.ord-item.correct-pos{background:#e8f5e9;border-color:#4CAF50;}
+.ord-item.wrong-pos{background:#ffebee;border-color:#f44336;}
+.ord-item.correct-pos .pos-num{background:#4CAF50;}
+.ord-item.wrong-pos .pos-num{background:#f44336;}
+.fcg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:10px 0;}
+.fcc{background:#fff;border-radius:9px;padding:12px;box-shadow:var(--sh);border-top:4px solid var(--em);}
+.fcp{font-size:.87rem;line-height:1.9;margin-bottom:7px;}
+select.fs{border:2px solid var(--vi);border-radius:5px;padding:2px 6px;font-size:.81rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;}
+select.fs.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.fs.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.fa{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.btn{padding:7px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:.83rem;}
+.bv{background:var(--em);color:#fff;}.bv:hover{background:var(--e);}
+.bg{background:var(--brd);color:var(--tx);}
+.qi{background:#fff;border-radius:10px;padding:13px;margin-bottom:10px;box-shadow:var(--sh);}
+.qq{font-weight:600;margin-bottom:8px;font-size:.89rem;}
+.qo{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:6px;margin-bottom:4px;cursor:pointer;font-size:.86rem;border:1.5px solid transparent;transition:background .15s;}
+.qo:hover:not(.locked){background:var(--el);}
+.qo input{accent-color:var(--em);margin-top:3px;flex-shrink:0;}
+.qo.correct{background:#e8f5e9;border-color:#4CAF50;}
+.qo.wrong{background:#ffebee;border-color:#f44336;}
+.qo.missed{background:#fff8e1;border-color:#FF9800;}
+.fb-txt{font-size:.8rem;margin-top:3px;display:none;line-height:1.5;}
+.qo.correct .fb-txt,.qo.wrong .fb-txt,.qo.missed .fb-txt{display:block;}
+.qo.correct .fb-txt{color:#2E7D32;}
+.qo.wrong .fb-txt{color:#c62828;}
+.qo.missed .fb-txt{color:#E65100;}
+#qr{font-size:.97rem;font-weight:700;padding:10px 15px;border-radius:10px;margin-top:10px;text-align:center;display:none;}
+.resume-hero{background:linear-gradient(135deg,#1B5E20,#2E7D32 50%,#388E3C);color:#fff;border-radius:14px;padding:22px;margin-bottom:16px;}
+.resume-hero h2{color:#A5D6A7;font-size:1.18rem;margin-bottom:8px;}
+.resume-hero p{font-size:.9rem;line-height:1.75;opacity:.92;}
+.resume-hero .sub{font-size:.8rem;opacity:.7;margin-top:6px;font-style:italic;}
+.concept-map{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+.cnode{border-radius:11px;padding:14px;cursor:pointer;transition:all .25s;border:2px solid transparent;}
+.cnode:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15);}
+.cnode.active{border-color:rgba(255,255,255,.6);}
+.cnode .cn-icon{font-size:1.55rem;margin-bottom:6px;}
+.cnode .cn-title{font-size:.86rem;font-weight:700;margin-bottom:3px;}
+.cnode .cn-sub{font-size:.75rem;opacity:.85;line-height:1.4;}
+.cn-a{background:linear-gradient(135deg,#1B5E20,#388E3C);color:#fff;}
+.cn-b{background:linear-gradient(135deg,#37474F,#546E7A);color:#fff;}
+.cn-c{background:linear-gradient(135deg,#0277BD,#0288D1);color:#fff;}
+.cn-d{background:linear-gradient(135deg,#B71C1C,#C62828);color:#fff;}
+.cn-e{background:linear-gradient(135deg,#4A148C,#6A1B9A);color:#fff;}
+.cn-panel{display:none;background:#fff;border-radius:11px;padding:16px;margin-bottom:12px;box-shadow:var(--sh);}
+.cn-panel.on{display:block;}
+.cn-panel.a{border-left:5px solid var(--em);}.cn-panel.b{border-left:5px solid var(--ar);}
+.cn-panel.c{border-left:5px solid var(--b);}.cn-panel.d{border-left:5px solid var(--r);}
+.cn-panel.e{border-left:5px solid var(--vi);}
+.connexion-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:11px 0;}
+.conn-item{border-radius:9px;padding:12px;border:2px solid;font-size:.84rem;line-height:1.6;}
+.conn-item .conn-ch{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;opacity:.75;}
+.conn-item .conn-notion{font-weight:700;margin-bottom:3px;}
+.piege-item{border-radius:10px;padding:13px;margin-bottom:9px;border:2px solid var(--r);background:var(--rl);overflow:hidden;}
+.piege-head{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:.88rem;font-weight:700;color:var(--r);}
+.piege-body{display:none;padding-top:10px;font-size:.86rem;line-height:1.7;color:var(--tx);}
+.piege-body.on{display:block;}
+.piege-body strong{color:var(--r);}
+.reflex{background:linear-gradient(135deg,var(--vil),var(--el));border:2px solid var(--vi);border-radius:11px;padding:14px;margin:12px 0;}
+.reflex h4{color:var(--vi);font-size:.85rem;font-weight:700;margin-bottom:10px;}
+.reflex-q{background:#fff;border-radius:8px;padding:11px;margin-bottom:8px;}
+.reflex-q .rq{font-size:.88rem;line-height:1.7;font-weight:600;margin-bottom:7px;}
+.rev-btn{background:var(--vi);color:#fff;border:none;padding:5px 11px;border-radius:6px;cursor:pointer;font-size:.79rem;font-weight:600;}
+.reflex-ans{display:none;margin-top:8px;padding:9px 12px;background:var(--vil);border-radius:7px;font-size:.85rem;line-height:1.7;color:#4a0080;}
+.reflex-ans.on{display:block;}
+footer{background:#1B5E20;color:rgba(255,255,255,.8);text-align:center;padding:20px 15px;font-size:.75rem;margin-top:30px;line-height:1.8;}
+footer strong{color:#A5D6A7;}
+@media(max-width:600px){
+  .g2,.concept-map,.connexion-grid{grid-template-columns:1fr;}
+  header h1{font-size:.92rem;}.t{padding:8px 4px;font-size:.66rem;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+    <div>
+      <h1>Chapitre 1 — Notion d'Écosystème</h1>
+      <p>2ème Secondaire SVT · Thème 2 · Pages 82–92 · Étude de la forêt de Boukornine</p>
+    </div>
+    <div style="text-align:right; font-size:.7rem; opacity:.9; line-height:1.6; flex-shrink:0;">
+      <strong style="font-size:.78rem;">INGÉNIEUR Mohamed CHAGRAOUI</strong><br>
+      ENSEIGNANT SVT · CANDIDAT CAPES SVT 2026 · TUNISIE<br>
+      Sciences de la Vie et de la Terre
+    </div>
+  </div>
+  <div class="pb"><div class="pf" id="pf"></div></div>
+</header>
+
+<div class="tw"><div class="ts">
+  <button class="t on"  onclick="showTab(0)">📚 Acquis</button>
+  <button class="t"     onclick="showTab(1)">🧠 Résumé</button>
+  <button class="t"     onclick="showTab(2)">🌿 Activité — Boukornine</button>
+  <button class="t"     onclick="showTab(3)">📋 Bilan</button>
+  <button class="t"     onclick="showTab(4)">🃏 Flashcards</button>
+  <button class="t"     onclick="showTab(5)">✏️ QCM</button>
+  <button class="t"     onclick="showTab(6)">📝 Exercices</button>
+</div></div>
+
+<div class="content">
+
+<!-- ══ 0 ACQUIS ══ -->
+<div class="pan on" id="p0">
+  <!-- AJOUT : Encart "Pourquoi ce chapitre ?" -->
+  <div class="card b">
+    <h2 class="b">🎯 Pourquoi ce chapitre ? — Objectifs du programme</h2>
+    <p style="font-size:.89rem; margin-bottom:7px;">
+      Selon le <strong>programme officiel tunisien</strong> (Thème 2 — Gestion rationnelle des écosystèmes), ce chapitre vise à :
+    </p>
+    <ul class="al" style="margin-top:8px;">
+      <li><strong>Identifier les composantes de l'écosystème</strong> et leurs interactions.</li>
+      <li><strong>Réaliser une sortie écologique</strong> dans un milieu local pour dégager les notions de biotope, biocénose, population et peuplement.</li>
+      <li><strong>Identifier les relations</strong> entre les composantes du milieu.</li>
+    </ul>
+    <p style="font-size:.84rem; color:var(--mu); margin-top:9px; font-style:italic;">
+      🔗 Ce chapitre introduit le vocabulaire fondamental de l'écologie. Il est le socle de tout le Thème 2 : adaptation (Ch.2), répartition des végétaux (Ch.3), relations trophiques (Ch.4) et développement durable (Ch.5).
+    </p>
+  </div>
+
+  <div class="card"><h2>📚 Préacquis</h2>
+    <ul class="al">
+      <li>Un milieu de vie = deux composantes : les <strong>êtres vivants</strong> (ensemble vivant) et le <strong>lieu où ils vivent</strong> (ensemble non vivant).</li>
+      <li>Différentes relations s'établissent entre êtres vivants d'un même milieu : <strong>alimentaires, reproduction, défense du territoire</strong>.</li>
+      <li>Une <strong>chaîne alimentaire</strong> relie des êtres vivants par des relations de nutrition : plante → herbivore → carnivore.</li>
+      <li>Le premier maillon d'une chaîne alimentaire est toujours une <strong>plante verte autotrophe</strong>.</li>
+      <li>Les êtres vivants sont <strong>adaptés</strong> aux conditions de leur milieu (climat, sol, topographie).</li>
+      <li>La <strong>répartition</strong> des êtres vivants dépend des conditions écologiques de leur milieu.</li>
+    </ul>
+  </div>
+
+  <!-- AJOUT : Images d'ouverture -->
+  <figure>
+    <img src="images/T2Ch1_Fig1_foret_Boukornine.PNG" alt="La forêt de Djebel Boukornine : une forêt de Thuya de berbérie (p.82)" onerror="this.style.display='none'">
+    <figcaption>Doc. p.82 — La forêt de Djebel Boukornine</figcaption>
+  </figure>
+
+  <div class="card ar"><h2 class="ar">❓ 2 Questions directrices</h2>
+    <ol style="margin-left:17px;line-height:2.4;font-size:.92rem">
+      <li>Quelles sont les <strong>composantes</strong> d'un milieu naturel ?</li>
+      <li>Quelles sont les <strong>interactions</strong> entre les composantes de ce milieu ?</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══ 1 RÉSUMÉ ══ (contenu inchangé, conserve les panneaux dépliables) -->
+<div class="pan" id="p1">
+  <div class="resume-hero">
+    <h2>🧠 Comprendre avant de mémoriser</h2>
+    <p>Ce chapitre introduit le vocabulaire fondamental de l'écologie à partir d'un exemple concret : la forêt de Boukornine. La logique est simple : <strong>Écosystème = Biotope + Biocénose</strong> en constante interaction. Tout le reste (facteurs abiotiques/biotiques, population, peuplement, échelles) découle de cette équation de base.</p>
+    <p class="sub">Clique sur chaque notion pour explorer · Pièges classiques CAPES et connexions révélés</p>
+  </div>
+
+  <div class="concept-map">
+    <div class="cnode cn-a" onclick="showCN('a')"><div class="cn-icon">🌿</div><div class="cn-title">Biocénose</div><div class="cn-sub">Faune, Flore, Population, Peuplement</div></div>
+    <div class="cnode cn-b" onclick="showCN('b')"><div class="cn-icon">🪨</div><div class="cn-title">Biotope</div><div class="cn-sub">Facteurs abiotiques (physico-chimiques + climatiques)</div></div>
+    <div class="cnode cn-c" onclick="showCN('c')"><div class="cn-icon">🔄</div><div class="cn-title">Interactions</div><div class="cn-sub">Facteurs biotiques · Relations +/−</div></div>
+    <div class="cnode cn-d" onclick="showCN('d')"><div class="cn-icon">⚠️</div><div class="cn-title">3 Pièges classiques</div><div class="cn-sub">Erreurs fréquentes CAPES</div></div>
+    <div class="cnode cn-e" onclick="showCN('e')"><div class="cn-icon">🔗</div><div class="cn-title">Connexions manuel</div><div class="cn-sub">Ch.2 · Ch.3 · Ch.4 Thème 2</div></div>
+  </div>
+
+  <!-- Panneaux dépliables (contenu identique à l'original, non modifié pour gagner de l'espace) -->
+  <div class="cn-panel a" id="cn-a">
+    <h3 style="color:var(--em)">🌿 La Biocénose — les êtres vivants du milieu</h3>
+    <table>
+      <tr><th>Terme</th><th>Définition</th><th>Exemple Boukornine</th></tr>
+      <tr class="hl"><td><strong>Biocénose</strong></td><td>Ensemble de tous les êtres vivants d'un écosystème</td><td>Thuya + Lentisque + Renard + Faucon…</td></tr>
+      <tr><td><strong>Faune</strong></td><td>Ensemble des animaux (peuplement animal)</td><td>Renard, Sanglier, Lièvre, Faucon pèlerin, Chouette, Hérisson</td></tr>
+      <tr class="hl"><td><strong>Flore</strong></td><td>Ensemble des végétaux (peuplement végétal)</td><td>Thuya de berbérie, Lentisque, Romarin, Bruyère, Alfa</td></tr>
+      <tr><td><strong>Population</strong></td><td>Ensemble d'individus de la <em>même espèce</em> dans un milieu précis</td><td>Population de Renards de Boukornine</td></tr>
+      <tr class="hl"><td><strong>Peuplement</strong></td><td>Ensemble de toutes les populations d'une biocénose</td><td>Toutes les espèces animales + végétales de Boukornine</td></tr>
+    </table>
+  </div>
+
+  <div class="cn-panel b" id="cn-b">
+    <h3 style="color:var(--ar)">🪨 Le Biotope — le milieu non vivant</h3>
+    <p style="font-size:.88rem;line-height:1.8;margin-bottom:10px">Le biotope est défini par l'ensemble de ses <strong>facteurs abiotiques</strong> (= non vivants).</p>
+    <table>
+      <tr><th class="ar">Type de facteur</th><th class="ar">Facteurs</th><th class="ar">Instrument de mesure</th></tr>
+      <tr class="hl"><td><strong>Physico-chimiques</strong></td><td>Nature du sol (calcaire, argile, sable) · pH · Salinité de l'eau</td><td>HCl (calcaire) · Pissette (argile) · pH-mètre</td></tr>
+      <tr><td><strong>Climatiques</strong></td><td>Température · Humidité · Pluviométrie · Luminosité · Vent</td><td>Thermomètre · Hygromètre · Pluviomètre · Luxmètre · Boussole</td></tr>
+      <tr class="hl"><td><strong>Mécaniques</strong></td><td>Vent · Érosion · Feu</td><td>Observation directe (inclinaison des arbres → direction vent)</td></tr>
+    </table>
+  </div>
+
+  <div class="cn-panel c" id="cn-c">
+    <h3 style="color:var(--b)">🔄 Les Interactions — facteurs biotiques et interdépendance</h3>
+    <div class="g2">
+      <div>
+        <h3>Relations intra-population</h3>
+        <table>
+          <tr><th class="b">Type</th><th class="b">Signe</th><th class="b">Exemple</th></tr>
+          <tr><td>Coopération</td><td style="color:var(--v);font-weight:700">+/+</td><td>Meute de Renards à la chasse</td></tr>
+          <tr class="hl"><td>Compétition</td><td style="color:var(--r);font-weight:700">−/−</td><td>Compétition pour la nourriture (Sangliers)</td></tr>
+          <tr><td>Reproduction</td><td style="color:var(--v);font-weight:700">+/+</td><td>Accouplement saisonnier</td></tr>
+        </table>
+      </div>
+      <div>
+        <h3>Relations inter-populations</h3>
+        <table>
+          <tr><th class="b">Type</th><th class="b">Signe</th><th class="b">Exemple Boukornine</th></tr>
+          <tr><td>Prédation</td><td style="color:var(--r);font-weight:700">+/−</td><td>Faucon pèlerin → Lièvre</td></tr>
+          <tr class="hl"><td>Herbivorie</td><td style="color:var(--r);font-weight:700">+/−</td><td>Sanglier → Thuya (écorce)</td></tr>
+          <tr><td>Mutualisme</td><td style="color:var(--v);font-weight:700">+/+</td><td>Abeille → Fleur (pollinisation)</td></tr>
+        </table>
+      </div>
+    </div>
+    <p style="font-size:.88rem;line-height:1.8;margin-top:10px;background:var(--el);padding:10px;border-radius:8px;border-left:4px solid var(--em)"><strong>Interdépendance :</strong> Les êtres vivants subissent l'influence des facteurs abiotiques ET agissent sur ces facteurs. Ex : les arbres modifient le microclimat (ombre, humidité du sol). C'est l'ensemble de ces interdépendances qui constitue l'<strong>écologie</strong>.</p>
+  </div>
+
+  <div class="cn-panel d" id="cn-d">
+    <h3 style="color:var(--r)">⚠️ 3 Pièges classiques CAPES</h3>
+    <div class="piege-item">
+      <div class="piege-head" onclick="togPiege(this)">⚠️ Piège 1 — Biocénose ≠ Peuplement <span style="margin-left:auto">▼</span></div>
+      <div class="piege-body">La <strong>biocénose</strong> = l'ensemble de TOUS les êtres vivants d'un écosystème. Le <strong>peuplement</strong> = l'ensemble des populations de la biocénose. On peut dire "peuplement animal" (= faune) ou "peuplement végétal" (= flore) mais pas "biocénose animale". La biocénose englobe toujours faune + flore.</div>
+    </div>
+    <div class="piege-item">
+      <div class="piege-head" onclick="togPiege(this)">⚠️ Piège 2 — Facteurs biotiques ≠ Biocénose <span style="margin-left:auto">▼</span></div>
+      <div class="piege-body">Les <strong>facteurs biotiques</strong> ne sont pas les êtres vivants eux-mêmes — ce sont les <strong>influences</strong> exercées par la présence et l'activité des êtres vivants. Ex : la prédation du Faucon sur le Lièvre est un facteur biotique. La biocénose = les êtres vivants (le Faucon, le Lièvre). Les facteurs biotiques = les relations entre eux.</div>
+    </div>
+    <div class="piege-item">
+      <div class="piege-head" onclick="togPiege(this)">⚠️ Piège 3 — Écosystème ≠ Biotope <span style="margin-left:auto">▼</span></div>
+      <div class="piege-body">Le <strong>biotope</strong> = seulement le milieu non vivant. L'<strong>écosystème</strong> = biotope + biocénose + LEURS INTERACTIONS. L'écosystème est toujours plus que le biotope. Ex : la forêt avec ses plantes, ses animaux et toutes leurs interactions avec le milieu = écosystème.</div>
+    </div>
+  </div>
+
+  <div class="cn-panel e" id="cn-e">
+    <h3 style="color:var(--vi)">🔗 Connexions avec le manuel — Thème 2</h3>
+    <div class="connexion-grid">
+      <div class="conn-item" style="border-color:var(--em);background:var(--el)"><div class="conn-ch" style="color:var(--em)">→ Chapitre 2 — Adaptation</div><div class="conn-notion">Facteurs abiotiques → adaptations</div><p style="font-size:.82rem;margin-top:3px">Les facteurs abiotiques du biotope imposent des adaptations aux êtres vivants de la biocénose.</p></div>
+      <div class="conn-item" style="border-color:var(--b);background:var(--bl)"><div class="conn-ch" style="color:var(--b)">→ Chapitre 3 — Répartition</div><div class="conn-notion">Facteurs abiotiques → répartition végétaux</div><p style="font-size:.82rem;margin-top:3px">Les facteurs abiotiques expliquent la répartition géographique des végétaux en Tunisie.</p></div>
+      <div class="conn-item" style="border-color:var(--ar);background:var(--arl)"><div class="conn-ch" style="color:var(--ar)">→ Chapitre 4 — Relations trophiques</div><div class="conn-notion">Facteurs biotiques = chaînes alimentaires</div><p style="font-size:.82rem;margin-top:3px">Les relations trophiques introduites ici seront approfondies en Ch.4.</p></div>
+      <div class="conn-item" style="border-color:var(--r);background:var(--rl)"><div class="conn-ch" style="color:var(--r)">→ Chapitre 5 — Développement durable</div><div class="conn-notion">Gestion rationnelle de l'écosystème</div><p style="font-size:.82rem;margin-top:3px">Boukornine est un Parc national depuis 1987 — exemple de gestion rationnelle d'un méso-écosystème.</p></div>
+    </div>
+  </div>
+
+  <div class="reflex">
+    <h4>💭 Questions de réflexion</h4>
+    <div class="reflex-q">
+      <div class="rq">1. Boukornine est classée Parc national depuis 1987. En quoi la protection modifie-t-elle les interactions biotope/biocénose ?</div>
+      <button class="rev-btn" onclick="togAns(this)">Voir la réflexion</button>
+      <div class="reflex-ans">La protection supprime ou réduit les <strong>facteurs biotiques perturbateurs humains</strong> (coupe de bois, chasse, pâturage). La biocénose peut alors se reconstituer naturellement : retour d'espèces fugitives, développement des strates végétales, augmentation des populations animales. Le biotope aussi s'améliore : moins d'érosion du sol, meilleure rétention d'eau. L'interdépendance biotope/biocénose se rééquilibre → l'écosystème retrouve sa résilience.</div>
+    </div>
+    <div class="reflex-q">
+      <div class="rq">2. Une mare dans la forêt de Boukornine abrite des grenouilles, des algues, des insectes aquatiques. À quelle échelle d'écosystème appartient-elle ? Identifiez son biotope et sa biocénose.</div>
+      <button class="rev-btn" onclick="togAns(this)">Voir la réflexion</button>
+      <div class="reflex-ans">La mare est un <strong>micro-écosystème</strong>. <strong>Biotope :</strong> eau douce, fond vaseux, pH neutre, lumière filtrée, température variable. <strong>Biocénose :</strong> algues (flore aquatique), grenouilles + insectes aquatiques (faune). Cette mare est elle-même incluse dans le méso-écosystème Boukornine.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2 ACTIVITÉ ══ -->
+<div class="pan" id="p2">
+  <div class="sech">🌿 Activité — Étude d'un milieu : la forêt de Boukornine (p.83–89)</div>
+
+  <!-- AJOUT : Images de la sortie -->
+  <div class="g2">
+    <figure>
+      <img src="images/T2Ch1_Fig2_extrait_carte_routiere.PNG" alt="Extrait de la carte routière de Tunisie (p.84)" onerror="this.style.display='none'">
+      <figcaption>Doc. 2 p.84 — Extrait de la carte routière de Tunisie</figcaption>
+    </figure>
+    <figure>
+      <img src="images/T2Ch1_Fig3_localisation_site.PNG" alt="Localisation du lieu visité (p.84)" onerror="this.style.display='none'">
+      <figcaption>Doc. 3 p.84 — Localisation du lieu visité</figcaption>
+    </figure>
+  </div>
+
+  <div class="card">
+    <h2>1. Présentation du milieu</h2>
+    <div class="g2">
+      <div>
+        <table>
+          <tr><th>Caractéristique</th><th>Données</th></tr>
+          <tr class="hl"><td><strong>Superficie</strong></td><td>1 939 hectares</td></tr>
+          <tr><td><strong>Altitude</strong></td><td>10 à 576 mètres</td></tr>
+          <tr class="hl"><td><strong>Exposition</strong></td><td>Flancs Nord ET Sud de la montagne</td></tr>
+          <tr><td><strong>Statut</strong></td><td>Parc national depuis 1987</td></tr>
+          <tr class="hl"><td><strong>Type</strong></td><td>Méso-écosystème forestier méditerranéen</td></tr>
+          <tr><td><strong>Espèce dominante</strong></td><td>Thuya de berbérie (<em>Tetraclinis articulata</em>)</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="gb"><canvas id="cgBoukornine" width="280" height="200"></canvas>
+          <figcaption>Coupe schématique des strates végétales de la forêt de Boukornine</figcaption>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AJOUT : Images caractéristiques du milieu et strates -->
+  <div class="g2">
+    <figure>
+      <img src="images/T2Ch1_Fig4_caracteristiques_milieu.PNG" alt="Les caractéristiques d'un milieu (p.85)" onerror="this.style.display='none'">
+      <figcaption>Doc. 4 p.85 — Les caractéristiques d'un milieu</figcaption>
+    </figure>
+    <figure>
+      <img src="images/T2Ch1_Fig6_vegetaux_Boukornine.PNG" alt="Les végétaux de Boukornine : plusieurs strates (p.85)" onerror="this.style.display='none'">
+      <figcaption>Doc. 6 p.85 — Les végétaux de Boukornine : plusieurs strates</figcaption>
+    </figure>
+  </div>
+
+  <div class="card b">
+    <h2 class="b">2. Détermination des facteurs abiotiques (Biotope)</h2>
+    <table>
+      <tr><th class="b">Facteur mesuré</th><th class="b">Instrument utilisé</th><th class="b">Ce qu'on détermine</th></tr>
+      <tr class="hl"><td>Température</td><td>Thermomètre</td><td>°C à l'ombre, au soleil, à différentes altitudes</td></tr>
+      <tr><td>Humidité de l'air</td><td>Hygromètre</td><td>% d'humidité relative</td></tr>
+      <tr class="hl"><td>Luminosité</td><td>Luxmètre</td><td>Lux (éclairement)</td></tr>
+      <tr><td>Pression atmosphérique</td><td>Baromètre</td><td>hPa</td></tr>
+      <tr class="hl"><td>Nature du sol : calcaire ?</td><td>Acide chlorhydrique (HCl)</td><td>Effervescence → présence de CaCO₃</td></tr>
+      <tr><td>Nature du sol : argile ?</td><td>Pissette d'eau</td><td>Sol plastique au toucher → argile</td></tr>
+      <tr class="hl"><td>Direction du vent</td><td>Boussole + observation</td><td>Inclinaison des arbres = direction vents dominants</td></tr>
+      <tr><td>Pluviométrie</td><td>Carte pluviométrique</td><td>mm/an selon la région</td></tr>
+    </table>
+  </div>
+
+  <!-- AJOUT : Images faune -->
+  <div class="g2">
+    <figure>
+      <img src="images/T2Ch1_Fig13_Lievre.PNG" alt="Lièvre (p.87)" onerror="this.style.display='none'">
+      <figcaption>Doc. 13 p.87 — Lièvre</figcaption>
+    </figure>
+    <figure>
+      <img src="images/T2Ch1_Fig14_Renard.PNG" alt="Renard (p.87)" onerror="this.style.display='none'">
+      <figcaption>Doc. 14 p.87 — Renard</figcaption>
+    </figure>
+  </div>
+
+  <div class="card v">
+    <h2 class="v">3. La flore de Boukornine — strates végétales</h2>
+    <table>
+      <tr><th class="v">Strate</th><th class="v">Hauteur</th><th class="v">Végétaux</th><th class="v">Particularités</th></tr>
+      <tr class="hl"><td><strong>Arborescente</strong></td><td>5–10 m</td><td>Thuya de berbérie</td><td>Espèce dominante, feuilles persistantes</td></tr>
+      <tr><td><strong>Arbustive</strong></td><td>1–3 m</td><td>Lentisque, Calycotome soyeux, Bruyère multiflore</td><td>Mi-ombre sous les arbres</td></tr>
+      <tr class="hl"><td><strong>Herbacée</strong></td><td>0–50 cm</td><td>Romarin, Alfa, Cyclamen de perse</td><td>Sol calcaire, pleine lumière ou ombre</td></tr>
+    </table>
+  </div>
+
+  <div class="card ar">
+    <h2 class="ar">4. La faune de Boukornine — observations directes et indirectes</h2>
+    <table>
+      <tr><th class="ar">Animal</th><th class="ar">Mode d'observation</th><th class="ar">Indices indirects</th><th class="ar">Régime alimentaire</th></tr>
+      <tr class="hl"><td><strong>Renard</strong></td><td>Directe + indirecte</td><td>Empreintes de pattes</td><td>Omnivore (carnivore principalement)</td></tr>
+      <tr><td><strong>Sanglier</strong></td><td>Indirecte</td><td>Crottes + écorce dévorée + empreintes</td><td>Omnivore</td></tr>
+      <tr class="hl"><td><strong>Lièvre</strong></td><td>Directe + indirecte</td><td>Traces de saut caractéristiques</td><td>Herbivore</td></tr>
+      <tr><td><strong>Faucon pèlerin</strong></td><td>Directe (jumelles)</td><td>Pelotes de réjection</td><td>Carnivore (oiseaux, petits mammifères)</td></tr>
+      <tr class="hl"><td><strong>Chouette</strong></td><td>Indirecte (chant nocturne)</td><td>Pelotes de réjection</td><td>Carnivore (rongeurs)</td></tr>
+      <tr><td><strong>Hérisson</strong></td><td>Indirecte</td><td>Empreintes caractéristiques</td><td>Insectivore / omnivore</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>5. Bilan de la sortie — Schéma de l'écosystème</h2>
+    <!-- AJOUT : Image schéma écosystème -->
+    <figure>
+      <img src="images/T2Ch1_Fig22_composantes_ecosysteme.PNG" alt="Les composantes d'un écosystème (p.89)" onerror="this.style.display='none'">
+      <figcaption>Doc. 22 p.89 — Les composantes d'un écosystème</figcaption>
+    </figure>
+    <div class="g2">
+      <div>
+        <div class="gb"><canvas id="cgEcosysteme" width="280" height="220"></canvas>
+          <figcaption>Schéma de synthèse : composantes de l'écosystème de Boukornine</figcaption>
+        </div>
+      </div>
+      <div>
+        <div class="gb"><canvas id="cgEchelles" width="280" height="220"></canvas>
+          <figcaption>Les 4 échelles d'écosystèmes — exemples tunisiens</figcaption>
+        </div>
+      </div>
+    </div>
+    <div class="ret"><h4>📌 Retenons — Notion d'écosystème (objectifs du programme)</h4>
+      <p><dt>Écosystème :</dt><dd>association d'une biocénose et d'un biotope en constante interaction. <strong style="color:var(--o)">[Obj. : Identifier les composantes]</strong></dd></p>
+      <p><dt>Biotope :</dt><dd>lieu de vie de la biocénose, défini par ses facteurs abiotiques.</dd></p>
+      <p><dt>Biocénose :</dt><dd>ensemble des êtres vivants (faune + flore) d'un écosystème.</dd></p>
+      <p><dt>Écologie :</dt><dd>science qui étudie l'ensemble des interdépendances entre les êtres vivants et leur milieu. <strong style="color:var(--o)">[Obj. : Identifier les relations entre composantes]</strong></dd></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 3 BILAN ══ -->
+<div class="pan" id="p3">
+  <div class="sech">📋 Bilan (p.90)</div>
+  <div class="bstep">
+    <p style="font-size:.92rem"><span class="bnum">1</span>Un écosystème comprend deux ensembles indissociables : la <select class="bl" data-rep="biocénose"><option value="">—</option><option>biotope</option><option>biocénose</option><option>population</option></select> (ensemble des êtres vivants) et le <select class="bl" data-rep="biotope"><option value="">—</option><option>peuplement</option><option>biocénose</option><option>biotope</option></select> (lieu où vit la biocénose). Ces deux composantes sont en <select class="bl" data-rep="constante interaction"><option value="">—</option><option>parfaite indépendance</option><option>constante interaction</option></select>.</p>
+  </div>
+  <div class="bstep v">
+    <p style="font-size:.92rem"><span class="bnum v">2</span>La biocénose comprend la <select class="bl" data-rep="faune"><option value="">—</option><option>flore</option><option>faune</option><option>biotope</option></select> (ensemble des animaux) et la <select class="bl" data-rep="flore"><option value="">—</option><option>faune</option><option>flore</option><option>biocénose</option></select> (ensemble des végétaux). Une <select class="bl" data-rep="population"><option value="">—</option><option>biocénose</option><option>population</option><option>espèce</option></select> est un ensemble d'individus appartenant à la même <select class="bl" data-rep="espèce"><option value="">—</option><option>famille</option><option>espèce</option><option>genre</option></select> vivant dans un milieu précis. L'ensemble des populations forme le <select class="bl" data-rep="peuplement"><option value="">—</option><option>biotope</option><option>écosystème</option><option>peuplement</option></select>.</p>
+  </div>
+  <div class="bstep b">
+    <p style="font-size:.92rem"><span class="bnum b">3</span>Les facteurs <select class="bl" data-rep="abiotiques"><option value="">—</option><option>biotiques</option><option>abiotiques</option></select> sont les facteurs non vivants du milieu : propriétés physico-chimiques (nature du sol, salinité, <select class="bl" data-rep="pH"><option value="">—</option><option>photosynthèse</option><option>pH</option></select>…) et facteurs climatiques (température, <select class="bl" data-rep="humidité"><option value="">—</option><option>prédation</option><option>humidité</option></select>, vent, lumière). Les facteurs <select class="bl" data-rep="biotiques"><option value="">—</option><option>abiotiques</option><option>biotiques</option></select> sont liés à la présence et à l'activité des êtres vivants.</p>
+  </div>
+  <div class="bstep ar">
+    <p style="font-size:.92rem"><span class="bnum ar">4</span>Selon la taille du biotope : sous une pierre = <select class="bl" data-rep="micro-écosystème"><option value="">—</option><option>méso-écosystème</option><option>micro-écosystème</option><option>macro-écosystème</option></select> ; la forêt de Boukornine = <select class="bl" data-rep="méso-écosystème"><option value="">—</option><option>micro-écosystème</option><option>méso-écosystème</option><option>macro-écosystème</option></select> ; la mer Méditerranée = <select class="bl" data-rep="macro-écosystème"><option value="">—</option><option>micro-écosystème</option><option>méso-écosystème</option><option>macro-écosystème</option></select> ; la planète Terre = <select class="bl" data-rep="écosystème général"><option value="">—</option><option>macro-écosystème</option><option>méso-écosystème</option><option>écosystème général</option></select>.</p>
+  </div>
+  <div style="margin-top:14px">
+    <button class="bck" onclick="ckBilan()">✓ Vérifier tout le bilan</button>
+    <button class="brs" onclick="rsBilan()">↺ Réinitialiser</button>
+    <div class="gfb" id="bilan-fb"></div>
+  </div>
+</div>
+
+<!-- ══ 4 FLASHCARDS ══ -->
+<div class="pan" id="p4">
+  <h2 style="margin-bottom:12px">🃏 Flashcards — Vocabulaire clé du chapitre</h2>
+  <div class="fa">
+    <button class="btn bv" onclick="chkFC()">✓ Vérifier tout</button>
+    <button class="btn bg" onclick="rstFC()">↺ Recommencer</button>
+    <span id="fcs" style="display:none;padding:7px 12px;border-radius:8px;font-weight:700"></span>
+  </div>
+  <div class="fcg" id="fcg"></div>
+</div>
+
+<!-- ══ 5 QCM ══ -->
+<div class="pan" id="p5">
+  <h2 style="margin-bottom:6px">✏️ QCM — Manuel (p.91) + Questions complémentaires</h2>
+  <p style="margin-bottom:12px;font-size:.85rem;color:var(--mu)">Vérification <strong>question par question</strong>. Cliquez sur "Vérifier" après chaque réponse. Les questions du manuel sont en <strong>cases à cocher</strong> (plusieurs réponses possibles).</p>
+
+  <h3 style="color:var(--em); margin-top:18px; margin-bottom:8px;">📋 QCM du manuel — Page 91</h3>
+  <div id="qcm-manuel-c"></div>
+
+  <h3 style="color:var(--vi); margin-top:22px; margin-bottom:8px;">📝 QCM complémentaires — Approfondissement</h3>
+  <div id="qcm-comp-c"></div>
+
+  <div style="display:flex;gap:10px;margin-top:12px;">
+    <button class="btn bv" onclick="resetAllQcm()">↺ Réinitialiser tous les QCM</button>
+  </div>
+  <div id="qr"></div>
+</div>
+
+<!-- ══ 6 EXERCICES ══ -->
+<div class="pan" id="p6">
+  <h2 style="margin-bottom:14px">📝 Exercices interactifs</h2>
+
+  <!-- EX 1 : Parc Ichkeul -->
+  <div class="tab-exo">
+    <h3 style="color:var(--ar);margin-bottom:8px">🌊 Ex.1 — Analyser le Parc Ichkeul (exercice 2, p.92)</h3>
+    <div class="ctx">Le Parc Ichkeul est couvert par un maquis dominé par l'Olivier sauvage. Dans les stations plus chaudes, on observe le Caroubier et le Romarin. On trouve l'asperge et le Câprier sur le versant Nord. Au niveau du lac, dans les eaux boueuses, le potamot (végétal aquatique) ne pousse pas en eau salée. C'est la nourriture de base des canards siffleurs. Autour des berges, les roseaux ont les racines constamment immergées. La salicorne pousse sur des sols salés.</div>
+    <table>
+      <tr><th class="ar">Élément observé</th><th class="ar">Composante de l'écosystème</th><th class="ar">Type</th></tr>
+      <tr>
+        <td>Olivier sauvage, Caroubier, Romarin</td>
+        <td><select class="tcell" data-rep="Biocénose"><option value="">—</option><option>Biotope</option><option>Biocénose</option></select></td>
+        <td><select class="tcell" data-rep="Flore (peuplement végétal)"><option value="">—</option><option>Faune (peuplement animal)</option><option>Flore (peuplement végétal)</option></select></td>
+      </tr>
+      <tr>
+        <td>Lac (eau saumâtre)</td>
+        <td><select class="tcell" data-rep="Biotope"><option value="">—</option><option>Biocénose</option><option>Biotope</option></select></td>
+        <td><select class="tcell" data-rep="Facteur abiotique (physico-chimique — salinité)"><option value="">—</option><option>Facteur biotique</option><option>Facteur abiotique (physico-chimique — salinité)</option></select></td>
+      </tr>
+      <tr>
+        <td>Canard siffleur mange le potamot</td>
+        <td><select class="tcell" data-rep="Relation biotique (facteur biotique)"><option value="">—</option><option>Facteur abiotique</option><option>Relation biotique (facteur biotique)</option></select></td>
+        <td><select class="tcell" data-rep="Herbivorie (relation inter-populations)"><option value="">—</option><option>Prédation (carnivorie)</option><option>Herbivorie (relation inter-populations)</option></select></td>
+      </tr>
+      <tr>
+        <td>Potamot absent en eau salée</td>
+        <td><select class="tcell" data-rep="Facteur abiotique agit sur la biocénose"><option value="">—</option><option>Facteur biotique</option><option>Facteur abiotique agit sur la biocénose</option></select></td>
+        <td><select class="tcell" data-rep="Salinité (facteur physico-chimique) → répartition végétaux"><option value="">—</option><option>Température → adaptation des plantes</option><option>Salinité (facteur physico-chimique) → répartition végétaux</option></select></td>
+      </tr>
+      <tr>
+        <td>Versant Nord — Câprier, Asperge</td>
+        <td><select class="tcell" data-rep="Facteur abiotique (exposition) → biocénose différente"><option value="">—</option><option>Facteur biotique entre espèces</option><option>Facteur abiotique (exposition) → biocénose différente</option></select></td>
+        <td><select class="tcell" data-rep="Facteur climatique (humidité, luminosité du versant Nord)"><option value="">—</option><option>Facteur physico-chimique (pH du sol)</option><option>Facteur climatique (humidité, luminosité du versant Nord)</option></select></td>
+      </tr>
+    </table>
+    <button class="bck" onclick="ckTabExo('ex1tab')">✓ Vérifier</button>
+    <button class="brs" onclick="rsTabExo('ex1tab')">↺</button>
+    <div class="gfb" id="ex1tab-fb"></div>
+  </div>
+
+  <!-- EX 2 : Texte à trous -->
+  <div class="trous">
+    <h3 style="color:var(--vi);margin-bottom:8px">📝 Ex.2 — Compléter le texte sur la notion d'écosystème</h3>
+    <div class="ctx">Utiliser les mots : biocénose, biotope, population, peuplement, faune, flore, abiotiques, biotiques, méso-écosystème.</div>
+    <div id="ex2-q">
+      <p>La forêt de Boukornine est un <select class="bl" data-rep="méso-écosystème"><option value="">—</option><option>micro-écosystème</option><option>méso-écosystème</option><option>macro-écosystème</option></select>. Elle comprend un <select class="bl" data-rep="biotope"><option value="">—</option><option>peuplement</option><option>biotope</option><option>biocénose</option></select> (sol calcaire, climat méditerranéen) et une <select class="bl" data-rep="biocénose"><option value="">—</option><option>faune</option><option>flore</option><option>biocénose</option></select> (Thuya, Lentisque, Renard, Sanglier). L'ensemble des Renards de la forêt constitue une <select class="bl" data-rep="population"><option value="">—</option><option>biocénose</option><option>population</option><option>espèce</option></select>. La <select class="bl" data-rep="flore"><option value="">—</option><option>faune</option><option>flore</option><option>biocénose</option></select> et la <select class="bl" data-rep="faune"><option value="">—</option><option>flore</option><option>biocénose</option><option>faune</option></select> ensemble forment le <select class="bl" data-rep="peuplement"><option value="">—</option><option>biotope</option><option>peuplement</option><option>écosystème</option></select>. Les relations de prédation entre Faucon et Lièvre constituent des facteurs <select class="bl" data-rep="biotiques"><option value="">—</option><option>abiotiques</option><option>biotiques</option></select>. La température et la salinité du sol sont des facteurs <select class="bl" data-rep="abiotiques"><option value="">—</option><option>biotiques</option><option>abiotiques</option></select>.</p>
+    </div>
+    <button class="bck" onclick="ckMQ('ex2')">✓ Vérifier</button>
+    <button class="brs" onclick="rsMQ('ex2')">↺</button>
+    <div class="mq-fb" id="ex2-fb"></div>
+  </div>
+
+  <!-- EX 3 : Remise en ordre -->
+  <div class="ord-exo">
+    <h3 style="color:var(--sa);margin-bottom:8px">🔢 Ex.3 — Remettre dans l'ordre les étapes d'une sortie sur le terrain</h3>
+    <p style="font-size:.85rem;margin-bottom:9px;color:var(--mu)">Ordonner les étapes logiques d'une étude de milieu :</p>
+    <div class="ord-items" id="ord1">
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="6" data-id="o6"><div class="pos-num">?</div><span>⠿</span> Rédiger le bilan : identifier biotope, biocénose, facteurs et interactions (notion d'écosystème)</div>
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="1" data-id="o1"><div class="pos-num">?</div><span>⠿</span> Préparer le matériel (thermomètre, hygromètre, HCl, boussole, jumelles...)</div>
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="4" data-id="o4"><div class="pos-num">?</div><span>⠿</span> Observer et identifier la flore : strates végétales, espèces, conditions de chaque espèce</div>
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="2" data-id="o2"><div class="pos-num">?</div><span>⠿</span> Localiser le site sur la carte topographique et définir l'itinéraire</div>
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="5" data-id="o5"><div class="pos-num">?</div><span>⠿</span> Observer et identifier la faune : directement (jumelles) et indirectement (empreintes, traces)</div>
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="3" data-id="o3"><div class="pos-num">?</div><span>⠿</span> Mesurer les facteurs abiotiques : T°, humidité, pH sol, calcaire (HCl), direction du vent</div>
+    </div>
+    <button class="bck" onclick="ckOrd('ord1')">✓ Vérifier</button>
+    <button class="brs" onclick="rsOrd('ord1')">↺ Mélanger</button>
+    <div class="gfb" id="ord1-fb"></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- AJOUT : Footer avec signature -->
+<footer>
+  <strong>INGÉNIEUR Mohamed CHAGRAOUI</strong><br>
+  ENSEIGNANT SVT · CANDIDAT CAPES SVT 2026 · TUNISIE<br>
+  Sciences de la Vie et de la Terre · 2ème Secondaire<br>
+  © 2026 — Fiche pédagogique interactive
+</footer>
+
+<script>
+// ══ TABS ══
+const panels=document.querySelectorAll('.pan'),tabs=document.querySelectorAll('.t');
+const pf=document.getElementById('pf');let vis=new Set([0]);
+function showTab(n){
+  panels.forEach(p=>p.classList.remove('on'));tabs.forEach(t=>t.classList.remove('on'));
+  panels[n].classList.add('on');tabs[n].classList.add('on');
+  vis.add(n);pf.style.width=Math.round(vis.size/tabs.length*100)+'%';
+  localStorage.setItem('t2ch1tab',n);window.scrollTo({top:0,behavior:'smooth'});
+  if(n===2)setTimeout(()=>{drawBoukornine();drawEcosysteme();drawEchelles();},80);
+}
+const sv=localStorage.getItem('t2ch1tab');
+if(sv){const n=parseInt(sv);if(n>0){panels[n].classList.add('on');panels[0].classList.remove('on');tabs[n].classList.add('on');tabs[0].classList.remove('on');vis.add(n);pf.style.width=Math.round(vis.size/tabs.length*100)+'%';}}
+
+function togTip(h){h.nextElementSibling.classList.toggle('on');}
+function showCN(id){
+  const panel=document.getElementById('cn-'+id);const isOn=panel.classList.contains('on');
+  document.querySelectorAll('.cn-panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.cnode').forEach(c=>c.classList.remove('active'));
+  if(!isOn){panel.classList.add('on');const cn=document.querySelector('.cnode.cn-'+id);if(cn)cn.classList.add('active');}
+}
+function togPiege(h){const b=h.nextElementSibling;b.classList.toggle('on');h.querySelector('span').textContent=b.classList.contains('on')?'▲':'▼';}
+function togAns(btn){btn.nextElementSibling.classList.toggle('on');}
+
+function ckMQ(id){
+  const sels=document.querySelectorAll('#'+id+'-q select.bl');let ok=0,tot=sels.length;
+  sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  const fb=document.getElementById(id+'-fb');
+  if(ok===tot){fb.className='mq-fb ok';fb.textContent='Parfait ! '+ok+'/'+tot;}
+  else{fb.className='mq-fb ko';fb.textContent=ok+'/'+tot+' — revois les réponses en rouge.';}
+}
+function rsMQ(id){
+  document.querySelectorAll('#'+id+'-q select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  const fb=document.getElementById(id+'-fb');fb.className='mq-fb';fb.textContent='';
+}
+function ckTabExo(id){
+  const fb=document.getElementById(id+'-fb');if(!fb)return;
+  const block=fb.closest('.tab-exo');if(!block)return;
+  const cells=block.querySelectorAll('.tcell');let ok=0,tot=cells.length;
+  cells.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  fb.className='gfb '+(ok===tot?'ok':'ko');
+  fb.textContent=ok===tot?'Parfait ! '+ok+'/'+tot:ok+'/'+tot+' — revois les cellules en rouge.';
+}
+function rsTabExo(id){
+  const fb=document.getElementById(id+'-fb');if(!fb)return;
+  const block=fb.closest('.tab-exo');if(!block)return;
+  block.querySelectorAll('.tcell').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  fb.className='gfb';fb.textContent='';
+}
+function ckBilan(){
+  const sels=document.querySelectorAll('#p3 select.bl');let ok=0,tot=sels.length;
+  sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  const fb=document.getElementById('bilan-fb');
+  fb.className='gfb '+(ok===tot?'ok':'ko');
+  fb.textContent=ok===tot?'Bilan complet ! '+ok+'/'+tot:ok+'/'+tot+' — Revois les trous en rouge.';
+}
+function rsBilan(){
+  document.querySelectorAll('#p3 select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  const fb=document.getElementById('bilan-fb');fb.className='gfb';fb.textContent='';
+}
+let dragItem=null;
+function dragOrd(ev){dragItem=ev.currentTarget;ev.dataTransfer.effectAllowed='move';}
+function dropOrd(ev,listId){
+  ev.preventDefault();const list=document.getElementById(listId);
+  const items=[...list.querySelectorAll('.ord-item')];
+  const target=ev.target.closest('.ord-item');
+  if(!target||target===dragItem)return;
+  list.insertBefore(dragItem,items.indexOf(target)>items.indexOf(dragItem)?target.nextSibling:target);
+  updOrd(listId);
+}
+function updOrd(id){document.getElementById(id).querySelectorAll('.ord-item').forEach((item,i)=>{item.querySelector('.pos-num').textContent=i+1;item.classList.remove('correct-pos','wrong-pos');});}
+function ckOrd(id){
+  const items=document.getElementById(id).querySelectorAll('.ord-item');let ok=0;
+  items.forEach((item,i)=>{item.classList.remove('correct-pos','wrong-pos');const cor=parseInt(item.dataset.order)===i+1;item.classList.add(cor?'correct-pos':'wrong-pos');item.querySelector('.pos-num').textContent=i+1;if(cor)ok++;});
+  const fb=document.getElementById(id+'-fb');fb.className='gfb '+(ok===items.length?'ok':'ko');
+  fb.textContent=ok===items.length?'Ordre parfait !':ok+'/'+items.length+' correctes.';
+}
+function rsOrd(id){
+  const list=document.getElementById(id);const items=[...list.querySelectorAll('.ord-item')];
+  items.sort(()=>Math.random()-.5);items.forEach(i=>{i.classList.remove('correct-pos','wrong-pos');list.appendChild(i);});updOrd(id);
+  const fb=document.getElementById(id+'-fb');fb.className='gfb';fb.textContent='';
+}
+
+function mkC(id,w,h){const c=document.getElementById(id);if(!c)return null;c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.clearRect(0,0,w,h);return ctx;}
+
+function drawBoukornine(){
+  const ctx=mkC('cgBoukornine',280,200);if(!ctx)return;
+  ctx.fillStyle='#e8f5e9';ctx.fillRect(0,0,280,200);
+  ctx.fillStyle='#e1f5fe';ctx.fillRect(0,0,280,80);
+  ctx.fillStyle='#D7CCC8';ctx.fillRect(0,175,280,25);
+  ctx.fillStyle='#BCAAA4';ctx.font='8px sans-serif';ctx.textAlign='center';ctx.fillText('Sol calcaire',140,188);
+  ctx.fillStyle='#1B5E20';
+  [[60,40],[130,30],[200,38],[250,45]].forEach(([x,y])=>{
+    ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-22,y+60);ctx.lineTo(x+22,y+60);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#558B2F';ctx.beginPath();ctx.moveTo(x,y+15);ctx.lineTo(x-18,y+65);ctx.lineTo(x+18,y+65);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#1B5E20';ctx.fillStyle='#795548';ctx.fillRect(x-3,y+60,6,18);ctx.fillStyle='#1B5E20';
+  });
+  ctx.fillStyle='#33691E';
+  [[30,115],[95,108],[165,112],[225,110]].forEach(([x,y])=>{
+    ctx.beginPath();ctx.arc(x,y,18,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#558B2F';ctx.beginPath();ctx.arc(x+5,y-5,12,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#33691E';
+  });
+  ctx.fillStyle='#8BC34A';ctx.strokeStyle='#8BC34A';ctx.lineWidth=1.5;
+  for(let x=15;x<270;x+=20){
+    ctx.beginPath();ctx.moveTo(x,175);ctx.quadraticCurveTo(x-5,160,x,155);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x+7,175);ctx.quadraticCurveTo(x+12,162,x+7,157);ctx.stroke();
+  }
+  ctx.fillStyle='#1B5E20';ctx.font='bold 8px sans-serif';ctx.textAlign='left';
+  ctx.fillText('Strate arborescente (Thuya)',4,25);
+  ctx.fillStyle='#33691E';ctx.fillText('Strate arbustive (Lentisque)',4,100);
+  ctx.fillStyle='#558B2F';ctx.fillText('Strate herbacée (Romarin, Alfa)',4,152);
+}
+
+function drawEcosysteme(){
+  const ctx=mkC('cgEcosysteme',280,220);if(!ctx)return;
+  ctx.fillStyle='#E8F5E9';ctx.strokeStyle='#2E7D32';ctx.lineWidth=3;
+  ctx.beginPath();ctx.roundRect(5,5,270,210,12);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#2E7D32';ctx.font='bold 10px sans-serif';ctx.textAlign='center';
+  ctx.fillText('ÉCOSYSTÈME',140,22);ctx.fillText('(Forêt de Boukornine)',140,33);
+  ctx.fillStyle='#E3F2FD';ctx.strokeStyle='#0277BD';ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(15,45,115,155,8);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#0277BD';ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.fillText('BIOTOPE',72,62);
+  ctx.fillStyle='#37474F';ctx.font='7px sans-serif';
+  ['Sol calcaire','Climat méditerranéen','T° · Humidité','Lumière · Vent'].forEach((t,i)=>{ctx.fillText(t,72,80+i*16);});
+  ctx.fillStyle='#546E7A';ctx.font='7px sans-serif';ctx.fillText('Facteurs abiotiques',72,148);
+  ctx.fillStyle='#E8F5E9';ctx.strokeStyle='#1B5E20';ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(150,45,120,155,8);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#1B5E20';ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.fillText('BIOCÉNOSE',210,62);
+  ctx.fillStyle='#37474F';ctx.font='7px sans-serif';
+  ['🌿 Flore','Thuya · Lentisque','🐾 Faune','Renard · Sanglier','Faucon · Lièvre'].forEach((t,i)=>{ctx.fillText(t,210,80+i*14);});
+  ctx.fillStyle='#2E7D32';ctx.font='7px sans-serif';ctx.fillText('Facteurs biotiques',210,155);
+  ctx.strokeStyle='#F57F17';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(130,110);ctx.lineTo(150,110);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(150,120);ctx.lineTo(130,120);ctx.stroke();
+  ctx.fillStyle='#F57F17';ctx.beginPath();ctx.moveTo(150,107);ctx.lineTo(156,110);ctx.lineTo(150,113);ctx.fill();
+  ctx.beginPath();ctx.moveTo(130,117);ctx.lineTo(124,120);ctx.lineTo(130,123);ctx.fill();
+  ctx.fillStyle='#E65100';ctx.font='bold 7px sans-serif';ctx.textAlign='center';ctx.fillText('interactions',140,106);
+}
+
+function drawEchelles(){
+  const ctx=mkC('cgEchelles',280,220);if(!ctx)return;
+  ctx.fillStyle='#f1f8e9';ctx.fillRect(0,0,280,220);
+  ctx.fillStyle='#1B5E20';ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.fillText('Les 4 échelles d\'écosystèmes',140,14);
+  const echelles=[
+    {label:'Micro',ex:'Sous un rocher',color:'#C8E6C9',border:'#4CAF50',size:35,x:30,y:40},
+    {label:'Méso',ex:'Boukornine (1939ha)',color:'#A5D6A7',border:'#2E7D32',size:55,x:100,y:55},
+    {label:'Macro',ex:'Mer Méditerranée',color:'#81C784',border:'#1B5E20',size:75,x:185,y:65},
+  ];
+  echelles.forEach(e=>{
+    ctx.fillStyle=e.color;ctx.strokeStyle=e.border;ctx.lineWidth=2;
+    ctx.beginPath();ctx.roundRect(e.x-e.size/2,e.y,e.size,e.size,6);ctx.fill();ctx.stroke();
+    ctx.fillStyle=e.border;ctx.font='bold 8px sans-serif';ctx.textAlign='center';ctx.fillText(e.label,e.x,e.y+e.size/2+3);
+    ctx.fillStyle='#546E7A';ctx.font='7px sans-serif';ctx.fillText(e.ex,e.x,e.y+e.size+12);
+  });
+  ctx.fillStyle='#E8F5E9';ctx.strokeStyle='#1B5E20';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.roundRect(10,155,260,55,8);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#1B5E20';ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.fillText('Écosystème général = Planète Terre (Biosphère)',140,175);
+  ctx.fillStyle='#2E7D32';ctx.font='7px sans-serif';ctx.fillText('Tous les écosystèmes de la Terre en interaction',140,190);
+  ctx.fillText('Sahara · Océans · Forêts · Déserts · Mers…',140,203);
+}
+
+// ══ FLASHCARDS ══
+const FC=[
+  {t:'Écosystème',d:'Association d\'une biocénose et d\'un biotope en constante interaction. Ex : la forêt de Boukornine (méso-écosystème méditerranéen tunisien).'},
+  {t:'Biotope',d:'Lieu de vie de la biocénose. Défini par ses facteurs abiotiques physico-chimiques et climatiques. Ex : sol calcaire + climat méditerranéen de Boukornine.'},
+  {t:'Biocénose',d:'Ensemble de tous les êtres vivants (faune + flore) habitant un biotope défini. Ex : Thuya + Lentisque + Renard + Faucon pèlerin de Boukornine.'},
+  {t:'Faune',d:'Ensemble des animaux d\'un écosystème (peuplement animal). Ex Boukornine : Renard, Sanglier, Lièvre, Faucon pèlerin, Chouette, Hérisson.'},
+  {t:'Flore',d:'Ensemble des végétaux d\'un écosystème (peuplement végétal). Ex Boukornine : Thuya de berbérie (dominant), Lentisque, Romarin, Bruyère, Alfa.'},
+  {t:'Population',d:'Ensemble d\'individus appartenant à la même espèce vivant dans un milieu précis. Ex : population de Renards de la forêt de Boukornine.'},
+  {t:'Peuplement',d:'Ensemble de toutes les populations d\'une biocénose. Comprend peuplement animal (faune) et peuplement végétal (flore).'},
+  {t:'Facteurs abiotiques',d:'Facteurs non vivants du milieu. Deux catégories : physico-chimiques (pH, salinité, nature du sol) et climatiques (température, humidité, vent, lumière).'},
+  {t:'Facteurs biotiques',d:'Facteurs liés à la présence et à l\'activité des êtres vivants dans le milieu. Comprennent toutes les relations entre organismes (prédation, compétition, mutualisme).'},
+  {t:'Micro-écosystème',d:'Écosystème de très petite taille. Ex : sous une pierre, dans un tronc d\'arbre creux, dans une goutte d\'eau.'},
+  {t:'Méso-écosystème',d:'Écosystème de taille intermédiaire. Ex : forêt de Boukornine (1939 ha), oasis de Tozeur, lac Ichkeul.'},
+  {t:'Macro-écosystème',d:'Écosystème de grande taille. Ex : mer Méditerranée, Sahara tunisien, océan Atlantique.'},
+  {t:'Interdépendance',d:'Relation réciproque entre biotope et biocénose : les êtres vivants subissent l\'influence des facteurs abiotiques ET modifient ces facteurs à leur tour. Fondement de l\'écologie.'},
+  {t:'Écologie',d:'Science qui étudie l\'ensemble des interdépendances entre les êtres vivants et leur milieu non vivant (entre biocénose et biotope).'},
+];
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const fcg=document.getElementById('fcg');
+  const defs=FC.map(c=>c.d);
+  FC.forEach((c,i)=>{
+    const shuffled=[...defs].sort(()=>Math.random()-.5).slice(0,3);
+    if(!shuffled.includes(c.d)){shuffled[0]=c.d;shuffled.sort(()=>Math.random()-.5);}
+    const opts=shuffled.map(d=>`<option value="${d.replace(/"/g,'&quot;')}">${d.length>65?d.slice(0,65)+'…':d}</option>`).join('');
+    fcg.innerHTML+=`<div class="fcc"><div class="fcp"><strong style="color:var(--em)">${c.t} :</strong><br>
+      <select class="fs" data-rep="${c.d.replace(/"/g,'&quot;')}"><option value="">— Choisir la définition</option>${opts}</select></div></div>`;
+  });
+  buildOneQcm('qcm-manuel-c',qcmManuelData,'manuel');
+  buildOneQcm('qcm-comp-c',qcmCompData,'comp');
+});
+
+function chkFC(){
+  let ok=0,tot=0;document.querySelectorAll('.fs').forEach(s=>{tot++;s.classList.remove('ok','ko');if(!s.value)return;if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else s.classList.add('ko');});
+  const sc=document.getElementById('fcs');sc.style.display='inline-block';
+  sc.style.background=ok===tot?'#e8f5e9':'#ffebee';sc.style.color=ok===tot?'#2E7D32':'#c62828';
+  sc.textContent=ok+'/'+tot+' correctes';
+}
+function rstFC(){document.querySelectorAll('.fs').forEach(s=>{s.value='';s.classList.remove('ok','ko');});document.getElementById('fcs').style.display='none';}
+
+// ══ QCM DATA ══
+const qcmManuelData = [
+  {q:"Q1 (manuel p.91) — La biocénose est l'ensemble des :",opts:[
+    {t:"A. facteurs biotiques d'un milieu.",c:false,fb:"Incorrect. Les facteurs biotiques sont les INFLUENCES des êtres vivants, pas les êtres eux-mêmes."},
+    {t:"B. êtres vivants d'un milieu.",c:true,fb:"Correct. La biocénose = ensemble de tous les êtres vivants (faune + flore) d'un écosystème."},
+    {t:"C. populations d'un milieu.",c:true,fb:"Correct. L'ensemble des populations d'une biocénose = le peuplement = la biocénose elle-même."},
+    {t:"D. facteurs liés à la faune et à la flore d'un écosystème.",c:false,fb:"Incorrect. Ceci décrit les facteurs BIOTIQUES, pas la biocénose."},
+  ],type:'checkbox'},
+  {q:"Q2 (manuel p.91) — Un écosystème est :",opts:[
+    {t:"A. une science qui étudie les milieux naturels.",c:false,fb:"Incorrect. La science qui étudie les écosystèmes = l'ÉCOLOGIE."},
+    {t:"B. l'ensemble des êtres vivants d'un milieu.",c:false,fb:"Incorrect. L'ensemble des êtres vivants = BIOCÉNOSE seulement."},
+    {t:"C. l'ensemble des interactions d'un milieu naturel.",c:false,fb:"Incorrect. Ce n'est pas seulement les interactions."},
+    {t:"D. l'association d'une biocénose et d'un biotope qui sont en constante interaction.",c:true,fb:"Correct. Définition exacte du bilan p.90."},
+  ],type:'checkbox'},
+  {q:"Q3 (manuel p.91) — Une population est l'ensemble des individus de :",opts:[
+    {t:"A. la faune et de la flore d'un écosystème.",c:false,fb:"Incorrect. Faune + flore = BIOCÉNOSE ou PEUPLEMENT."},
+    {t:"B. la même espèce animale ou végétale.",c:true,fb:"Correct. Population = individus de la MÊME espèce dans un milieu PRÉCIS."},
+    {t:"C. la même faune.",c:false,fb:"Incorrect. La faune comprend PLUSIEURS espèces."},
+    {t:"D. la même flore.",c:false,fb:"Incorrect. La flore comprend PLUSIEURS espèces."},
+  ],type:'checkbox'},
+  {q:"Q4 (manuel p.91) — Les exemples suivants sont des facteurs abiotiques :",opts:[
+    {t:"A. la salinité de l'eau.",c:true,fb:"Correct. Salinité = propriété physico-chimique du milieu → facteur ABIOTIQUE."},
+    {t:"B. le pH du sol.",c:true,fb:"Correct. pH = propriété physico-chimique → facteur ABIOTIQUE."},
+    {t:"C. les relations alimentaires.",c:false,fb:"Incorrect. Relations alimentaires = activité des êtres vivants → facteurs BIOTIQUES."},
+    {t:"D. la reproduction chez les végétaux.",c:false,fb:"Incorrect. Reproduction = activité des êtres vivants → facteur BIOTIQUE."},
+  ],type:'checkbox'},
+  {q:"Q5 (manuel p.91) — Le biotope est :",opts:[
+    {t:"A. le lieu où vit la biocénose d'un écosystème.",c:true,fb:"Correct. Biotope = lieu de vie de la biocénose."},
+    {t:"B. la faune et la flore d'un écosystème.",c:false,fb:"Incorrect. Faune + flore = BIOCÉNOSE."},
+    {t:"C. l'ensemble des individus de la même espèce animale ou végétale.",c:false,fb:"Incorrect. Individus de même espèce = POPULATION."},
+    {t:"D. l'ensemble des facteurs abiotiques.",c:true,fb:"Correct. Le biotope est défini par ses facteurs abiotiques."},
+  ],type:'checkbox'},
+];
+
+const qcmCompData = [
+  {q:"Q6. La forêt de Boukornine est :",opts:[
+    {t:"A. Un micro-écosystème",c:false,fb:"Incorrect. Micro = très petit (sous une pierre)."},
+    {t:"B. Un méso-écosystème",c:true,fb:"Correct. Boukornine (1939 ha) = taille intermédiaire."},
+    {t:"C. Un macro-écosystème",c:false,fb:"Incorrect. Macro = très grand (mer, océan)."},
+  ],rep:[1],type:'checkbox'},
+  {q:"Q7. Les facteurs biotiques comprennent :",opts:[
+    {t:"A. La température et l'humidité",c:false,fb:"Incorrect. Ce sont des facteurs ABIOTIQUES climatiques."},
+    {t:"B. Les relations de prédation entre espèces",c:true,fb:"Correct. Prédation = relation entre êtres vivants = facteur BIOTIQUE."},
+    {t:"C. La coopération entre individus d'une même population",c:true,fb:"Correct. Coopération = facteur BIOTIQUE intra-population."},
+  ],rep:[1,2],type:'checkbox'},
+  {q:"Q8. L'étude complète d'un milieu naturel nécessite :",opts:[
+    {t:"A. D'observer uniquement la flore",c:false,fb:"Incorrect. Incomplet : il faut aussi la faune et les facteurs abiotiques."},
+    {t:"B. De mesurer les facteurs abiotiques et d'observer la biocénose complète",c:true,fb:"Correct. Étude complète = biotope + biocénose."},
+    {t:"C. D'observer la faune par observation directe ET indirecte",c:true,fb:"Correct. Observation directe (jumelles) + indirecte (empreintes, traces)."},
+  ],rep:[1,2],type:'checkbox'},
+];
+
+function buildOneQcm(containerId,data,prefix){
+  const container=document.getElementById(containerId);
+  if(!container)return;
+  container.innerHTML='';
+  data.forEach((q,i)=>{
+    const inputType=q.type||'checkbox';
+    const optsHtml=q.opts.map((o,j)=>{
+      const name=prefix+'-q'+i;
+      return '<label class="qo" id="lbl-'+prefix+'-'+i+'-'+j+'"><input type="'+inputType+'" name="'+name+'" value="'+j+'"> '+o.t+'<div class="fb-txt" id="fb-'+prefix+'-'+i+'-'+j+'"></div></label>';
+    }).join('');
+    container.innerHTML+='<div class="qi" id="qi-'+prefix+'-'+i+'"><div class="qq">'+q.q+'</div>'+optsHtml+
+      '<div style="margin-top:8px;"><button class="btn bv" onclick="checkOneQcm(\''+prefix+'\','+i+')" style="font-size:.78rem;padding:5px 11px;">✓ Vérifier</button> <button class="btn bg" onclick="resetOneQcm(\''+prefix+'\','+i+')" style="font-size:.78rem;padding:5px 11px;">↺</button></div><div class="mq-fb" id="fb-'+prefix+'-'+i+'" style="margin-top:6px;"></div></div>';
+  });
+}
+
+function checkOneQcm(prefix,i){
+  const data=prefix==='manuel'?qcmManuelData:qcmCompData;
+  const q=data[i];
+  const checkedInputs=document.querySelectorAll('input[name="'+prefix+'-q'+i+'"]:checked');
+  const fbContainer=document.getElementById('fb-'+prefix+'-'+i);
+  if(checkedInputs.length===0){fbContainer.className='mq-fb ko';fbContainer.textContent='Veuillez sélectionner au moins une réponse.';return;}
+  const userAnswers=Array.from(checkedInputs).map(inp=>parseInt(inp.value));
+  const correctAnswers=q.rep||q.opts.map((o,idx)=>o.c?idx:-1).filter(idx=>idx>=0);
+  let isCorrect=false;
+  if(correctAnswers.length===userAnswers.length){isCorrect=correctAnswers.every(ca=>userAnswers.includes(ca));}
+  q.opts.forEach((o,j)=>{
+    const lbl=document.getElementById('lbl-'+prefix+'-'+i+'-'+j);
+    const fbTxt=document.getElementById('fb-'+prefix+'-'+i+'-'+j);
+    lbl.classList.remove('correct','wrong','missed');fbTxt.textContent='';
+    if(correctAnswers.includes(j)&&userAnswers.includes(j)){lbl.classList.add('correct');fbTxt.textContent='✓ '+(o.fb||'Correct.');}
+    else if(!correctAnswers.includes(j)&&userAnswers.includes(j)){lbl.classList.add('wrong');fbTxt.textContent='✗ '+(o.fb||'Incorrect.');}
+    else if(correctAnswers.includes(j)&&!userAnswers.includes(j)){lbl.classList.add('missed');fbTxt.textContent='⚠ Réponse manquée : '+(o.fb||'Cette option est correcte.');}
+  });
+  fbContainer.className='mq-fb '+(isCorrect?'ok':'ko');
+  fbContainer.textContent=isCorrect?'Correct ! ✓':'Incorrect. Consultez les feedbacks ci-dessus. ✗';
+}
+
+function resetOneQcm(prefix,i){
+  document.querySelectorAll('input[name="'+prefix+'-q'+i+'"]').forEach(inp=>inp.checked=false);
+  const data=prefix==='manuel'?qcmManuelData:qcmCompData;
+  data[i].opts.forEach((o,j)=>{
+    const lbl=document.getElementById('lbl-'+prefix+'-'+i+'-'+j);
+    const fbTxt=document.getElementById('fb-'+prefix+'-'+i+'-'+j);
+    if(lbl)lbl.classList.remove('correct','wrong','missed');
+    if(fbTxt)fbTxt.textContent='';
+  });
+  const fbContainer=document.getElementById('fb-'+prefix+'-'+i);
+  if(fbContainer){fbContainer.className='mq-fb';fbContainer.textContent='';}
+}
+
+function resetAllQcm(){['manuel','comp'].forEach(prefix=>{const data=prefix==='manuel'?qcmManuelData:qcmCompData;data.forEach((q,i)=>resetOneQcm(prefix,i));});}
+</script>
+</body>
+</html>
