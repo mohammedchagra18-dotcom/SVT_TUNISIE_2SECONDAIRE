@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T3-Ch4 — L'Information Génétique</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --e:#1B5E20;--em:#2E7D32;--el:#e8f5e9;--ep:#f1f8e9;
+  --v:#1B5E20;--vl:#e8f5e9;
+  --b:#0277BD;--bl:#e1f5fe;
+  --ar:#37474F;--arl:#eceff1;
+  --sa:#F57F17;--sal:#fffde7;
+  --r:#B71C1C;--rl:#ffebee;
+  --vi:#4A148C;--vil:#f3e5f5;
+  --j:#F9A825;--jl:#fffde7;
+  --o:#E65100;--ol:#fff3e0;
+  --bg:#e8f5e9;--tx:#1a1a1a;--mu:#666;
+  --brd:#a5d6a7;--sh:0 2px 12px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6;}
+header{background:linear-gradient(135deg,#0D3311,#1B5E20 50%,#2E7D32);color:#fff;padding:18px 26px 13px;position:sticky;top:0;z-index:100;box-shadow:0 3px 16px rgba(0,0,0,.3);}
+header h1{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:2px;}
+header p{font-size:.8rem;opacity:.85;}
+.signature-header{font-size:.7rem;opacity:.7;margin-top:3px;font-style:italic;letter-spacing:.6px;color:#a5d6a7;}
+.pb{height:4px;background:rgba(255,255,255,.3);border-radius:2px;margin-top:8px;}
+.pf{height:100%;background:#81C784;border-radius:2px;transition:width .4s;width:9%;}
+.tw{background:#fff;border-bottom:2px solid var(--brd);position:sticky;top:86px;z-index:99;overflow-x:auto;}
+.ts{display:flex;min-width:max-content;}
+.t{padding:10px 8px;font-size:.69rem;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;color:var(--mu);white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;transition:all .2s;}
+.t:hover{color:var(--em);background:var(--el);}
+.t.on{color:var(--em);border-bottom-color:var(--em);}
+.content{max-width:960px;margin:0 auto;padding:18px 18px 60px;}
+.pan{display:none;}.pan.on{display:block;}
+.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:13px;box-shadow:var(--sh);border-left:5px solid var(--em);}
+.card.v{border-left-color:var(--v);}.card.r{border-left-color:var(--r);}.card.b{border-left-color:var(--b);}.card.ar{border-left-color:var(--ar);}
+h2{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:9px;color:var(--em);}
+h2.v{color:var(--v);}h2.r{color:var(--r);}h2.ar{color:var(--ar);}h2.b{color:var(--b);}
+h3{font-size:.88rem;font-weight:700;margin:9px 0 5px;color:var(--e);}
+.sech{background:linear-gradient(135deg,#0D3311,#2E7D32);color:#fff;padding:10px 15px;border-radius:10px;font-weight:600;margin-bottom:12px;font-size:.88rem;}
+.tip{background:#fdf6ec;border:1.5px solid var(--j);border-radius:10px;margin:8px 0;overflow:hidden;}
+.tip-head{padding:8px 13px;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:.86rem;font-weight:600;color:#7B5800;}
+.tip-head:hover{background:#fff8d6;}
+.tip-body{display:none;padding:10px 13px 12px;font-size:.85rem;line-height:1.7;color:#4a3800;border-top:1px solid #ffe082;}
+.tip-body.on{display:block;}
+.mq{background:linear-gradient(135deg,var(--vil),var(--el));border:2px solid var(--vi);border-radius:10px;padding:13px;margin:10px 0;}
+.mq-title{font-weight:700;color:var(--vi);font-size:.82rem;letter-spacing:.8px;text-transform:uppercase;margin-bottom:9px;}
+.mq p{margin-bottom:7px;font-size:.88rem;line-height:1.85;}
+select.bl{border:2px solid var(--vi);border-radius:5px;padding:2px 6px;font-size:.84rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;}
+select.bl.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.bl.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.mq-fb{font-size:.82rem;padding:6px 10px;border-radius:7px;margin-top:7px;font-weight:600;display:none;}
+.mq-fb.ok{background:#e8f5e9;color:#2E7D32;display:block;}
+.mq-fb.ko{background:#ffebee;color:#c62828;display:block;}
+.bck{background:var(--vi);color:#fff;border:none;padding:6px 13px;border-radius:7px;cursor:pointer;font-weight:700;font-size:.8rem;margin-top:8px;}
+.bck:hover{background:#311B92;}
+.brs{background:var(--brd);color:var(--tx);border:none;padding:6px 11px;border-radius:7px;cursor:pointer;font-size:.8rem;margin-top:8px;margin-left:5px;}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.83rem;}
+th{background:var(--em);color:#fff;padding:7px 9px;text-align:left;}
+td{padding:6px 9px;border-bottom:1px solid var(--brd);}
+tr:nth-child(even) td{background:var(--ep);}
+tr.hl td{background:#fff8e1 !important;font-weight:700;}
+.ret{background:var(--jl);border:1.5px solid var(--j);border-radius:9px;padding:10px 13px;margin:10px 0;}
+.ret h4{color:var(--o);font-size:.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.ret p{margin-bottom:4px;font-size:.85rem;}
+.ret dt{font-weight:700;color:var(--o);display:inline;}
+.ret dd{display:inline;margin-left:3px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:9px 0;}
+.al{list-style:none;display:grid;gap:5px;}
+.al li{padding:7px 11px;background:var(--el);border-radius:7px;border-left:4px solid var(--em);font-size:.85rem;}
+.al li::before{content:"✓ ";color:var(--em);font-weight:700;}
+.bstep{background:#fff;border-radius:11px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-top:4px solid var(--em);}
+.bnum{display:inline-flex;align-items:center;justify-content:center;background:var(--em);color:#fff;border-radius:50%;width:26px;height:26px;font-weight:700;font-size:.88rem;margin-right:8px;flex-shrink:0;}
+.gfb{font-size:.83rem;padding:7px 11px;border-radius:8px;margin-top:8px;font-weight:600;}
+.gfb.ok{background:#e8f5e9;color:#2E7D32;}
+.gfb.ko{background:#ffebee;color:#c62828;}
+.tab-exo{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--ar);}
+.tab-exo .ctx{background:var(--arl);border-radius:7px;padding:8px 12px;margin-bottom:9px;font-size:.84rem;border-left:3px solid var(--ar);}
+select.tcell{border:1.5px solid var(--vi);border-radius:4px;padding:2px 5px;font-size:.81rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;max-width:280px;}
+select.tcell.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.tcell.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.fcg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:10px 0;}
+.fcc{background:#fff;border-radius:9px;padding:12px;box-shadow:var(--sh);border-top:4px solid var(--em);}
+.fcp{font-size:.87rem;line-height:1.9;margin-bottom:7px;}
+select.fs{border:2px solid var(--vi);border-radius:5px;padding:2px 6px;font-size:.81rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;}
+select.fs.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.fs.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.fa{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.btn{padding:7px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:.83rem;}
+.bv{background:var(--em);color:#fff;}.bv:hover{background:var(--e);}
+.bg{background:var(--brd);color:var(--tx);}
+.qi{background:#fff;border-radius:10px;padding:13px;margin-bottom:10px;box-shadow:var(--sh);}
+.qq{font-weight:600;margin-bottom:8px;font-size:.89rem;}
+.qo{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:6px;margin-bottom:4px;cursor:pointer;font-size:.86rem;border:1.5px solid transparent;transition:background .15s;}
+.qo:hover:not(.locked){background:var(--el);}
+.qo input{accent-color:var(--em);margin-top:3px;flex-shrink:0;}
+.qo.correct{background:#e8f5e9;border-color:#4CAF50;}
+.qo.wrong{background:#ffebee;border-color:#f44336;}
+.qo.missed{background:#fff8e1;border-color:#FF9800;}
+.fb-txt{font-size:.8rem;margin-top:3px;display:none;line-height:1.5;}
+.qo.correct .fb-txt,.qo.wrong .fb-txt,.qo.missed .fb-txt{display:block;}
+.qo.correct .fb-txt{color:#2E7D32;}
+.qo.wrong .fb-txt{color:#c62828;}
+.qo.missed .fb-txt{color:#E65100;}
+img.manuel{max-width:100%;border-radius:8px;margin:9px auto;display:block;box-shadow:var(--sh);border:2px solid var(--brd);}
+img.manuel.pleine{max-width:100%;}
+img.manuel.schema{max-width:65%;}
+img.manuel.photo{max-width:80%;}
+.img-placeholder{width:100%;aspect-ratio:16/10;background:linear-gradient(135deg,var(--el),var(--arl));border-radius:8px;display:flex;align-items:center;justify-content:center;margin:9px 0;border:2px dashed var(--brd);flex-direction:column;gap:6px;}
+.img-placeholder span{font-size:.82rem;color:var(--mu);font-weight:600;}
+.img-placeholder small{font-size:.7rem;color:var(--mu);opacity:.7;}
+.pourquoi-box{background:linear-gradient(135deg,#0D3311,#1B5E20 50%,#2E7D32);color:#fff;border-radius:14px;padding:22px;margin-bottom:16px;}
+.pourquoi-box h2{color:#a5d6a7;font-size:1.18rem;margin-bottom:12px;}
+.pourquoi-box .obj-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.pourquoi-box .obj-item{background:rgba(255,255,255,.1);padding:10px 13px;border-radius:8px;font-size:.84rem;line-height:1.6;border-left:3px solid #a5d6a7;}
+.pourquoi-box .obj-num{display:inline-flex;align-items:center;justify-content:center;background:#a5d6a7;color:#0D3311;border-radius:50%;width:22px;height:22px;font-weight:700;font-size:.76rem;margin-right:6px;flex-shrink:0;}
+.qcm-ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.qcm-ctrl .btn{font-size:.78rem;}
+.qcm-score{font-size:.82rem;padding:6px 10px;border-radius:7px;font-weight:600;display:inline-block;margin-left:8px;}
+.bilan-rev{background:#fff;border-radius:10px;padding:16px;margin-bottom:12px;box-shadow:var(--sh);border-left:5px solid var(--em);}
+.bilan-rev h3{color:var(--em);font-size:.95rem;margin-bottom:10px;}
+.bilan-rev .obj-block{background:var(--el);border-radius:9px;padding:12px;margin-bottom:12px;border:2px solid var(--brd);}
+.bilan-rev .obj-num{display:inline-flex;align-items:center;justify-content:center;background:var(--em);color:#fff;border-radius:50%;width:24px;height:24px;font-weight:700;font-size:.78rem;margin-right:7px;flex-shrink:0;}
+.bilan-rev .obj-title{font-weight:700;font-size:.86rem;color:var(--e);margin-bottom:6px;display:flex;align-items:center;}
+.bilan-rev .bonus-q{background:#fff;border-radius:7px;padding:10px;margin-top:8px;font-size:.84rem;line-height:1.7;border:1.5px dashed var(--sa);}
+.expl-text{font-size:.88rem;line-height:1.85;color:var(--tx);margin-bottom:10px;padding:10px 14px;background:var(--el);border-radius:9px;border-left:4px solid var(--em);}
+.focus-box{background:linear-gradient(135deg,var(--bl),var(--el));border:2px solid var(--b);border-radius:10px;padding:13px;margin:10px 0;font-size:.86rem;line-height:1.8;}
+.focus-box strong{color:var(--b);}
+footer{background:linear-gradient(135deg,#0D3311,#1B5E20 50%,#2E7D32);color:#fff;text-align:center;padding:14px 18px;font-size:.78rem;opacity:.9;margin-top:30px;border-radius:12px 12px 0 0;}
+footer .ft-sig{font-size:.76rem;opacity:.75;font-style:italic;letter-spacing:.6px;margin-top:4px;}
+.resume-hero{background:linear-gradient(135deg,#0D3311,#1B5E20 50%,#2E7D32);color:#fff;border-radius:14px;padding:22px;margin-bottom:16px;}
+.resume-hero h2{color:#a5d6a7;font-size:1.15rem;margin-bottom:8px;}
+.resume-hero p{font-size:.9rem;line-height:1.75;opacity:.92;}
+.resume-hero .sub{font-size:.8rem;opacity:.7;margin-top:6px;font-style:italic;}
+.concept-map{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+.cnode{border-radius:11px;padding:13px;cursor:pointer;transition:all .25s;border:2px solid transparent;}
+.cnode:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15);}
+.cnode.active{border-color:rgba(255,255,255,.5);}
+.cnode .cn-icon{font-size:1.5rem;margin-bottom:5px;}
+.cnode .cn-title{font-size:.85rem;font-weight:700;margin-bottom:3px;}
+.cnode .cn-sub{font-size:.74rem;opacity:.85;line-height:1.35;}
+.cn-a{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;}
+.cn-b{background:linear-gradient(135deg,#0277BD,#0288D1);color:#fff;}
+.cn-c{background:linear-gradient(135deg,#B71C1C,#C62828);color:#fff;}
+.cn-d{background:linear-gradient(135deg,#B71C1C,#880000);color:#fff;}
+.cn-e{background:linear-gradient(135deg,#37474F,#546E7A);color:#fff;}
+.cn-panel{display:none;background:#fff;border-radius:11px;padding:16px;margin-bottom:12px;box-shadow:var(--sh);}
+.cn-panel.on{display:block;}
+.cn-panel.a{border-left:5px solid var(--em);}
+.cn-panel.b{border-left:5px solid var(--b);}
+.cn-panel.c{border-left:5px solid var(--r);}
+.cn-panel.d{border-left:5px solid var(--r);}
+.cn-panel.e{border-left:5px solid var(--ar);}
+.connexion-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:11px 0;}
+.conn-item{border-radius:9px;padding:12px;border:2px solid;font-size:.84rem;line-height:1.6;}
+.conn-item .conn-ch{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;opacity:.75;}
+.conn-item .conn-notion{font-weight:700;margin-bottom:3px;}
+.piege-item{border-radius:10px;padding:13px;margin-bottom:9px;border:2px solid var(--r);background:var(--rl);overflow:hidden;}
+.piege-head{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:.88rem;font-weight:700;color:var(--r);}
+.piege-body{display:none;padding-top:10px;font-size:.86rem;line-height:1.7;color:var(--tx);}
+.piege-body.on{display:block;}
+.piege-body strong{color:var(--r);}
+.reflex{background:linear-gradient(135deg,var(--vil),var(--el));border:2px solid var(--vi);border-radius:11px;padding:14px;margin:12px 0;}
+.reflex h4{color:var(--vi);font-size:.85rem;font-weight:700;margin-bottom:10px;}
+.reflex-q{background:#fff;border-radius:8px;padding:11px;margin-bottom:8px;}
+.reflex-q .rq{font-size:.88rem;line-height:1.7;font-weight:600;margin-bottom:7px;}
+.rev-btn{background:var(--vi);color:#fff;border:none;padding:5px 11px;border-radius:6px;cursor:pointer;font-size:.79rem;font-weight:600;}
+.reflex-ans{display:none;margin-top:8px;padding:9px 12px;background:var(--vil);border-radius:7px;font-size:.85rem;line-height:1.7;color:#4a0080;}
+.reflex-ans.on{display:block;}
+@media(max-width:600px){
+  .g2,.concept-map,.connexion-grid,.pourquoi-box .obj-list{grid-template-columns:1fr;}
+  header h1{font-size:.82rem;}.t{padding:8px 3px;font-size:.6rem;}
+  img.manuel.schema,img.manuel.photo{max-width:100%;}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Chapitre 4 — L'Information Génétique</h1>
+  <p>2ème Secondaire SVT · Thème 3 · Pages 215–227 · 4 Activités</p>
+  <div class="signature-header">INGÉNIEUR Mohamed CHAGRAOUI / ENSEIGNANT SVT · CANDIDAT CAPES SVT 2026 · TUNISIE</div>
+  <div class="pb"><div class="pf" id="pf"></div></div>
+</header>
+
+<div class="tw"><div class="ts">
+  <button class="t on"  onclick="showTab(0)">📚 Acquis</button><button class="t" onclick="showTab(1)">🧠 Résumé</button>
+  <button class="t"     onclick="showTab(2)">🧪 Act.1 — Localisation</button>
+  <button class="t"     onclick="showTab(3)">🧬 Act.2 — Nature</button>
+  <button class="t"     onclick="showTab(4)">🩸 Act.3 — Code IG</button>
+  <button class="t"     onclick="showTab(5)">🔄 Act.4 — Réplication</button>
+  <button class="t"     onclick="showTab(6)">📋 BILAN</button>
+  <button class="t"     onclick="showTab(7)">📝 Exercices</button>
+  <button class="t"     onclick="showTab(8)">📋 Bilan Révision</button>
+  <button class="t"     onclick="showTab(9)">🃏 Flashcards</button>
+  <button class="t"     onclick="showTab(10)">✏️ QCM</button>
+</div></div>
+
+<div class="content">
+
+<!-- ══ 0 ACQUIS ══ -->
+<div class="pan on" id="p0">
+  <div class="pourquoi-box">
+    <h2>🎯 Pourquoi ce chapitre ?</h2>
+    <p style="font-size:.88rem;line-height:1.7;margin-bottom:12px;opacity:.92;">
+      D'après le <strong>programme officiel tunisien</strong> (Thème 3, Objectif 4 — p.19), ce chapitre vise à :
+    </p>
+    <div class="obj-list">
+      <div class="obj-item"><span class="obj-num">1</span> Poser le problème du <strong>support et de la nature</strong> de l'information génétique</div>
+      <div class="obj-item"><span class="obj-num">2</span> Analyser l'<strong>expérience de Griffith</strong> (transformation bactérienne)</div>
+      <div class="obj-item"><span class="obj-num">3</span> <strong>Identifier l'ADN</strong> comme support de l'information génétique</div>
+      <div class="obj-item"><span class="obj-num">4</span> Présenter la <strong>composition chimique</strong> de l'ADN et son <strong>modèle structural</strong></div>
+      <div class="obj-item"><span class="obj-num">5</span> Expliquer la <strong>réplication de l'ADN</strong> selon le modèle <strong>semi-conservatif</strong></div>
+      <div class="obj-item"><span class="obj-num">6</span> Comprendre que la réplication assure la <strong>stabilité de l'information génétique</strong></div>
+    </div>
+  </div>
+  <div class="card"><h2>📚 Préacquis</h2>
+    <ul class="al">
+      <li><strong>Ch.1 —</strong> Le noyau contient la chromatine (ADN). Les chromosomes = ADN condensé.</li>
+      <li><strong>Ch.3 —</strong> La mitose assure la reproduction conforme. Phase S = duplication de l'ADN.</li>
+      <li>Une <strong>expérience scientifique</strong> suit la démarche : hypothèse → expérience → résultat → conclusion.</li>
+    </ul>
+  </div>
+  <div class="card ar"><h2 class="ar">❓ 3 Questions directrices</h2>
+    <ol style="margin-left:17px;line-height:2.4;font-size:.92rem">
+      <li>Où est <strong>localisée</strong> l'information génétique ?</li>
+      <li>Quelle est la <strong>nature</strong> chimique du support de l'IG ?</li>
+      <li>Comment l'IG est-elle <strong>conservée</strong> lors de la division cellulaire ?</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══ 1 RÉSUMÉ ══ -->
+<div class="pan" id="p1">
+  <div class="resume-hero"><h2>🧠 Comprendre avant de mémoriser</h2><p>Ce chapitre répond à 3 questions fondamentales : <strong>où</strong> est l'information génétique ? (dans le noyau) · <strong>qu'est-ce que</strong> c'est ? (l'ADN) · <strong>comment</strong> est-elle conservée ? (réplication semi-conservative). La logique suit la démarche scientifique historique : expériences de Gurdon et Acétabulaire → Griffith → Avery → Watson & Crick → Taylor.</p><p class="sub">Clique sur chaque notion · Pièges CAPES et connexions révélés</p></div>
+  <div class="concept-map">
+    <div class="cnode cn-a" onclick="showCN('a')"><div class="cn-icon">📍</div><div class="cn-title">Localisation</div><div class="cn-sub">Gurdon · Acétabulaire → Noyau</div></div>
+    <div class="cnode cn-b" onclick="showCN('b')"><div class="cn-icon">🧬</div><div class="cn-title">Nature : l'ADN</div><div class="cn-sub">Griffith · Avery · Double hélice</div></div>
+    <div class="cnode cn-c" onclick="showCN('c')"><div class="cn-icon">🔄</div><div class="cn-title">Réplication</div><div class="cn-sub">Semi-conservative · Taylor</div></div>
+    <div class="cnode cn-d" onclick="showCN('d')"><div class="cn-icon">⚠️</div><div class="cn-title">3 Pièges</div><div class="cn-sub">Erreurs fréquentes CAPES</div></div>
+    <div class="cnode cn-e" onclick="showCN('e')"><div class="cn-icon">🔗</div><div class="cn-title">Connexions</div><div class="cn-sub">Ch.1 · Ch.3 · Thème 1</div></div>
+  </div>
+  <!-- Panneaux conceptuels -->
+  <div class="cn-panel a" id="cn-a"><h3 style="color:var(--em)">📍 Localisation de l'IG — les expériences historiques</h3><p class="expl-text">Deux expériences majeures démontrent que l'IG est dans le <strong>noyau</strong> : Gurdon (1960) transplante des noyaux de cellules intestinales de xénope albinos dans des ovules énucléés → têtards albinos. Acétabulaire : la greffe de noyau détermine la forme du chapeau.</p><table><tr><th>Expérience</th><th>Principe</th><th>Conclusion</th></tr><tr class="hl"><td><strong>Gurdon (1960)</strong></td><td>Noyau cellule intestinale → ovule énucléé</td><td>Le noyau contrôle le développement</td></tr><tr><td><strong>Acétabulaire</strong></td><td>Greffe noyau entre 2 espèces</td><td>Le noyau détermine les caractères</td></tr></table><div class="tip"><div class="tip-head" onclick="togTip(this)">💡 Énucléé = privé de noyau</div><div class="tip-body">Un ovule énucléé = ovule dont on a retiré le noyau. Il ne contient plus d'IG. On y injecte un nouveau noyau → le développement reprend selon l'IG du noyau injecté.</div></div></div>
+  <div class="cn-panel b" id="cn-b"><h3 style="color:var(--b)">🧬 Nature : l'ADN est le support de l'IG</h3><p class="expl-text">Griffith (1928) : pneumocoques S (virulents) tués transforment les R (non virulents) en S vivants. Avery identifie l'<strong>ADN</strong> comme le « principe transformant ». Watson & Crick (1953) : modèle double hélice.</p><table><tr><th class="b">Expérience</th><th class="b">Résultat clé</th></tr><tr class="hl"><td><strong>Griffith (1928)</strong></td><td>Transformation R→S = « principe transformant »</td></tr><tr><td><strong>Avery (1944)</strong></td><td>ADN = principe transformant (pas les protéines)</td></tr><tr class="hl"><td><strong>Watson & Crick (1953)</strong></td><td>ADN = double hélice (A=T, G≡C)</td></tr></table></div>
+  <div class="cn-panel c" id="cn-c"><h3 style="color:var(--r)">🔄 La réplication semi-conservative</h3><p class="expl-text">3 hypothèses : conservatif, dispersif, semi-conservatif. Taylor (1958) avec thymine radioactive sur Bellevalia confirme le modèle <strong>semi-conservatif</strong> : chaque molécule fille = 1 brin ancien + 1 brin nouveau. Phase S du cycle cellulaire.</p><div class="focus-box"><strong>🔍 Mécanisme :</strong> Ouverture double hélice → chaque brin sert de matrice → ADN polymérase incorpore nucléotides complémentaires → 2 molécules identiques (1 ancien + 1 nouveau).</div></div>
+  <div class="cn-panel d" id="cn-d"><h3 style="color:var(--r)">⚠️ 3 Pièges</h3><div class="piege-item"><div class="piege-head" onclick="togPiege(this)">⚠️ Griffith : S tuées = S vivantes ? <span style="margin-left:auto">▼</span></div><div class="piege-body">S tuées seules → souris survivent. S tuées + R vivantes → souris meurent, on retrouve S vivantes. Les S tuées ont <strong>transformé</strong> les R en S. Le « principe transformant » = ADN.</div></div><div class="piege-item"><div class="piege-head" onclick="togPiege(this)">⚠️ A=T et G≡C ≠ A+T/G+C=1 <span style="margin-left:auto">▼</span></div><div class="piege-body">A/T=1 et G/C=1 (complémentarité). Mais A+T/G+C varie selon les espèces. A+G/T+C=1 toujours (Chargaff).</div></div><div class="piege-item"><div class="piege-head" onclick="togPiege(this)">⚠️ Réplication = phase S (interphase) ≠ mitose <span style="margin-left:auto">▼</span></div><div class="piege-body">La réplication a lieu pendant la phase S de l'interphase, PAS pendant la mitose. La mitose répartit l'ADN déjà dupliqué.</div></div></div>
+  <div class="cn-panel e" id="cn-e"><h3 style="color:var(--ar)">🔗 Connexions</h3><div class="connexion-grid"><div class="conn-item" style="border-color:var(--em);background:var(--el)"><div class="conn-ch" style="color:var(--em)">← Ch.1 — La Cellule</div><p style="font-size:.82rem">Chromatine = ADN. Le noyau contient l'IG.</p></div><div class="conn-item" style="border-color:var(--b);background:var(--bl)"><div class="conn-ch" style="color:var(--b)">← Ch.3 — Mitose</div><p style="font-size:.82rem">Phase S = réplication. Mitose = partage égal.</p></div><div class="conn-item" style="border-color:var(--r);background:var(--rl)"><div class="conn-ch" style="color:var(--r)">→ Notion de gène</div><p style="font-size:.82rem">Séquence ADN = gène. Mutations = modification séquence.</p></div><div class="conn-item" style="border-color:var(--ar);background:var(--arl)"><div class="conn-ch" style="color:var(--ar)">Drépanocytose</div><p style="font-size:.82rem">1 seule base modifiée = hématie falciforme.</p></div></div></div>
+  <div class="reflex"><h4>💭 Réflexion</h4><div class="reflex-q"><div class="rq">1. Pourquoi l'expérience d'Avery est-elle plus précise que celle de Griffith ?</div><button class="rev-btn" onclick="togAns(this)">Voir</button><div class="reflex-ans">Griffith a montré l'existence d'un « principe transformant » sans l'identifier. Avery a isolé chimiquement l'ADN et les protéines, puis testé chaque composant séparément. Seul l'ADN transforme les R en S → preuve directe.</div></div><div class="reflex-q"><div class="rq">2. Si on met une cellule dans un milieu avec des nucléotides radioactifs pendant une génération, puis dans un milieu normal pendant la génération suivante, quel pourcentage d'ADN sera radioactif ?</div><button class="rev-btn" onclick="togAns(this)">Voir</button><div class="reflex-ans">Génération 1 : 100% radioactif (tous les brins). Génération 2 (réplication semi-conservative) : 50% des molécules ont 1 brin radioactif + 1 brin normal, 50% ont 2 brins normaux. C'est exactement l'expérience de Taylor.</div></div></div>
+</div>
+
+<!-- ══ 2 ACT.1 — LOCALISATION ══ -->
+<div class="pan" id="p2"><div class="sech">🧪 Activité 1 — Localisation de l'Information Génétique (p.216)</div>
+  <div class="card"><h2>Où est localisée l'IG ? — Expériences de Gurdon et Acétabulaire</h2>
+    <p class="expl-text">Deux expériences historiques démontrent que l'information génétique est localisée dans le <strong>noyau</strong> de la cellule, et non dans le cytoplasme.</p>
+    <div class="g2"><div><img class="manuel schema" src="images/T3Ch4_Fig1_experience_Gurdon.PNG" alt="Exp. Gurdon" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.1 — Expérience de Gurdon</span><small>p.216</small></div></div><div><img class="manuel schema" src="images/T3Ch4_Fig2_experience_Acetabulaire.PNG" alt="Exp. Acétabulaire" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.2 — Expérience Acétabulaire</span><small>p.216</small></div></div></div>
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz</div><div id="mq1-q"><p>1. Gurdon transplante des noyaux de cellules intestinales de xénope <select class="bl" data-rep="albinos"><option value="">—</option><option>vert</option><option>albinos</option></select> dans des ovules énucléés → têtards <select class="bl" data-rep="albinos"><option value="">—</option><option>verts</option><option>albinos</option></select>. Conclusion : l'IG est dans le <select class="bl" data-rep="noyau"><option value="">—</option><option>cytoplasme</option><option>noyau</option></select>.</p><p>2. Chez l'Acétabulaire, la greffe d'un noyau de l'espèce A dans l'espèce B donne un chapeau de type <select class="bl" data-rep="A (déterminé par le noyau greffé)"><option value="">—</option><option>B (cytoplasme)</option><option>A (déterminé par le noyau greffé)</option></select>.</p></div><button class="bck" onclick="ckMQ('mq1')">✓ Vérifier</button><button class="brs" onclick="rsMQ('mq1')">↺</button><div class="mq-fb" id="mq1-fb"></div></div>
+  </div>
+</div>
+
+<!-- ══ 3 ACT.2 — NATURE ══ -->
+<div class="pan" id="p3"><div class="sech">🧬 Activité 2 — Nature de l'Information Génétique : l'ADN (p.217–220)</div>
+  <div class="card"><h2>L'ADN est le support de l'IG</h2>
+    <p class="expl-text">Griffith (1928) découvre la <strong>transformation bactérienne</strong>. Avery identifie l'<strong>ADN</strong> comme support. Watson & Crick (1953) proposent le modèle en <strong>double hélice</strong>.</p>
+    <img class="manuel pleine" src="images/T3Ch4_Fig3_experiences_Griffith.PNG" alt="Exp. Griffith" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.3 — Expériences de Griffith</span><small>p.217</small></div>
+    <div class="g2"><div><img class="manuel schema" src="images/T3Ch4_Fig4_ADN_histones_chromosome.PNG" alt="ADN + histones" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.4 — ADN et histones</span><small>p.219</small></div></div><div><img class="manuel schema" src="images/T3Ch4_Fig5_chromosome_metaphasique.PNG" alt="Chromosome" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.5 — Chromosome</span><small>p.219</small></div></div></div>
+    <img class="manuel schema" src="images/T3Ch4_Fig6_schema_double_helice.PNG" alt="Double hélice" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.6 — Double hélice ADN</span><small>p.220</small></div>
+    <table><tr><th>Composant</th><th>Description</th></tr><tr class="hl"><td><strong>Nucléotide</strong></td><td>Phosphate + Désoxyribose + Base azotée (A, T, G, C)</td></tr><tr><td><strong>Complémentarité</strong></td><td>A = T (2 liaisons H) · G ≡ C (3 liaisons H)</td></tr><tr class="hl"><td><strong>Rapports</strong></td><td>A/T = 1 · G/C = 1 (toutes espèces) · A+T/G+C variable (caractéristique espèce)</td></tr></table>
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz</div><div id="mq2-q"><p>1. L'ADN est constitué de deux chaînes de <select class="bl" data-rep="nucléotides"><option value="">—</option><option>protéines</option><option>nucléotides</option></select>. Chaque nucléotide = Phosphate + <select class="bl" data-rep="Désoxyribose"><option value="">—</option><option>Ribose</option><option>Désoxyribose</option></select> + Base.</p><p>2. La complémentarité : A s'unit à <select class="bl" data-rep="T (par 2 liaisons hydrogène)"><option value="">—</option><option>G</option><option>T (par 2 liaisons hydrogène)</option></select> et G s'unit à <select class="bl" data-rep="C (par 3 liaisons hydrogène)"><option value="">—</option><option>A</option><option>C (par 3 liaisons hydrogène)</option></select>.</p></div><button class="bck" onclick="ckMQ('mq2')">✓ Vérifier</button><button class="brs" onclick="rsMQ('mq2')">↺</button><div class="mq-fb" id="mq2-fb"></div></div>
+  </div>
+</div>
+
+<!-- ══ 4 ACT.3 — CODE IG ══ -->
+<div class="pan" id="p4"><div class="sech">🩸 Activité 3 — Qu'est-ce que l'Information Génétique ? (p.221)</div>
+  <div class="card"><h2>La séquence des nucléotides = information génétique</h2>
+    <p class="expl-text">L'exemple de la <strong>drépanocytose</strong> montre qu'une seule base modifiée dans l'ADN change la protéine (HbA → HbS) et provoque la maladie. L'IG est donc <strong>l'ordre des nucléotides</strong> (la séquence).</p>
+    <div class="g2"><div><img class="manuel photo" src="images/T3Ch4_Fig7a_hematie_normale.PNG" alt="Hématie normale" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.7a — Hématie normale</span><small>p.221</small></div></div><div><img class="manuel photo" src="images/T3Ch4_Fig7b_hematie_falciforme.PNG" alt="Hématie falciforme" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.7b — Hématie drépanocytaire</span><small>p.221</small></div></div></div>
+    <div class="g2"><div><img class="manuel schema" src="images/T3Ch4_Fig8a_ADN_personne_saine.PNG" alt="ADN sain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.8a — Portion ADN saine</span><small>p.221</small></div></div><div><img class="manuel schema" src="images/T3Ch4_Fig8b_ADN_personne_anemique.PNG" alt="ADN drépanocytaire" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.8b — Portion ADN anémique</span><small>p.221</small></div></div></div>
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz</div><div id="mq3-q"><p>1. La drépanocytose est due à <select class="bl" data-rep="une modification d'une seule base dans la séquence d'ADN"><option value="">—</option><option>la disparition d'un chromosome</option><option>une modification d'une seule base dans la séquence d'ADN</option></select>. L'IG est donc <select class="bl" data-rep="l'ordre des nucléotides (la séquence)"><option value="">—</option><option>le nombre total de chromosomes</option><option>l'ordre des nucléotides (la séquence)</option></select>.</p></div><button class="bck" onclick="ckMQ('mq3')">✓ Vérifier</button><button class="brs" onclick="rsMQ('mq3')">↺</button><div class="mq-fb" id="mq3-fb"></div></div>
+  </div>
+</div>
+
+<!-- ══ 5 ACT.4 — RÉPLICATION ══ -->
+<div class="pan" id="p5"><div class="sech">🔄 Activité 4 — La Réplication de l'ADN (p.222–224)</div>
+  <div class="card"><h2>La réplication semi-conservative</h2>
+    <p class="expl-text">La réplication a lieu en <strong>phase S</strong> de l'interphase. 3 hypothèses : conservatif, dispersif, semi-conservatif. <strong>Taylor (1958)</strong> confirme le modèle semi-conservatif avec la thymine radioactive.</p>
+    <img class="manuel pleine" src="images/T3Ch4_Fig9_cycle_cellulaire.PNG" alt="Cycle cellulaire" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.9 — Cycle cellulaire</span><small>p.222</small></div>
+    <div class="g2"><div><img class="manuel schema" src="images/T3Ch4_Fig11_hypotheses_replication.PNG" alt="3 hypothèses" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.11 — 3 modèles</span><small>p.223</small></div></div><div><img class="manuel schema" src="images/T3Ch4_Fig12_experience_Taylor.PNG" alt="Exp. Taylor" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.12 — Exp. Taylor</span><small>p.224</small></div></div></div>
+    <div class="focus-box"><strong>🔍 Cycle cellulaire (p.222) :</strong> G1 (croissance) → <strong>S</strong> (synthèse ADN = réplication) → G2 (croissance) → M (mitose). La quantité d'ADN double en phase S (q → 2q).</div>
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz</div><div id="mq4-q"><p>1. La réplication est <select class="bl" data-rep="semi-conservative (1 brin ancien + 1 brin nouveau)"><option value="">—</option><option>conservative (1 molécule ancienne + 1 nouvelle)</option><option>semi-conservative (1 brin ancien + 1 brin nouveau)</option></select>. L'enzyme principale est l'<select class="bl" data-rep="ADN polymérase"><option value="">—</option><option>ADN polymérase</option><option>ribosome</option></select>. La réplication a lieu en <select class="bl" data-rep="phase S (interphase)"><option value="">—</option><option>phase S (interphase)</option><option>métaphase (mitose)</option></select>.</p></div><button class="bck" onclick="ckMQ('mq4')">✓ Vérifier</button><button class="brs" onclick="rsMQ('mq4')">↺</button><div class="mq-fb" id="mq4-fb"></div></div>
+  </div>
+</div>
+
+<!-- ══ 6 BILAN (p.225-226) ══ -->
+<div class="pan" id="p6">
+  <div class="sech">📋 BILAN — Pages 225–226 (6 blocs)</div>
+
+  <div class="bstep"><h3 style="margin-bottom:8px"><span class="bnum">1</span> L'ADN, constituant fondamental des chromosomes (p.225)</h3>
+    <p style="font-size:.84rem;margin-bottom:8px">Chaque chromatide est formée de la spiralisation d'un nucléofilament constitué d'une macromolécule d'<select class="bl" data-rep="ADN"><option value="">—</option><option>protéine</option><option>ADN</option></select>. L'ADN est constitué de <select class="bl" data-rep="deux chaînes nucléotidiques"><option value="">—</option><option>une seule chaîne</option><option>deux chaînes nucléotidiques</option></select>. Chaque nucléotide = <select class="bl" data-rep="Phosphate (P) + Désoxyribose (D) + Base azotée (A, T, G ou C)"><option value="">—</option><option>Acide aminé + Ribose</option><option>Phosphate (P) + Désoxyribose (D) + Base azotée (A, T, G ou C)</option></select>. Il existe <select class="bl" data-rep="4 types de nucléotides"><option value="">—</option><option>2 types</option><option>4 types de nucléotides</option></select> selon la nature de la base.</p>
+    <img class="manuel schema" src="images/T3Ch4_Fig10_modele_double_helice_bilan.PNG" alt="Double hélice" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.10 — Modèle double hélice</span><small>p.225</small></div>
+  </div>
+
+  <div class="bstep"><h3 style="margin-bottom:8px"><span class="bnum">2</span> Structure en double hélice (p.225)</h3>
+    <p style="font-size:.84rem;margin-bottom:8px">Chacune des 4 bases ne peut s'unir qu'à une base complémentaire : A s'unit à <select class="bl" data-rep="T (thymine) par 2 liaisons hydrogène"><option value="">—</option><option>G</option><option>T (thymine) par 2 liaisons hydrogène</option></select> et C s'unit à <select class="bl" data-rep="G (guanine) par 3 liaisons hydrogène"><option value="">—</option><option>A</option><option>G (guanine) par 3 liaisons hydrogène</option></select>. Le rapport A+G/T+C est égal à <select class="bl" data-rep="1 chez toutes les espèces"><option value="">—</option><option>0</option><option>1 chez toutes les espèces</option></select>. Le rapport A+T/G+C est <select class="bl" data-rep="différent de 1 et caractéristique de l'espèce"><option value="">—</option><option>égal à 1 toujours</option><option>différent de 1 et caractéristique de l'espèce</option></select>. Watson et Crick (1953) : deux chaînes enroulées en <select class="bl" data-rep="double hélice"><option value="">—</option><option>simple hélice</option><option>double hélice</option></select>.</p>
+  </div>
+
+  <div class="bstep"><h3 style="margin-bottom:8px"><span class="bnum">3</span> L'information génétique = séquence des nucléotides (p.225)</h3>
+    <p style="font-size:.84rem;margin-bottom:8px">Le rôle fondamental de l'ADN est lié à l'<select class="bl" data-rep="ordre des nucléotides"><option value="">—</option><option>nombre total de chromosomes</option><option>ordre des nucléotides</option></select>. La succession des nucléotides ou <strong>séquence</strong> (nombre et ordre) est à la base de l'<select class="bl" data-rep="information génétique"><option value="">—</option><option>énergie cellulaire</option><option>information génétique</option></select>. Une modification d'une seule base (mutation) peut changer le message génétique (ex : <select class="bl" data-rep="drépanocytose — HbA → HbS"><option value="">—</option><option>mitose anormale</option><option>drépanocytose — HbA → HbS</option></select>).</p>
+  </div>
+
+  <div class="bstep"><h3 style="margin-bottom:8px"><span class="bnum">4</span> La réplication semi-conservative (p.226)</h3>
+    <p style="font-size:.84rem;margin-bottom:8px">Au cours de la <select class="bl" data-rep="phase S du cycle cellulaire"><option value="">—</option><option>phase G1</option><option>phase S du cycle cellulaire</option></select>, les chromosomes se dédoublent et la quantité d'ADN <select class="bl" data-rep="double"><option value="">—</option><option>reste constante</option><option>double</option></select> (q → 2q). La réplication se fait selon le modèle <select class="bl" data-rep="semi-conservatif"><option value="">—</option><option>conservatif</option><option>semi-conservatif</option></select>. Les deux chaînes de la double hélice se <select class="bl" data-rep="séparent au niveau des liaisons hydrogène"><option value="">—</option><option>restent soudées</option><option>séparent au niveau des liaisons hydrogène</option></select>. Chaque chaîne parentale sert de <select class="bl" data-rep="matrice pour la synthèse d'une chaîne nouvelle complémentaire"><option value="">—</option><option>matrice pour la synthèse d'une chaîne nouvelle complémentaire</option><option>déchet éliminé</option></select>.</p>
+  </div>
+
+  <div class="bstep"><h3 style="margin-bottom:8px"><span class="bnum">5</span> Le cycle cellulaire (p.226)</h3>
+    <p style="font-size:.84rem;margin-bottom:8px">Le cycle cellulaire comprend 4 phases : <strong>G1</strong> (<select class="bl" data-rep="croissance cellulaire"><option value="">—</option><option>synthèse ADN</option><option>croissance cellulaire</option></select>) → <strong>S</strong> (<select class="bl" data-rep="synthèse ADN = réplication"><option value="">—</option><option>division cellulaire</option><option>synthèse ADN = réplication</option></select>) → <strong>G2</strong> (croissance) → <strong>M</strong> (<select class="bl" data-rep="mitose"><option value="">—</option><option>interphase</option><option>mitose</option></select>). La mitose dure 1 à 3 heures, le cycle complet dure <select class="bl" data-rep="15 à 20 heures selon les espèces"><option value="">—</option><option>1 à 2 heures</option><option>15 à 20 heures selon les espèces</option></select>.</p>
+  </div>
+
+  <div class="bstep"><h3 style="margin-bottom:8px"><span class="bnum">6</span> Conservation de l'IG — Copie conforme (p.226)</h3>
+    <p style="font-size:.84rem;margin-bottom:8px">Chaque molécule d'ADN fille est <select class="bl" data-rep="identique à l'ADN parental"><option value="">—</option><option>différente</option><option>identique à l'ADN parental</option></select> et possède <select class="bl" data-rep="une chaîne néoformée et une chaîne parentale"><option value="">—</option><option>deux chaînes néoformées</option><option>une chaîne néoformée et une chaîne parentale</option></select>. Toutes les réactions dépendent d'un complexe enzymatique dont la principale est l'<select class="bl" data-rep="ADN polymérase"><option value="">—</option><option>ADN polymérase</option><option>ribosome</option></select>. La réplication semi-conservative assure la <select class="bl" data-rep="copie conforme de l'information génétique"><option value="">—</option><option>dégradation de l'ADN</option><option>copie conforme de l'information génétique</option></select>.</p>
+  </div>
+
+  <div style="margin-top:14px"><button class="bck" onclick="ckBilan()">✓ Vérifier tout le bilan (6 blocs)</button><button class="brs" onclick="rsBilan()">↺</button><div class="gfb" id="bilan-fb"></div></div>
+</div>
+
+<!-- ══ 7 EXERCICES (p.227) ══ -->
+<div class="pan" id="p7">
+  <div class="sech">📝 Exercices — Manuel p.227</div>
+
+  <div class="tab-exo"><h3 style="color:var(--ar);margin-bottom:8px">🧬 Ex.1 — Brin complémentaire d'ADN (Exercice A, p.227)</h3>
+    <div class="ctx">Soit le brin d'ADN suivant : <strong>5' — A T G C C T A G — 3'</strong></div>
+    <p style="font-size:.85rem;margin-bottom:8px"><strong>1. Donner le brin complémentaire :</strong></p>
+    <p style="font-size:.88rem">Le brin complémentaire est : 3' — <select class="bl" data-rep="T A C G G A T C"><option value="">—</option><option>A T G C C T A G</option><option>T A C G G A T C</option><option>G C A T T G C A</option></select> — 5'. La complémentarité suit la règle : A en face de <select class="bl" data-rep="T"><option value="">—</option><option>G</option><option>T</option><option>C</option></select>, T en face de <select class="bl" data-rep="A"><option value="">—</option><option>C</option><option>A</option></select>, G en face de <select class="bl" data-rep="C"><option value="">—</option><option>A</option><option>C</option></select>, C en face de <select class="bl" data-rep="G"><option value="">—</option><option>T</option><option>G</option></select>.</p>
+    <button class="bck" onclick="ckMQ('ex1')">✓ Vérifier</button><button class="brs" onclick="rsMQ('ex1')">↺</button><div class="mq-fb" id="ex1-fb"></div>
+  </div>
+
+  <div class="tab-exo"><h3 style="color:var(--ar);margin-bottom:8px">📊 Ex.2 — Tableau du cycle cellulaire (Exercice B, p.227)</h3>
+    <div class="ctx">Compléter le tableau : nombre de chromosomes (n ou 2n), nombre de chromatides par chromosome, quantité d'ADN (q ou 2q).</div>
+    <table><tr><th class="ar">Phase</th><th class="ar">Nombre chromosomes</th><th class="ar">Chromatides/chr</th><th class="ar">Quantité ADN</th></tr>
+      <tr><td><strong>G1</strong></td><td><select class="tcell" data-rep="2n"><option value="">—</option><option>n</option><option>2n</option><option>4n</option></select></td><td><select class="tcell" data-rep="1"><option value="">—</option><option>1</option><option>2</option></select></td><td><select class="tcell" data-rep="q"><option value="">—</option><option>q</option><option>2q</option></select></td></tr>
+      <tr><td><strong>G2</strong></td><td><select class="tcell" data-rep="2n"><option value="">—</option><option>n</option><option>2n</option><option>4n</option></select></td><td><select class="tcell" data-rep="2"><option value="">—</option><option>1</option><option>2</option></select></td><td><select class="tcell" data-rep="2q"><option value="">—</option><option>q</option><option>2q</option></select></td></tr>
+      <tr><td><strong>Métaphase</strong></td><td><select class="tcell" data-rep="2n"><option value="">—</option><option>n</option><option>2n</option><option>4n</option></select></td><td><select class="tcell" data-rep="2"><option value="">—</option><option>1</option><option>2</option></select></td><td><select class="tcell" data-rep="2q"><option value="">—</option><option>q</option><option>2q</option></select></td></tr>
+      <tr><td><strong>Anaphase</strong></td><td><select class="tcell" data-rep="4n"><option value="">—</option><option>2n</option><option>4n</option></select></td><td><select class="tcell" data-rep="1"><option value="">—</option><option>1</option><option>2</option></select></td><td><select class="tcell" data-rep="2q"><option value="">—</option><option>q</option><option>2q</option></select></td></tr>
+      <tr><td><strong>Télophase (1 cellule fille)</strong></td><td><select class="tcell" data-rep="2n"><option value="">—</option><option>n</option><option>2n</option></select></td><td><select class="tcell" data-rep="1"><option value="">—</option><option>1</option><option>2</option></select></td><td><select class="tcell" data-rep="q"><option value="">—</option><option>q</option><option>2q</option></select></td></tr>
+    </table>
+    <button class="bck" onclick="ckTabExo('ex2tab')">✓ Vérifier</button><button class="brs" onclick="rsTabExo('ex2tab')">↺</button><div class="gfb" id="ex2tab-fb"></div>
+  </div>
+
+  <div class="tab-exo"><h3 style="color:var(--ar);margin-bottom:8px">✏️ Ex.3 — QCM du manuel (p.227)</h3>
+    <div class="ctx">Les 4 questions du manuel (p.227) sont intégrées dans l'onglet <strong>✏️ QCM</strong> (questions 1 à 4). Clique pour y accéder.</div>
+    <button class="btn bv" onclick="showTab(10)" style="margin-top:8px;">Aller au QCM →</button>
+  </div>
+</div>
+
+<!-- ══ 8 BILAN RÉVISION ══ -->
+<div class="pan" id="p8">
+  <div class="sech">📋 Bilan Révision — Vérifie chaque objectif</div>
+  <p style="font-size:.85rem;color:var(--mu);margin-bottom:12px">Exercice principal + bonus d'approfondissement par objectif.</p>
+  <div class="bilan-rev">
+    <div class="obj-block"><div class="obj-title"><span class="obj-num">1</span> Localiser l'IG dans le noyau</div><p style="font-size:.85rem;margin-bottom:6px">L'expérience de Gurdon prouve que l'IG est dans <select class="bl" data-rep="le noyau"><option value="">—</option><option>le cytoplasme</option><option>le noyau</option></select>. Un ovule <select class="bl" data-rep="énucléé (privé de noyau)"><option value="">—</option><option>avec cytoplasme seul</option><option>énucléé (privé de noyau)</option></select> ne peut pas se développer normalement.</p><button class="bck" onclick="ckMQ('rev1')" style="font-size:.72rem;">Vérifier</button><span class="mq-fb" id="rev1-fb"></span><div class="bonus-q"><strong>🔍 Bonus :</strong> Chez l'Acétabulaire, si on greffe un noyau d'A. mediterranea dans A. crenulata, le chapeau sera de type <select class="bl" data-rep="mediterranea (régulier)"><option value="">—</option><option>crenulata (denté)</option><option>mediterranea (régulier)</option></select>.</div></div>
+    <div class="obj-block"><div class="obj-title"><span class="obj-num">2</span> Identifier l'ADN comme support de l'IG</div><p style="font-size:.85rem;margin-bottom:6px">Dans l'expérience de Griffith, les bactéries S tuées <select class="bl" data-rep="transforment les R en S vivantes"><option value="">—</option><option>restent sans effet</option><option>transforment les R en S vivantes</option></select>. Avery prouve que le principe transformant est <select class="bl" data-rep="l'ADN"><option value="">—</option><option>les protéines</option><option>l'ADN</option></select>.</p><button class="bck" onclick="ckMQ('rev2')" style="font-size:.72rem;">Vérifier</button><span class="mq-fb" id="rev2-fb"></span><div class="bonus-q"><strong>🔍 Bonus :</strong> Si on traite l'extrait de S avec une enzyme qui détruit l'ADN, la transformation <select class="bl" data-rep="ne se produit pas"><option value="">—</option><option>se produit normalement</option><option>ne se produit pas</option></select>.</div></div>
+    <div class="obj-block"><div class="obj-title"><span class="obj-num">3</span> Maîtriser la structure de l'ADN</div><p style="font-size:.85rem;margin-bottom:6px">Un nucléotide = <select class="bl" data-rep="Phosphate + Désoxyribose + Base azotée"><option value="">—</option><option>Acide aminé + Ribose</option><option>Phosphate + Désoxyribose + Base azotée</option></select>. A/T = <select class="bl" data-rep="1"><option value="">—</option><option>0</option><option>1</option></select> et G/C = <select class="bl" data-rep="1"><option value="">—</option><option>2</option><option>1</option></select> chez toutes les espèces.</p><button class="bck" onclick="ckMQ('rev3')" style="font-size:.72rem;">Vérifier</button><span class="mq-fb" id="rev3-fb"></span><div class="bonus-q"><strong>🔍 Bonus :</strong> Si A=30% dans un ADN, alors T=<select class="bl" data-rep="30%"><option value="">—</option><option>20%</option><option>30%</option></select> et G+C=<select class="bl" data-rep="40%"><option value="">—</option><option>60%</option><option>40%</option></select>.</div></div>
+    <div class="obj-block"><div class="obj-title"><span class="obj-num">4</span> Expliquer la réplication semi-conservative</div><p style="font-size:.85rem;margin-bottom:6px">La réplication a lieu en phase <select class="bl" data-rep="S"><option value="">—</option><option>G1</option><option>S</option><option>M</option></select>. Le modèle est <select class="bl" data-rep="semi-conservatif (1 brin ancien + 1 nouveau)"><option value="">—</option><option>conservatif</option><option>semi-conservatif (1 brin ancien + 1 nouveau)</option></select>. Confirmé par <select class="bl" data-rep="Taylor (1958)"><option value="">—</option><option>Griffith (1928)</option><option>Taylor (1958)</option></select>.</p><button class="bck" onclick="ckMQ('rev4')" style="font-size:.72rem;">Vérifier</button><span class="mq-fb" id="rev4-fb"></span><div class="bonus-q"><strong>🔍 Bonus :</strong> La quantité d'ADN dans une cellule passe de q à <select class="bl" data-rep="2q"><option value="">—</option><option>q</option><option>2q</option></select> entre G1 et G2.</div></div>
+    <div class="obj-block"><div class="obj-title"><span class="obj-num">5</span> Comprendre que l'IG = séquence des nucléotides</div><p style="font-size:.85rem;margin-bottom:6px">L'IG est portée par <select class="bl" data-rep="l'ordre des nucléotides (la séquence)"><option value="">—</option><option>le nombre de chromosomes</option><option>l'ordre des nucléotides (la séquence)</option></select>. Une mutation = <select class="bl" data-rep="modification d'une base dans la séquence"><option value="">—</option><option>disparition du noyau</option><option>modification d'une base dans la séquence</option></select>.</p><button class="bck" onclick="ckMQ('rev5')" style="font-size:.72rem;">Vérifier</button><span class="mq-fb" id="rev5-fb"></span><div class="bonus-q"><strong>🔍 Bonus :</strong> La drépanocytose (HbS) diffère de l'HbA par <select class="bl" data-rep="un seul acide aminé (Glu → Val)"><option value="">—</option><option>une protéine entièrement différente</option><option>un seul acide aminé (Glu → Val)</option></select>.</div></div>
+    <div class="obj-block"><div class="obj-title"><span class="obj-num">6</span> Relier réplication et conservation de l'IG</div><p style="font-size:.85rem;margin-bottom:6px">La réplication semi-conservative assure la <select class="bl" data-rep="copie conforme de l'IG"><option value="">—</option><option>modification aléatoire</option><option>copie conforme de l'IG</option></select>. L'enzyme clé est <select class="bl" data-rep="l'ADN polymérase"><option value="">—</option><option>la ribosome</option><option>l'ADN polymérase</option></select>.</p><button class="bck" onclick="ckMQ('rev6')" style="font-size:.72rem;">Vérifier</button><span class="mq-fb" id="rev6-fb"></span><div class="bonus-q"><strong>🔍 Bonus :</strong> De G1 à G2, le nombre de chromosomes reste <select class="bl" data-rep="2n (inchangé)"><option value="">—</option><option>2n (inchangé)</option><option>4n (doublé)</option></select> mais chaque chromosome passe de 1 à <select class="bl" data-rep="2 chromatides"><option value="">—</option><option>1</option><option>2 chromatides</option></select>.</div></div>
+  </div>
+</div>
+
+<!-- ══ 9 FLASHCARDS ══ -->
+<div class="pan" id="p9"><h2 style="margin-bottom:12px">🃏 Flashcards — Paragraphes à trous</h2><div class="fa"><button class="btn bv" onclick="chkFC()">✓ Vérifier tout</button><button class="btn bg" onclick="rstFC()">↺</button><span id="fcs" style="display:none;padding:7px 12px;border-radius:8px;font-weight:700"></span></div><div class="fcg" id="fcg"></div></div>
+
+<!-- ══ 10 QCM ══ -->
+<div class="pan" id="p10"><h2 style="margin-bottom:6px">✏️ QCM — Manuel (p.227) + Questions CAPES</h2><p style="margin-bottom:6px;font-size:.85rem;color:var(--mu)">Questions 1-4 (p.227) + compléments</p><div class="qcm-ctrl"><button class="btn bg" onclick="corrAllQ()" style="font-size:.78rem;">📋 Tout corriger</button><button class="btn bg" onclick="rstAllQ()" style="font-size:.78rem;">↺</button><span id="qcm-global-score" class="qcm-score" style="display:none;"></span></div><div id="qcm-c"></div></div>
+
+</div>
+
+<footer>
+  <p>Chapitre 4 — L'Information Génétique · 2ème année Secondaire SVT · Programme Tunisien</p>
+  <p class="ft-sig">INGÉNIEUR Mohamed CHAGRAOUI / ENSEIGNANT SVT · CANDIDAT CAPES SVT 2026 · TUNISIE</p>
+</footer>
+
+<script>
+const panels=document.querySelectorAll('.pan'),tabs=document.querySelectorAll('.t');
+const pf=document.getElementById('pf');let vis=new Set([0]);
+function showTab(n){
+  panels.forEach(p=>p.classList.remove('on'));tabs.forEach(t=>t.classList.remove('on'));
+  panels[n].classList.add('on');tabs[n].classList.add('on');
+  vis.add(n);pf.style.width=Math.round(vis.size/tabs.length*100)+'%';
+  localStorage.setItem('t3ch4tab',n);window.scrollTo({top:0,behavior:'smooth'});
+}
+const sv=localStorage.getItem('t3ch4tab');
+if(sv){const n=parseInt(sv);if(n>0){panels[n].classList.add('on');panels[0].classList.remove('on');tabs[n].classList.add('on');tabs[0].classList.remove('on');vis.add(n);pf.style.width=Math.round(vis.size/tabs.length*100)+'%';}}
+function togTip(h){h.nextElementSibling.classList.toggle('on');}
+function showCN(id){const p=document.getElementById('cn-'+id),isOn=p.classList.contains('on');document.querySelectorAll('.cn-panel').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.cnode').forEach(x=>x.classList.remove('active'));if(!isOn){p.classList.add('on');const cn=document.querySelector('.cnode.cn-'+id);if(cn)cn.classList.add('active');}}
+function togPiege(h){const b=h.nextElementSibling;b.classList.toggle('on');h.querySelector('span').textContent=b.classList.contains('on')?'▲':'▼';}
+function togAns(b){b.nextElementSibling.classList.toggle('on');}
+function ckMQ(id){const sels=document.querySelectorAll('#'+id+'-q select.bl');let ok=0,tot=sels.length;sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});const fb=document.getElementById(id+'-fb');fb.className='mq-fb '+(ok===tot?'ok':'ko');fb.textContent=ok===tot?'Parfait ! '+ok+'/'+tot:ok+'/'+tot+' — revois les réponses en rouge.';}
+function rsMQ(id){document.querySelectorAll('#'+id+'-q select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});const fb=document.getElementById(id+'-fb');fb.className='mq-fb';fb.textContent='';}
+function ckTabExo(id){const fb=document.getElementById(id+'-fb');if(!fb)return;const block=fb.closest('.tab-exo');if(!block)return;const cells=block.querySelectorAll('.tcell');let ok=0,tot=cells.length;cells.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});fb.className='gfb '+(ok===tot?'ok':'ko');fb.textContent=ok===tot?'Parfait ! '+ok+'/'+tot:ok+'/'+tot+' — revois les cellules en rouge.';}
+function rsTabExo(id){const fb=document.getElementById(id+'-fb');if(!fb)return;const block=fb.closest('.tab-exo');if(!block)return;block.querySelectorAll('.tcell').forEach(s=>{s.value='';s.classList.remove('ok','ko');});fb.className='gfb';fb.textContent='';}
+function ckBilan(){const sels=document.querySelectorAll('#p6 select.bl');let ok=0,tot=sels.length;sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});const fb=document.getElementById('bilan-fb');fb.className='gfb '+(ok===tot?'ok':'ko');fb.textContent=ok===tot?'Bilan complet ! '+ok+'/'+tot:ok+'/'+tot+' — Revois les trous en rouge.';}
+function rsBilan(){document.querySelectorAll('#p6 select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});const fb=document.getElementById('bilan-fb');fb.className='gfb';fb.textContent='';}
+
+// FLASHCARDS
+const fcData=[{p:"L'<select class='fs' data-ans='ADN'>—|ADN|ARN|protéine</select> est le support de l'<select class='fs' data-ans='information génétique'>—|énergie|information génétique|division</select>. Il est localisé dans le <select class='fs' data-ans='noyau'>—|cytoplasme|noyau|ribosome</select>."},{p:"Un nucléotide = <select class='fs' data-ans='Phosphate'>—|Ribose|Phosphate|Acide aminé</select> + <select class='fs' data-ans='Désoxyribose'>—|Ribose|Désoxyribose|Glucose</select> + <select class='fs' data-ans='Base azotée'>—|Acide aminé|Base azotée|Lipide</select>."},{p:"Les bases : <select class='fs' data-ans='A (Adénine)'>—|A (Adénine)|G (Guanine)|C (Cytosine)</select>, T (Thymine), <select class='fs' data-ans='G (Guanine)'>—|A|T|G (Guanine)</select>, C (Cytosine). A s'unit à <select class='fs' data-ans='T'>—|G|C|T</select>, G s'unit à <select class='fs' data-ans='C'>—|A|T|C</select>."},{p:"Watson & Crick (1953) : ADN = <select class='fs' data-ans='double hélice'>—|simple hélice|double hélice|triple hélice</select>. Les deux chaînes sont unies par des <select class='fs' data-ans='liaisons hydrogène'>—|liaisons covalentes|liaisons hydrogène|ponts disulfures</select>."},{p:"La <select class='fs' data-ans='réplication'>—|transcription|réplication|traduction</select> a lieu en phase <select class='fs' data-ans='S'>—|G1|S|M</select> du cycle cellulaire. La quantité d'ADN <select class='fs' data-ans='double (q → 2q)'>—|reste constante|double (q → 2q)|diminue de moitié</select>."},{p:"Modèle <select class='fs' data-ans='semi-conservatif'>—|conservatif|dispersif|semi-conservatif</select> : chaque molécule fille = <select class='fs' data-ans='1 brin ancien + 1 brin nouveau'>—|2 brins nouveaux|1 brin ancien + 1 brin nouveau|2 brins anciens</select>."},{p:"L'information génétique = <select class='fs' data-ans=\"l'ordre des nucléotides (séquence)\">—|le nombre de chromosomes|l'ordre des nucléotides (séquence)|la taille de la cellule</select>. Une mutation = <select class='fs' data-ans='modification d'une base'>—|disparition du noyau|modification d'une base|doublement des chromosomes</select>."},{p:"<select class='fs' data-ans='Griffith (1928)'>—|Avery|Griffith (1928)|Taylor</select> découvre la transformation bactérienne. <select class='fs' data-ans='Avery'>—|Griffith|Avery|Watson</select> identifie l'ADN comme support. <select class='fs' data-ans='Taylor'>—|Griffith|Avery|Taylor</select> confirme la réplication semi-conservative."}];
+function shuffle(a){return a.slice().sort(()=>Math.random()-.5);}
+function buildFC(){const c=document.getElementById('fcg');if(!c)return;c.innerHTML='';fcData.forEach(fc=>{c.innerHTML+='<div class="fcc"><div class="fcp">'+fc.p+'</div></div>';});document.querySelectorAll('#fcg .fcp').forEach(div=>{let h=div.innerHTML;const regex=/<select class='fs' data-ans='([^']+)'>([^<]+)<\/select>/g;h=h.replace(regex,(match,ans,optionsStr)=>{const opts=optionsStr.split('|');const allOpts=opts.filter(o=>o!=='—');const shuffled=shuffle(allOpts);return '<select class="fs" data-ans="'+ans+'"><option value="">—</option>'+shuffled.map(o=>'<option value="'+o+'">'+o+'</option>').join('')+'</select>';});div.innerHTML=h;});}
+function chkFC(){let ok=0,tot=0;document.querySelectorAll('#fcg .fs').forEach(s=>{tot++;s.classList.remove('ok','ko');if(!s.value)return;if(s.value===s.dataset.ans){s.classList.add('ok');ok++;}else s.classList.add('ko');});const sc=document.getElementById('fcs');sc.style.display='inline-block';sc.style.background=ok===tot?'#e8f5e9':'#ffebee';sc.style.color=ok===tot?'#2E7D32':'#c62828';sc.textContent=ok+'/'+tot+' correctes';}
+function rstFC(){document.querySelectorAll('#fcg .fs').forEach(s=>{s.value='';s.classList.remove('ok','ko');});document.getElementById('fcs').style.display='none';}
+
+// QCM
+const QS=[{q:'Q1 (p.227). Les chromosomes :',o:['Sont constitués uniquement d\'ADN','Se dupliquent dans les cellules en interphase','Se rencontrent uniquement dans les cellules en division','Supportent les gènes'],c:[1,3],fb:'(a) Faux : ADN + protéines (histones). (b) Vrai : duplication en phase S. (c) Faux : présents en interphase (chromatine). (d) Vrai.'},{q:'Q2 (p.227). L\'ADN est un polymère :',o:['De nucléotides','D\'acides phosphoriques','De bases azotées','De désoxyriboses'],c:[0],fb:'ADN = polymère de NUCLÉOTIDES (a). Les autres sont des composants du nucléotide, pas du polymère entier.'},{q:'Q3 (p.227). L\'ADN :',o:['Se réplique en métaphase','Se réplique en phase S de l\'interphase','Conserve une information génétique intégrale','Contient les mêmes gènes dans tous les chromosomes'],c:[1,2],fb:'Réplication = phase S (b). Conservation intégrale (c). Pas en métaphase (a). Chromosomes différents = gènes différents (d faux).'},{q:'Q4 (p.227). L\'ADN :',o:['A la même composition chimique chez toutes les espèces','Est constitué d\'un seul brin','A une structure linéaire','A une structure en double hélice'],c:[3],fb:'Double hélice (d). Composition varie (A+T/G+C) (a faux). 2 brins, pas 1 (b faux). Structure en hélice, pas linéaire (c faux).'},{q:'Q5. La complémentarité des bases :',o:['A=T (2 liaisons H)','G≡C (3 liaisons H)','A/T=1 et G/C=1','A+T/G+C=1'],c:[0,1,2],fb:'A=T et G≡C (a,b). A/T=1 et G/C=1 (c). A+T/G+C ≠ 1 (d faux) — ce rapport est caractéristique de l\'espèce.'},{q:'Q6. La réplication semi-conservative :',o:['Produit 2 molécules identiques à l\'original','Chaque molécule fille = 1 brin ancien + 1 nouveau','A lieu en phase S','Est catalysée par l\'ADN polymérase'],c:[0,1,2,3],fb:'Toutes les réponses sont correctes. C\'est le bilan complet de la réplication semi-conservative.'},{q:'Q7. L\'expérience de Griffith (1928) montre :',o:['Que les bactéries S tuées restent virulentes','Que les S tuées transforment les R en S vivantes','L\'existence d\'un principe transformant','Que l\'ADN est le support de l\'IG'],c:[1,2],fb:'Transformation R→S (b) et principe transformant (c). S tuées seules ne sont pas virulentes (a). Griffith n\'a pas identifié l\'ADN (d = Avery).'},{q:'Q8. Expérience de Taylor (1958) :',o:['Utilise la thymine radioactive','Confirme le modèle semi-conservatif','Est réalisée sur des racines de Bellevalia','Montre que l\'ADN se réplique en mitose'],c:[0,1,2],fb:'Thymine radioactive (a), semi-conservatif (b), Bellevalia (c). La réplication est en phase S (interphase), pas en mitose (d faux).'}];
+function corrOneQ(qi){const q=QS[qi],div=document.getElementById('qi'+qi),checked=[...div.querySelectorAll('input:checked')].map(c=>parseInt(c.value));div.querySelectorAll('.qo').forEach((opt,oi)=>{opt.classList.add('locked');const inp=opt.querySelector('input');if(q.c.includes(oi)&&checked.includes(oi))opt.classList.add('correct');else if(q.c.includes(oi)&&!checked.includes(oi))opt.classList.add('missed');else if(!q.c.includes(oi)&&checked.includes(oi))opt.classList.add('wrong');inp.disabled=!0;});const ef=div.querySelector('.q-feedback');if(ef)ef.remove();div.insertAdjacentHTML('beforeend','<div class="q-feedback" style="margin-top:8px;padding:8px 12px;background:#e8f5e9;border-radius:7px;font-size:.82rem;color:#2E7D32;font-weight:600">💡 '+q.fb+'</div>');updQcmScore();}
+function corrAllQ(){QS.forEach((q,i)=>corrOneQ(i));}
+function rstAllQ(){document.querySelectorAll('#qcm-c .qi').forEach(qi=>{qi.querySelectorAll('input').forEach(inp=>{inp.checked=!1;inp.disabled=!1;});qi.querySelectorAll('.qo').forEach(o=>o.classList.remove('correct','wrong','missed','locked'));const fb=qi.querySelector('.q-feedback');if(fb)fb.remove();});document.getElementById('qcm-global-score').style.display='none';}
+function updQcmScore(){let sc=0;QS.forEach((q,i)=>{const qi=document.getElementById('qi'+i),checked=[...qi.querySelectorAll('input:checked')].map(c=>parseInt(c.value));if(q.c.length===checked.length&&q.c.every(r=>checked.includes(r)))sc++;});const gs=document.getElementById('qcm-global-score');gs.style.display='inline-block';const p=Math.round(sc/QS.length*100);gs.style.background=p>=80?'#e8f5e9':p>=50?'#fff8e1':'#ffebee';gs.style.color=p>=80?'#2E7D32':p>=50?'#E65100':'#c62828';gs.textContent='Score : '+sc+'/'+QS.length+' ('+p+'%)';}
+window.addEventListener('DOMContentLoaded',()=>{buildFC();const qcmc=document.getElementById('qcm-c');QS.forEach((q,qi)=>{qcmc.innerHTML+=`<div class="qi" id="qi${qi}"><div class="qq">${q.q}</div>${q.o.map((o,oi)=>`<label class="qo" id="qo${qi}-${oi}"><input type="checkbox" name="q${qi}" value="${oi}"> <span>${o}</span><span class="fb-txt">${q.c.includes(oi)?'✓':'✗'}</span></label>`).join('')}<button class="btn bg" onclick="corrOneQ(${qi})" style="font-size:.76rem;margin-top:6px;">Vérifier Q${qi+1}</button></div>`;});});
+</script>
+</body>
+</html>
