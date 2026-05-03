@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T2-Ch4 — Les Relations Trophiques</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --v:#1B5E20;--vm:#2E7D32;--vl:#e8f5e9;
+  --o:#E65100;--ol:#fff3e0;
+  --b:#1565C0;--bl:#e3f2fd;
+  --r:#B71C1C;--rl:#ffebee;
+  --vi:#4A148C;--vil:#f3e5f5;
+  --t:#00695C;--tl:#e0f2f1;
+  --j:#F9A825;--jl:#fffde7;
+  --sa:#F57F17;--sal:#fffde7;
+  --bg:#fdf9f3;--tx:#1a1a1a;--mu:#666;
+  --brd:#ffe0b2;--sh:0 2px 12px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6;}
+header{background:linear-gradient(135deg,#4A148C,#6A1B9A 50%,#1B5E20);color:#fff;padding:18px 26px 13px;position:sticky;top:0;z-index:100;box-shadow:0 3px 16px rgba(0,0,0,.3);}
+header h1{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:2px;}
+header p{font-size:.8rem;opacity:.85;}
+.signature-header{font-size:.7rem;opacity:.7;margin-top:3px;font-style:italic;letter-spacing:.6px;color:#CE93D8;}
+.pb{height:4px;background:rgba(255,255,255,.3);border-radius:2px;margin-top:8px;}
+.pf{height:100%;background:#CE93D8;border-radius:2px;transition:width .4s;width:12%;}
+.tw{background:#fff;border-bottom:2px solid var(--brd);position:sticky;top:86px;z-index:99;overflow-x:auto;}
+.ts{display:flex;min-width:max-content;}
+.t{padding:10px 10px;font-size:.71rem;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;color:var(--mu);white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;transition:all .2s;}
+.t:hover{color:var(--vi);background:var(--vil);}
+.t.on{color:var(--vi);border-bottom-color:var(--vi);}
+.content{max-width:960px;margin:0 auto;padding:18px 18px 60px;}
+.pan{display:none;}.pan.on{display:block;}
+.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:13px;box-shadow:var(--sh);border-left:5px solid var(--vi);}
+.card.v{border-left-color:var(--v);}.card.o{border-left-color:var(--o);}
+.card.b{border-left-color:var(--b);}.card.r{border-left-color:var(--r);}
+.card.t{border-left-color:var(--t);}
+h2{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:9px;color:var(--vi);}
+h2.v{color:var(--v);}h2.o{color:var(--o);}h2.b{color:var(--b);}h2.t{color:var(--t);}
+h3{font-size:.88rem;font-weight:700;margin:9px 0 5px;color:var(--vi);}
+.sech{background:linear-gradient(135deg,#4A148C,#6A1B9A);color:#fff;padding:10px 15px;border-radius:10px;font-weight:600;margin-bottom:12px;font-size:.88rem;}
+.tip{background:#fdf6ec;border:1.5px solid var(--j);border-radius:10px;margin:8px 0;overflow:hidden;}
+.tip-head{padding:8px 13px;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:.86rem;font-weight:600;color:#7B5800;}
+.tip-head:hover{background:#fff8d6;}
+.tip-body{display:none;padding:10px 13px 12px;font-size:.85rem;line-height:1.7;color:#4a3800;border-top:1px solid #ffe082;}
+.tip-body.on{display:block;}
+.mq{background:linear-gradient(135deg,var(--vil),var(--vl));border:2px solid var(--vi);border-radius:10px;padding:13px;margin:10px 0;}
+.mq-title{font-weight:700;color:var(--vi);font-size:.82rem;letter-spacing:.8px;text-transform:uppercase;margin-bottom:9px;}
+.mq p{margin-bottom:7px;font-size:.88rem;line-height:1.85;}
+select.bl{border:2px solid var(--vi);border-radius:5px;padding:2px 6px;font-size:.84rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;}
+select.bl.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.bl.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.mq-fb{font-size:.82rem;padding:6px 10px;border-radius:7px;margin-top:7px;font-weight:600;display:none;}
+.mq-fb.ok{background:#e8f5e9;color:#2E7D32;display:block;}
+.mq-fb.ko{background:#ffebee;color:#c62828;display:block;}
+.bck{background:var(--vi);color:#fff;border:none;padding:6px 13px;border-radius:7px;cursor:pointer;font-weight:700;font-size:.8rem;margin-top:8px;}
+.bck:hover{background:#6A1B9A;}
+.brs{background:var(--brd);color:var(--tx);border:none;padding:6px 11px;border-radius:7px;cursor:pointer;font-size:.8rem;margin-top:8px;margin-left:5px;}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.83rem;}
+th{background:var(--vi);color:#fff;padding:7px 9px;text-align:left;}
+th.v{background:var(--v);}th.o{background:var(--o);}th.b{background:var(--b);}th.t{background:var(--t);}th.r{background:var(--r);}
+td{padding:6px 9px;border-bottom:1px solid var(--brd);}
+tr:nth-child(even) td{background:var(--bg);}
+tr.hl td{background:#fff8e1 !important;font-weight:700;}
+.gb{background:#fafafa;border:1px solid var(--brd);border-radius:9px;padding:10px;margin:9px 0;text-align:center;}
+.gb canvas{max-width:100%;}
+.gb figcaption{font-size:.74rem;color:var(--mu);margin-top:4px;font-style:italic;}
+.ret{background:var(--jl);border:1.5px solid var(--j);border-radius:9px;padding:10px 13px;margin:10px 0;}
+.ret h4{color:var(--o);font-size:.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.ret p{margin-bottom:4px;font-size:.85rem;}
+.ret dt{font-weight:700;color:var(--o);display:inline;}
+.ret dd{display:inline;margin-left:3px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:9px 0;}
+.al{list-style:none;display:grid;gap:5px;}
+.al li{padding:7px 11px;background:var(--vil);border-radius:7px;border-left:4px solid var(--vi);font-size:.85rem;}
+.al li::before{content:"✓ ";color:var(--vi);font-weight:700;}
+.bstep{background:#fff;border-radius:11px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-top:4px solid var(--vi);}
+.bstep.v{border-top-color:var(--v);}
+.bstep.o{border-top-color:var(--o);}
+.bstep.b{border-top-color:var(--b);}
+.bnum{display:inline-flex;align-items:center;justify-content:center;background:var(--vi);color:#fff;border-radius:50%;width:26px;height:26px;font-weight:700;font-size:.88rem;margin-right:8px;flex-shrink:0;}
+.bnum.v{background:var(--v);}
+.bnum.o{background:var(--o);}
+.gfb{font-size:.83rem;padding:7px 11px;border-radius:8px;margin-top:8px;font-weight:600;}
+.gfb.ok{background:#e8f5e9;color:#2E7D32;}
+.gfb.ko{background:#ffebee;color:#c62828;}
+.trous{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--vi);}
+.trous .ctx{background:var(--vil);border-radius:7px;padding:8px 12px;margin-bottom:9px;font-size:.84rem;line-height:1.6;color:#4a0080;}
+.tab-exo{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--t);}
+.tab-exo .ctx{background:var(--tl);border-radius:7px;padding:8px 12px;margin-bottom:9px;font-size:.84rem;border-left:3px solid var(--t);}
+select.tcell{border:1.5px solid var(--vi);border-radius:4px;padding:2px 5px;font-size:.81rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;max-width:200px;}
+select.tcell.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.tcell.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.fcg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:10px 0;}
+.fcc{background:#fff;border-radius:9px;padding:12px;box-shadow:var(--sh);border-top:4px solid var(--vi);}
+.fcp{font-size:.87rem;line-height:1.9;margin-bottom:7px;}
+select.fs{border:2px solid var(--vi);border-radius:5px;padding:2px 6px;font-size:.81rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;}
+select.fs.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.fs.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.fa{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.btn{padding:7px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:.83rem;}
+.bv{background:var(--vi);color:#fff;}.bv:hover{background:#6A1B9A;}
+.bg{background:var(--brd);color:var(--tx);}
+.qi{background:#fff;border-radius:10px;padding:13px;margin-bottom:10px;box-shadow:var(--sh);}
+.qq{font-weight:600;margin-bottom:8px;font-size:.89rem;}
+.qo{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:6px;margin-bottom:4px;cursor:pointer;font-size:.86rem;border:1.5px solid transparent;}
+.qo:hover:not(.locked){background:var(--vil);}
+.qo input{accent-color:var(--vi);margin-top:3px;flex-shrink:0;}
+.qo.correct{background:#e8f5e9;border-color:#4CAF50;}
+.qo.wrong{background:#ffebee;border-color:#f44336;}
+.qo.missed{background:#fff8e1;border-color:#FF9800;}
+.fb-txt{font-size:.8rem;margin-top:3px;display:none;line-height:1.5;}
+.qo.correct .fb-txt,.qo.wrong .fb-txt,.qo.missed .fb-txt{display:block;}
+.qo.correct .fb-txt{color:#2E7D32;}
+.qo.wrong .fb-txt{color:#c62828;}
+.qo.missed .fb-txt{color:#E65100;}
+img.manuel{width:100%;border-radius:8px;margin:9px 0;box-shadow:var(--sh);border:2px solid var(--brd);}
+.img-placeholder{width:100%;aspect-ratio:16/10;background:linear-gradient(135deg,var(--vil),var(--tl));border-radius:8px;display:flex;align-items:center;justify-content:center;margin:9px 0;border:2px dashed var(--brd);flex-direction:column;gap:6px;}
+.img-placeholder span{font-size:.82rem;color:var(--mu);font-weight:600;}
+.img-placeholder small{font-size:.7rem;color:var(--mu);opacity:.7;}
+.pourquoi-box{background:linear-gradient(135deg,#4A148C,#6A1B9A 50%,#1B5E20);color:#fff;border-radius:14px;padding:22px;margin-bottom:16px;}
+.pourquoi-box h2{color:#CE93D8;font-size:1.18rem;margin-bottom:12px;}
+.pourquoi-box .obj-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.pourquoi-box .obj-item{background:rgba(255,255,255,.1);padding:10px 13px;border-radius:8px;font-size:.84rem;line-height:1.6;border-left:3px solid #CE93D8;}
+.pourquoi-box .obj-num{display:inline-flex;align-items:center;justify-content:center;background:#CE93D8;color:#4A148C;border-radius:50%;width:22px;height:22px;font-weight:700;font-size:.76rem;margin-right:6px;flex-shrink:0;}
+.qcm-ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.qcm-ctrl .btn{font-size:.78rem;}
+.qcm-score{font-size:.82rem;padding:6px 10px;border-radius:7px;font-weight:600;display:inline-block;margin-left:8px;}
+.man-p148{background:var(--arl);border-radius:9px;padding:12px;margin-bottom:9px;border-left:4px solid #37474F;}
+.man-p148 .mpq{font-size:.86rem;font-weight:600;margin-bottom:6px;color:#37474F;}
+.man-p148 .cbox-group{display:flex;flex-direction:column;gap:4px;margin:5px 0;}
+.man-p148 label{display:flex;align-items:flex-start;gap:7px;font-size:.84rem;cursor:pointer;padding:4px 6px;border-radius:5px;}
+.man-p148 label:hover{background:rgba(0,0,0,.03);}
+.man-p148 input[type="checkbox"]{accent-color:#37474F;margin-top:2px;flex-shrink:0;}
+footer{background:linear-gradient(135deg,#4A148C,#6A1B9A 50%,#1B5E20);color:#fff;text-align:center;padding:14px 18px;font-size:.78rem;opacity:.9;margin-top:30px;border-radius:12px 12px 0 0;}
+footer .ft-sig{font-size:.76rem;opacity:.75;font-style:italic;letter-spacing:.6px;margin-top:4px;}
+.resume-hero{background:linear-gradient(135deg,#4A148C,#6A1B9A 50%,#1B5E20);color:#fff;border-radius:14px;padding:22px;margin-bottom:16px;}
+.resume-hero h2{color:#CE93D8;font-size:1.15rem;margin-bottom:8px;}
+.resume-hero p{font-size:.9rem;line-height:1.75;opacity:.92;}
+.resume-hero .sub{font-size:.8rem;opacity:.7;margin-top:6px;font-style:italic;}
+.concept-map{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+.cnode{border-radius:11px;padding:13px;cursor:pointer;transition:all .25s;border:2px solid transparent;}
+.cnode:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15);}
+.cnode.active{border-color:rgba(255,255,255,.5);}
+.cnode .cn-icon{font-size:1.5rem;margin-bottom:5px;}
+.cnode .cn-title{font-size:.85rem;font-weight:700;margin-bottom:3px;}
+.cnode .cn-sub{font-size:.74rem;opacity:.85;line-height:1.35;}
+.cn-a{background:linear-gradient(135deg,#B71C1C,#C62828);color:#fff;}
+.cn-b{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;}
+.cn-c{background:linear-gradient(135deg,#E65100,#F57F17);color:#fff;}
+.cn-d{background:linear-gradient(135deg,#B71C1C,#880000);color:#fff;}
+.cn-e{background:linear-gradient(135deg,#1565C0,#1976D2);color:#fff;}
+.cn-f{background:linear-gradient(135deg,#4A148C,#6A1B9A);color:#fff;}
+.cn-panel{display:none;background:#fff;border-radius:11px;padding:16px;margin-bottom:12px;box-shadow:var(--sh);}
+.cn-panel.on{display:block;}
+.cn-panel.a{border-left:5px solid var(--r);}
+.cn-panel.b{border-left:5px solid var(--v);}
+.cn-panel.c{border-left:5px solid var(--o);}
+.cn-panel.d{border-left:5px solid #880000;}
+.cn-panel.e{border-left:5px solid var(--b);}
+.cn-panel.f{border-left:5px solid var(--vi);}
+.connexion-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:11px 0;}
+.conn-item{border-radius:9px;padding:12px;border:2px solid;font-size:.84rem;line-height:1.6;}
+.conn-item .conn-ch{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;opacity:.75;}
+.piege-item{border-radius:10px;padding:13px;margin-bottom:9px;border:2px solid var(--r);background:var(--rl);overflow:hidden;}
+.piege-head{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:.88rem;font-weight:700;color:var(--r);}
+.piege-body{display:none;padding-top:10px;font-size:.86rem;line-height:1.7;}
+.piege-body.on{display:block;}
+.reflex{background:linear-gradient(135deg,var(--vil),var(--vl));border:2px solid var(--vi);border-radius:11px;padding:14px;margin:12px 0;}
+.reflex h4{color:var(--vi);font-size:.85rem;font-weight:700;margin-bottom:10px;}
+.reflex-q{background:#fff;border-radius:8px;padding:11px;margin-bottom:8px;}
+.rq{font-size:.88rem;line-height:1.7;font-weight:600;margin-bottom:7px;}
+.rev-btn{background:var(--vi);color:#fff;border:none;padding:5px 11px;border-radius:6px;cursor:pointer;font-size:.79rem;font-weight:600;}
+.reflex-ans{display:none;margin-top:8px;padding:9px 12px;background:var(--vil);border-radius:7px;font-size:.85rem;line-height:1.7;color:#4a0080;}
+.reflex-ans.on{display:block;}
+.rel-badge{display:inline-block;padding:3px 9px;border-radius:12px;font-size:.78rem;font-weight:700;margin:2px 3px;}
+.rb-plus{background:#e8f5e9;color:#2E7D32;border:1px solid #4CAF50;}
+.rb-moins{background:#ffebee;color:#c62828;border:1px solid #ef9a9a;}
+.rb-zero{background:#f5f5f5;color:#666;border:1px solid #ccc;}
+.reseau-box{background:#fafafa;border:1px solid var(--brd);border-radius:9px;padding:12px;margin:9px 0;}
+.reseau-box p{font-size:.85rem;margin-bottom:5px;line-height:1.7;}
+.arrow{color:var(--vi);font-weight:700;font-size:1.1rem;margin:0 4px;}
+.chain{background:var(--vil);border-radius:7px;padding:7px 11px;margin-bottom:5px;font-size:.86rem;display:flex;align-items:center;flex-wrap:wrap;gap:4px;}
+@media(max-width:600px){
+  .g2,.concept-map,.connexion-grid,.pourquoi-box .obj-list{grid-template-columns:1fr;}
+  header h1{font-size:.88rem;}.t{padding:8px 4px;font-size:.65rem;}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>T2 — Ch.4 : Les Relations Trophiques d'un Écosystème</h1>
+  <p>2ème Secondaire SVT · Thème 2 · Pages 118–154 · 4 Activités majeures</p>
+  <div class="signature-header">INGÉNIEUR Mohamed CHAGRAOUI / ENSEIGNANT SVT · CANDIDAT CAPES SVT 2026 · TUNISIE</div>
+  <div class="pb"><div class="pf" id="pf"></div></div>
+</header>
+<div class="tw"><div class="ts">
+  <button class="t on"  onclick="showTab(0)">📚 Acquis</button>
+  <button class="t"     onclick="showTab(1)">🧠 Résumé</button>
+  <button class="t"     onclick="showTab(2)">🔗 Act.1 — Types de relations</button>
+  <button class="t"     onclick="showTab(3)">🌿 Act.2 — Organisation</button>
+  <button class="t"     onclick="showTab(4)">📊 Act.3 — Biomasse</button>
+  <button class="t"     onclick="showTab(5)">♻️ Act.4 — Cycle matière</button>
+  <button class="t"     onclick="showTab(6)">📋 Bilan</button>
+  <button class="t"     onclick="showTab(7)">🃏 Flashcards</button>
+  <button class="t"     onclick="showTab(8)">✏️ QCM</button>
+  <button class="t"     onclick="showTab(9)">📝 Exercices</button>
+</div></div>
+<div class="content">
+
+<!-- ══ 0 ACQUIS ══ -->
+<div class="pan on" id="p0">
+  <div class="pourquoi-box">
+    <h2>🎯 Pourquoi ce chapitre ?</h2>
+    <p style="font-size:.88rem;line-height:1.7;margin-bottom:12px;opacity:.92;">
+      D'après le <strong>programme officiel tunisien</strong> (Thème 2, Objectif 4 — p.16-17), ce chapitre vise à :
+    </p>
+    <div class="obj-list">
+      <div class="obj-item"><span class="obj-num">1</span> Distinguer les <strong>principaux types de relations trophiques</strong> (prédation, parasitisme, symbiose, compétition)</div>
+      <div class="obj-item"><span class="obj-num">2</span> Expliquer l'<strong>organisation des relations trophiques</strong> en chaînes et réseaux</div>
+      <div class="obj-item"><span class="obj-num">3</span> Définir la notion d'<strong>équilibre écologique</strong></div>
+      <div class="obj-item"><span class="obj-num">4</span> Expliquer la <strong>variation de la biomasse</strong> au sein d'une chaîne alimentaire</div>
+      <div class="obj-item"><span class="obj-num">5</span> Construire les <strong>pyramides écologiques</strong> (nombres, biomasses, énergies)</div>
+      <div class="obj-item"><span class="obj-num">6</span> Reconstituer le <strong>cycle du carbone</strong> et signaler le rôle des décomposeurs</div>
+    </div>
+  </div>
+  <div class="card"><h2>📚 Préacquis</h2>
+    <ul class="al">
+      <li>Un <strong>écosystème</strong> = biotope (milieu physique) + biocénose (ensemble des êtres vivants)</li>
+      <li>Les <strong>végétaux chlorophylliens</strong> sont autotrophes → produisent leur matière organique par photosynthèse</li>
+      <li>Les <strong>animaux</strong> sont hétérotrophes → dépendent de la matière organique produite par d'autres</li>
+      <li>La <strong>photosynthèse</strong> est la base de toute la matière organique d'un écosystème</li>
+      <li>T2-Ch3 : La végétation varie selon les étages bioclimatiques → forêt, steppe, désert = écosystèmes différents</li>
+    </ul>
+  </div>
+  <img class="manuel" src="images/T2Ch4_Fig1_insecte_araignee.PNG" alt="Fig.1 — Insecte capturé par une araignée (p.118)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+  <div class="img-placeholder" style="display:none"><span>📷 Fig.1 — Insecte capturé par une araignée</span><small>Image du manuel p.118</small></div>
+  <div class="card b"><h2 class="b">❓ 3 Questions directrices</h2>
+    <ol style="margin-left:17px;line-height:2.1;font-size:.92rem">
+      <li>Comment les <strong>relations alimentaires</strong> sont-elles organisées ?</li>
+      <li>Quels sont les différents <strong>niveaux trophiques</strong> ?</li>
+      <li>Comment se fait le <strong>transfert de matière et d'énergie</strong> entre niveaux ?</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══ 1 RÉSUMÉ ══ -->
+<div class="pan" id="p1">
+  <div class="resume-hero">
+    <h2>🧠 Comprendre avant de mémoriser</h2>
+    <p>Ce chapitre répond à une question fondamentale : <strong>comment la matière et l'énergie circulent-elles dans un écosystème ?</strong> Les relations trophiques ne sont pas de simples liens "qui mange qui" — elles gouvernent l'équilibre, la stabilité et le fonctionnement entier d'un écosystème. Supprimer un maillon, et tout s'effondre.</p>
+    <p class="sub">Clique sur chaque notion · Pièges classiques et connexions révélés</p>
+  </div>
+
+  <div class="concept-map">
+    <div class="cnode cn-a" onclick="showCN('a')"><div class="cn-icon">🦁</div><div class="cn-title">Prédation</div><div class="cn-sub">+ / − · relation d'exploitation</div></div>
+    <div class="cnode cn-b" onclick="showCN('b')"><div class="cn-icon">🤝</div><div class="cn-title">Symbiose</div><div class="cn-sub">+ / + · coopération obligatoire</div></div>
+    <div class="cnode cn-c" onclick="showCN('c')"><div class="cn-icon">🦠</div><div class="cn-title">Parasitisme</div><div class="cn-sub">+ / − · parasite sur hôte</div></div>
+    <div class="cnode cn-d" onclick="showCN('d')"><div class="cn-icon">⚔️</div><div class="cn-title">Compétition</div><div class="cn-sub">− / − · ressources limitées</div></div>
+    <div class="cnode cn-e" onclick="showCN('e')"><div class="cn-icon">📊</div><div class="cn-title">Pyramides + Rendement</div><div class="cn-sub">Flux matière/énergie</div></div>
+    <div class="cnode cn-f" onclick="showCN('f')"><div class="cn-icon">🔗</div><div class="cn-title">Liens + Pièges</div><div class="cn-sub">Connexions + erreurs fréquentes</div></div>
+  </div>
+
+  <div class="cn-panel a" id="cn-a"><h3 style="color:var(--r)">🦁 La Prédation — relation + / −</h3><p style="font-size:.88rem;line-height:1.8;margin-bottom:9px">Le prédateur cherche, tue et mange la proie. Bénéfique pour le prédateur (+), fatal pour la proie (−). <strong>Obligatoire</strong> pour le prédateur. La prédation régule les populations.</p><div class="tip"><div class="tip-head" onclick="togTip(this)">💡 Le rôle régulateur de la prédation — cas des cerfs (exercice intégré p.133)</div><div class="tip-body">Quand les prédateurs sont éliminés, les cerfs prolifèrent sans contrôle → surpâturage → destruction de la végétation → famine → chute brutale des cerfs. Les prédateurs sont <strong>indispensables à l'équilibre</strong>.</div></div></div>
+
+  <div class="cn-panel b" id="cn-b"><h3 style="color:var(--v)">🤝 La Symbiose — relation + / +</h3><p style="font-size:.88rem;line-height:1.8;margin-bottom:9px">Les deux organismes bénéficient mutuellement. <strong>Obligatoire</strong> pour les deux.</p><div class="g2"><div style="background:var(--vl);border-radius:9px;padding:11px"><strong style="color:var(--v)">🫘 Rhizobium / Légumineuses</strong><p style="font-size:.84rem;margin-top:5px">La bactérie fixe N₂ → azote assimilable pour la plante. La plante fournit des glucides en échange.</p></div><div style="background:#e8f5e9;border-radius:9px;padding:11px"><strong style="color:#1B5E20">🐄 Bactéries / Ruminants</strong><p style="font-size:.84rem;margin-top:5px">Les bactéries digèrent la cellulose → acides gras et protéines pour le ruminant. Le ruminant offre un milieu nutritif.</p></div></div></div>
+
+  <div class="cn-panel c" id="cn-c"><h3 style="color:var(--o)">🦠 Le Parasitisme — relation + / −</h3><p style="font-size:.88rem;line-height:1.8;margin-bottom:9px">Le parasite se nourrit aux dépens de l'hôte sans le tuer immédiatement. <strong>Obligatoire</strong> pour le parasite.</p><table><tr><th class="o">Parasite</th><th class="o">Hôte</th><th class="o">Mode</th></tr><tr><td>Ténia (ver)</td><td>Vertébrés</td><td>Interne — vole les nutriments</td></tr><tr><td>Chenille processionnaire</td><td>Pin d'Alep</td><td>Externe — dévore les feuilles</td></tr><tr><td>Orobanche</td><td>Légumineuses</td><td>Se fixe sur les racines</td></tr></table><div class="tip"><div class="tip-head" onclick="togTip(this)">💡 Parasitisme vs Prédation</div><div class="tip-body">Prédation : le prédateur tue rapidement. Parasitisme : le parasite maintient l'hôte en vie (il en a besoin). Les deux sont + / −.</div></div></div>
+
+  <div class="cn-panel d" id="cn-d"><h3 style="color:#880000">⚔️ La Compétition — relation − / −</h3><p style="font-size:.88rem;line-height:1.8;margin-bottom:9px">Deux organismes exploitent la même ressource limitée. Les deux sont pénalisés.</p><table><tr><th>Type</th><th>Résultat</th><th>Exemple</th></tr><tr><td><strong>Interspécifique</strong></td><td>Exclusion d'une espèce</td><td>Paramécies : P. aurelia élimine P. caudatum</td></tr><tr><td><strong>Intraspécifique</strong></td><td>Élimination des moins adaptés</td><td>Holcus vs Rumex</td></tr></table></div>
+
+  <div class="cn-panel e" id="cn-e"><h3 style="color:var(--b)">📊 Pyramides écologiques et Rendement</h3><p style="font-size:.88rem;line-height:1.8;margin-bottom:9px">À chaque niveau trophique, ~90% de l'énergie est perdue (respiration, excréments, chaleur).</p><div style="background:var(--bl);border-radius:9px;padding:12px;text-align:center;margin-bottom:9px"><strong style="font-family:monospace;font-size:1rem;color:var(--b)">Re = P / I × 100</strong><p style="font-size:.82rem;color:var(--mu);margin-top:4px">P = matière produite · I = matière ingérée · Re en %</p></div></div>
+
+  <div class="cn-panel f" id="cn-f"><h3 style="color:var(--vi)">🔗 Pièges classiques + Connexions</h3>
+    <div class="piege-item"><div class="piege-head" onclick="togPiege(this)">⚠️ Piège 1 — Symbiose ≠ coopération facultative <span style="margin-left:auto">▼</span></div><div class="piege-body">La symbiose est <strong>obligatoire</strong> pour les deux. Sans Rhizobium, la légumineuse manque d'azote. Sans la légumineuse, la bactérie manque de glucides.</div></div>
+    <div class="piege-item"><div class="piege-head" onclick="togPiege(this)">⚠️ Piège 2 — Flèches = sens du flux de matière <span style="margin-left:auto">▼</span></div><div class="piege-body">Herbe <strong>→</strong> Lapin <strong>→</strong> Renard. La flèche part de la proie vers le prédateur (= "est mangé par"). Ce n'est pas "qui mange qui" mais le sens du transfert de matière.</div></div>
+    <div class="piege-item"><div class="piege-head" onclick="togPiege(this)">⚠️ Piège 3 — Pyramide des nombres peut être inversée <span style="margin-left:auto">▼</span></div><div class="piege-body">1 chêne peut nourrir des milliers de chenilles → pyramide inversée. Seule la pyramide des <strong>énergies</strong> est toujours normale.</div></div>
+    <div class="connexion-grid" style="margin-top:12px">
+      <div class="conn-item" style="border-color:var(--v);background:var(--vl)"><div class="conn-ch" style="color:var(--v)">← T2 Ch.3 — Répartition végétaux</div><p style="font-size:.82rem;margin-top:3px">Le type de végétation détermine les chaînes alimentaires. Forêt tunisienne → écosystème forêt (p.129).</p></div>
+      <div class="conn-item" style="border-color:var(--vi);background:var(--vil)"><div class="conn-ch" style="color:var(--vi)">→ T2 Ch.5 — Développement durable</div><p style="font-size:.82rem;margin-top:3px">Les perturbations des chaînes alimentaires mènent aux problèmes de développement durable.</p></div>
+    </div>
+  </div>
+
+  <div class="reflex"><h4>💭 Questions de réflexion</h4>
+    <div class="reflex-q"><div class="rq">1. Dans un écosystème, on élimine tous les prédateurs. Décris les effets en cascade.</div><button class="rev-btn" onclick="togAns(this)">Voir</button><div class="reflex-ans">Éliminer les prédateurs → proies prolifèrent → surpâturage → destruction végétation → famine → effondrement des proies → déséquilibre général. Cas des cerfs (p.133).</div></div>
+    <div class="reflex-q"><div class="rq">2. Pourquoi les chaînes alimentaires sont-elles rarement plus longues que 5 maillons ?</div><button class="rev-btn" onclick="togAns(this)">Voir</button><div class="reflex-ans">Re ≈ 10% → 1000 → 100 → 10 → 1 → 0,1 kcal. Après 4-5 maillons, l'énergie disponible est trop faible pour maintenir une population viable.</div></div>
+  </div>
+</div>
+
+<!-- ══ 2 ACT1 TYPES RELATIONS ══ -->
+<div class="pan" id="p2">
+  <div class="sech">🔗 Activité 1 — Les Principaux Types de Relations Alimentaires (p.119–126)</div>
+
+  <div class="card r">
+    <h2 class="r" style="font-size:.95rem">Tableau récapitulatif des 4 relations trophiques</h2>
+
+    <!-- ══ IMAGES : relations trophiques d'exploitation ══ -->
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig1_tenia.PNG" alt="Fig.1 — Ténia (p.119)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.1 — Ténia</span><small>p.119</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig2_cycle_tenia.PNG" alt="Fig.2 — Cycle biologique du ténia (p.119)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.2 — Cycle du ténia</span><small>p.119</small></div></div>
+    </div>
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig3_chenilles_processionnaires.PNG" alt="Fig.3 — Chenilles processionnaires (p.120)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.3 — Chenilles processionnaires</span><small>p.120</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig5_mante_religieuse_criquet.PNG" alt="Fig.5 — Mante religieuse (p.121)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.5 — Mante religieuse</span><small>p.121</small></div></div>
+    </div>
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig6_coccinelle_pucerons.PNG" alt="Fig.6 — Coccinelle et pucerons (p.121)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.6 — Coccinelle et pucerons</span><small>p.121</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig7_lions_zebre.PNG" alt="Fig.7 — Lions dévorant un zèbre (p.121)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.7 — Lions et zèbre</span><small>p.121</small></div></div>
+    </div>
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig8_nodosites.PNG" alt="Fig.8 — Nodosités à deux échelles (p.122)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.8 — Nodosités</span><small>p.122</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig9a_tube_digestif_ruminant.PNG" alt="Fig.9a — Tube digestif Ruminant (p.123)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.9a — Tube digestif Ruminant</span><small>p.123</small></div></div>
+    </div>
+    <img class="manuel" src="images/T2Ch4_Fig9b_bacteries_panse.PNG" alt="Fig.9b — Bactéries fixées dans la panse (p.123)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none"><span>📷 Fig.9b — Bactéries de la panse</span><small>p.123</small></div>
+
+    <table>
+      <tr><th class="r">Relation</th><th class="r">Effet A</th><th class="r">Effet B</th><th class="r">Obligatoire ?</th><th class="r">Exemple tunisien</th></tr>
+      <tr class="hl"><td><strong>Prédation</strong></td><td><span class="rel-badge rb-plus">+</span>prédateur</td><td><span class="rel-badge rb-moins">−</span>proie (mort)</td><td>Pour A (prédateur)</td><td>Lion/Zèbre · Coccinelle/Puceron · Mante/Criquet</td></tr>
+      <tr><td><strong>Parasitisme</strong></td><td><span class="rel-badge rb-plus">+</span>parasite</td><td><span class="rel-badge rb-moins">−</span>hôte (affaibli)</td><td>Pour A (parasite)</td><td>Ténia/Vertébré · Chenille processionnaire/Pin · Orobanche/Fève</td></tr>
+      <tr class="hl"><td><strong>Symbiose</strong></td><td><span class="rel-badge rb-plus">+</span>Rhizobium</td><td><span class="rel-badge rb-plus">+</span>Légumineuse</td><td>Pour les deux</td><td>Rhizobium/Fève · Bactéries/Ruminants</td></tr>
+      <tr><td><strong>Compétition</strong></td><td><span class="rel-badge rb-moins">−</span>espèce A</td><td><span class="rel-badge rb-moins">−</span>espèce B</td><td>Non</td><td>Paramécies entre elles · Holcus vs Rumex</td></tr>
+    </table>
+
+    <!-- ══ IMAGES : Compétition ══ -->
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig10a_10b_competition_plantes.PNG" alt="Fig.10a/10b — Compétition végétale (p.124)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.10a/10b — Compétition végétale</span><small>p.124</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig11a_11b_paramécies.PNG" alt="Fig.11a/11b — Compétition Paramécies (p.125)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.11a/11b — Compétition Paramécies</span><small>p.125</small></div></div>
+    </div>
+
+    <div class="tip"><div class="tip-head" onclick="togTip(this)">💡 Mémo pour retenir les signes</div><div class="tip-body"><strong>Prédation :</strong> + / − · <strong>Parasitisme :</strong> + / − · <strong>Symbiose :</strong> + / + · <strong>Compétition :</strong> − / −</div></div>
+
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz</div>
+      <div id="mq1-q">
+        <p>1. La relation entre une coccinelle et un puceron est une <select class="bl" data-rep="prédation (+ pour coccinelle / − pour puceron, mort de la proie)"><option value="">—</option><option>symbiose (+ pour les deux)</option><option>parasitisme (puceron reste en vie)</option><option>prédation (+ pour coccinelle / − pour puceron, mort de la proie)</option></select>.</p>
+        <p>2. La relation Rhizobium/Légumineuse est une <select class="bl" data-rep="symbiose (+ / + obligatoire pour les deux)"><option value="">—</option><option>prédation (la bactérie détruit la plante)</option><option>parasitisme (la bactérie profite seule)</option><option>symbiose (+ / + obligatoire pour les deux)</option></select>.</p>
+        <p>3. La chenille processionnaire qui dévore les feuilles de pin est un exemple de <select class="bl" data-rep="parasitisme (+ parasite / − hôte affaibli mais non tué immédiatement)"><option value="">—</option><option>prédation (la chenille tue le pin directement)</option><option>parasitisme (+ parasite / − hôte affaibli mais non tué immédiatement)</option></select>.</p>
+        <p>4. Paramécium aurelia et Paramécium caudatum cultivées ensemble montrent une <select class="bl" data-rep="compétition (− / −, P. aurelia élimine P. caudatum)"><option value="">—</option><option>symbiose (elles se complètent)</option><option>compétition (− / −, P. aurelia élimine P. caudatum)</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq1')">✓ Vérifier</button>
+      <button class="brs" onclick="rsMQ('mq1')">↺</button>
+      <div class="mq-fb" id="mq1-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 3 ACT2 ORGANISATION ══ -->
+<div class="pan" id="p3">
+  <div class="sech">🌿 Activité 2 — Organisation des Relations Alimentaires (p.127–133)</div>
+
+  <div class="card v">
+    <h2 class="v">Niveaux trophiques — Producteurs, Consommateurs, Décomposeurs</h2>
+
+    <!-- ══ IMAGES : Chaîne alimentaire + Niveaux trophiques ══ -->
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig2_chaine_alimentaire.PNG" alt="Fig.2 — Exemple de chaîne alimentaire (p.127)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.2 — Chaîne alimentaire</span><small>p.127</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig3_niveaux_trophiques.PNG" alt="Fig.3 — Niveaux trophiques (p.128)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.3 — Niveaux trophiques</span><small>p.128</small></div></div>
+    </div>
+
+    <table>
+      <tr><th class="v">Niveau</th><th class="v">Définition</th><th class="v">Mode nutrition</th><th class="v">Exemples</th></tr>
+      <tr class="hl"><td><strong>Producteurs (P)</strong></td><td>Végétaux photosynthétiques</td><td>Autotrophes (CO₂ + lumière)</td><td>Herbe, chêne, pin d'Alep, Alfa</td></tr>
+      <tr><td><strong>C1 — Phytophages</strong></td><td>Mangent les végétaux</td><td>Hétérotrophes</td><td>Puceron, Criquet, Lapin, Zèbre</td></tr>
+      <tr><td><strong>C2 — Zoophages</strong></td><td>Mangent les C1</td><td>Hétérotrophes</td><td>Coccinelle, Couleuvre, Renard</td></tr>
+      <tr><td><strong>C3 — Superprédateurs</strong></td><td>Mangent les C2</td><td>Hétérotrophes</td><td>Lion, Aigle, Faucon</td></tr>
+      <tr class="hl"><td><strong>Décomposeurs (D)</strong></td><td>Décomposent la MO morte</td><td>Hétérotrophes saprotrophes</td><td>Bactéries, Champignons, Vers de terre</td></tr>
+    </table>
+
+    <!-- ══ IMAGES : Écosystèmes tunisiens (forêt, steppe, Sahara) ══ -->
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig4a_4b_ecosysteme_foret.PNG" alt="Fig.4a/4b — Êtres vivants écosystème forêt (p.129)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.4a/4b — Écosystème forêt</span><small>p.129</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig5a_5b_ecosysteme_steppe.PNG" alt="Fig.5a/5b — Êtres vivants écosystème steppe (p.130)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.5a/5b — Écosystème steppe</span><small>p.130</small></div></div>
+    </div>
+    <img class="manuel" src="images/T2Ch4_Fig6a_6b_ecosysteme_sahara.PNG" alt="Fig.6a/6b — Êtres vivants écosystème Sahara (p.131)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none"><span>📷 Fig.6a/6b — Écosystème Sahara</span><small>p.131</small></div>
+
+    <h3 style="margin-top:12px">Exemples de chaînes alimentaires tunisiennes</h3>
+    <div class="reseau-box">
+      <div class="chain">Oléastre <span class="arrow">→</span> Étourneau <span class="arrow">→</span> Épervier <span class="arrow">→</span> Renard</div>
+      <div class="chain">Sève <span class="arrow">→</span> Puceron <span class="arrow">→</span> Coccinelle <span class="arrow">→</span> Hérisson <span class="arrow">→</span> Renard</div>
+      <div class="chain">Caroubier <span class="arrow">→</span> Rat <span class="arrow">→</span> Couleuvre <span class="arrow">→</span> Faucon</div>
+    </div>
+
+    <!-- ══ IMAGES : Réseau trophique + Équilibre biologique ══ -->
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig8_9_reseau_trophique.PNG" alt="Fig.8/9 — Réseau trophique (p.132)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.8/9 — Réseau trophique</span><small>p.132</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig10_cerfs_arizona.PNG" alt="Fig.10 — Évolution du nombre de cerfs (p.133)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.10 — Cerfs Arizona</span><small>p.133</small></div></div>
+    </div>
+
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz</div>
+      <div id="mq2-q">
+        <p>1. Dans la chaîne : Alfa → Criquet → Araignée → Hérisson, le Criquet est un consommateur de <select class="bl" data-rep="1er ordre (C1, phytophage — mange directement les végétaux)"><option value="">—</option><option>2ème ordre (C2, zoophage)</option><option>1er ordre (C1, phytophage — mange directement les végétaux)</option></select>.</p>
+        <p>2. Les flèches dans une chaîne alimentaire représentent <select class="bl" data-rep="le sens du transfert de matière organique (de la proie vers le prédateur)"><option value="">—</option><option>qui attaque qui (du prédateur vers la proie)</option><option>le sens du transfert de matière organique (de la proie vers le prédateur)</option></select>.</p>
+        <p>3. Un réseau trophique est <select class="bl" data-rep="un ensemble de chaînes alimentaires liées par des maillons communs"><option value="">—</option><option>une seule chaîne alimentaire complexe</option><option>un ensemble de chaînes alimentaires liées par des maillons communs</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq2')">✓ Vérifier</button>
+      <button class="brs" onclick="rsMQ('mq2')">↺</button>
+      <div class="mq-fb" id="mq2-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 4 ACT3 BIOMASSE ══ -->
+<div class="pan" id="p4">
+  <div class="sech">📊 Activité 3 — La Production de Biomasse (p.134–138)</div>
+
+  <div class="card b">
+    <h2 class="b">Pyramides écologiques et Rendement écologique</h2>
+
+    <!-- ══ IMAGES : Pyramides + Énergie ingérée + Agro-système ══ -->
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig1_pyramide_nombres.PNG" alt="Fig.1 — Pyramide des nombres (p.134)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.1 — Pyramide des nombres</span><small>p.134</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig3_pyramide_biomasses.PNG" alt="Fig.3 — Pyramide des biomasses (p.135)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.3 — Pyramide des biomasses</span><small>p.135</small></div></div>
+    </div>
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig7_pyramide_energies.PNG" alt="Fig.7 — Pyramide des énergies (p.136)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.7 — Pyramide des énergies</span><small>p.136</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig8_source_chaude_floride.PNG" alt="Fig.8 — Source chaude de Floride (p.136)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.8 — Source chaude Floride</span><small>p.136</small></div></div>
+    </div>
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig11a_11b_energie_ingeree.PNG" alt="Fig.11a/11b — Énergie ingérée lézard/lapin (p.137)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.11a/11b — Énergie ingérée</span><small>p.137</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig12_agro_systeme_prairie.PNG" alt="Fig.12 — Agro-système prairie pâturée (p.138)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.12 — Agro-système prairie</span><small>p.138</small></div></div>
+    </div>
+
+    <div class="g2">
+      <div>
+        <table>
+          <tr><th class="b">Type pyramide</th><th class="b">Ce qu'elle représente</th><th class="b">Toujours normale ?</th></tr>
+          <tr class="hl"><td><strong>Pyramide des nombres</strong></td><td>Nombre d'individus par niveau</td><td>Non — peut être inversée</td></tr>
+          <tr><td><strong>Pyramide des biomasses</strong></td><td>Masse de MO sèche par niveau (g/m²)</td><td>Généralement non</td></tr>
+          <tr class="hl"><td><strong>Pyramide des énergies</strong></td><td>Flux d'énergie par niveau (kcal)</td><td><strong>Toujours normale ✅</strong></td></tr>
+        </table>
+        <div class="tip"><div class="tip-head" onclick="togTip(this)">💡 Formule du rendement écologique</div><div class="tip-body"><strong>Re = P / I × 100</strong><br>P = matière produite · I = matière ingérée · Re est faible (5–20%).</div></div>
+      </div>
+      <div><div class="gb"><canvas id="cgPyra" width="280" height="200"></canvas><figcaption>Pyramide des énergies — toujours normale</figcaption></div></div>
+    </div>
+
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz</div>
+      <div id="mq3-q">
+        <p>1. Re = P / I × 100. Si I = 782 g/m²/an et P = 10 g/m²/an, alors Re = <select class="bl" data-rep="≈ 1,3% (10/782 × 100)"><option value="">—</option><option>≈ 78,2% (782/1000)</option><option>≈ 1,3% (10/782 × 100)</option><option>≈ 13% (10/78 × 100)</option></select>.</p>
+        <p>2. La pyramide des énergies est <strong>toujours normale</strong> car <select class="bl" data-rep="l'énergie se dissipe (respiration, chaleur) à chaque niveau — jamais reconstituée"><option value="">—</option><option>les végétaux produisent toujours plus d'énergie que les animaux</option><option>l'énergie se dissipe (respiration, chaleur) à chaque niveau — jamais reconstituée</option></select>.</p>
+        <p>3. Les pertes de biomasse entre deux niveaux trophiques sont dues à <select class="bl" data-rep="la respiration (énergie thermique) et les excréments (non assimilés)"><option value="">—</option><option>la prédation uniquement (la proie résiste)</option><option>la respiration (énergie thermique) et les excréments (non assimilés)</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq3')">✓ Vérifier</button>
+      <button class="brs" onclick="rsMQ('mq3')">↺</button>
+      <div class="mq-fb" id="mq3-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 5 ACT4 CYCLE ══ -->
+<div class="pan" id="p5">
+  <div class="sech">♻️ Activité 4 — Le Cycle de la Matière (p.139–142)</div>
+
+  <div class="card t">
+    <h2 class="t">Le Cycle du Carbone — circulation permanente</h2>
+
+    <!-- ══ IMAGES : Appareil Berlèse + Faune litière + Cycles ══ -->
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig1_appareil_berlese.PNG" alt="Fig.1 — Appareil de Berlèse (p.139)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.1 — Appareil de Berlèse</span><small>p.139</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig2_faune_litiere.PNG" alt="Fig.2 — Faune de la litière (p.140)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.2 — Faune de la litière</span><small>p.140</small></div></div>
+    </div>
+    <div class="g2">
+      <div><img class="manuel" src="images/T2Ch4_Fig3_cycle_matiere.PNG" alt="Fig.3 — Cycle de la matière (p.141)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.3 — Cycle de la matière</span><small>p.141</small></div></div>
+      <div><img class="manuel" src="images/T2Ch4_Fig4_cycle_carbone_simplifie.PNG" alt="Fig.4 — Schéma simplifié du cycle du carbone (p.141)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.4 — Cycle du carbone simplifié</span><small>p.141</small></div></div>
+    </div>
+    <img class="manuel" src="images/T2Ch4_Fig5_cycle_carbone_complet.PNG" alt="Fig.5 — Cycle du carbone complet (p.142)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none"><span>📷 Fig.5 — Cycle du carbone complet</span><small>p.142</small></div>
+
+    <div class="g2">
+      <div>
+        <table>
+          <tr><th class="t">Processus</th><th class="t">Direction du carbone</th><th class="t">Qui ?</th></tr>
+          <tr class="hl"><td><strong>Photosynthèse</strong></td><td>CO₂ (minéral) → MO (organique)</td><td>Végétaux autotrophes</td></tr>
+          <tr><td><strong>Respiration</strong></td><td>MO (organique) → CO₂ (minéral)</td><td>Tous les êtres vivants</td></tr>
+          <tr class="hl"><td><strong>Minéralisation</strong></td><td>MO morte → sels minéraux + CO₂</td><td>Décomposeurs</td></tr>
+          <tr><td><strong>Fermentation</strong></td><td>MO → CO₂ + CH₄</td><td>Bactéries anaérobies</td></tr>
+          <tr class="hl"><td><strong>Fossilisation</strong></td><td>MO → charbon/pétrole</td><td>Processus géologique</td></tr>
+          <tr><td><strong>Combustion</strong></td><td>Charbon/pétrole → CO₂</td><td>Activité humaine</td></tr>
+        </table>
+      </div>
+      <div><div class="gb"><canvas id="cgCycle" width="280" height="220"></canvas><figcaption>Cycle du carbone simplifié</figcaption></div></div>
+    </div>
+
+    <div class="ret"><h4>📌 Retenons (bilan p.147)</h4>
+      <p><dt>Cycle de la matière :</dt><dd>passage continuel du carbone minéral (CO₂) au carbone organique (MO) et vice versa.</dd></p>
+      <p><dt>Producteurs :</dt><dd>CO₂ + H₂O + lumière → MO (photosynthèse).</dd></p>
+      <p><dt>Consommateurs :</dt><dd>MO → MO + CO₂ (respiration).</dd></p>
+      <p><dt>Décomposeurs :</dt><dd>MO morte → sels minéraux + CO₂ (minéralisation).</dd></p>
+    </div>
+
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz — Cycle de la matière</div>
+      <div id="mq4-q">
+        <p>1. Le processus qui transforme le CO₂ minéral en matière organique est la <select class="bl" data-rep="photosynthèse (réalisée par les producteurs autotrophes)"><option value="">—</option><option>respiration (réalisée par tous les êtres vivants)</option><option>photosynthèse (réalisée par les producteurs autotrophes)</option></select>.</p>
+        <p>2. Les décomposeurs transforment la matière organique morte en <select class="bl" data-rep="matière minérale (CO₂, nitrates, phosphates) — processus de minéralisation"><option value="">—</option><option>matière organique plus complexe</option><option>matière minérale (CO₂, nitrates, phosphates) — processus de minéralisation</option></select>.</p>
+        <p>3. Le cycle du carbone est "fermé" car <select class="bl" data-rep="les décomposeurs restituent le carbone minéral aux producteurs qui le réutilisent"><option value="">—</option><option>le carbone ne quitte jamais les organismes vivants</option><option>les décomposeurs restituent le carbone minéral aux producteurs qui le réutilisent</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq4')">✓ Vérifier</button>
+      <button class="brs" onclick="rsMQ('mq4')">↺</button>
+      <div class="mq-fb" id="mq4-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 6 BILAN ══ -->
+<div class="pan" id="p6">
+  <div class="sech">📋 Bilan (p.143–147)</div>
+  <div class="bstep r"><p style="font-size:.92rem"><span class="bnum" style="background:var(--r)">1</span>La <strong>prédation</strong> est une relation <select class="bl" data-rep="+ / − (bénéfique pour le prédateur, fatale pour la proie)"><option value="">—</option><option>+ / + (bénéfique pour les deux)</option><option>+ / − (bénéfique pour le prédateur, fatale pour la proie)</option></select>, <select class="bl" data-rep="obligatoire pour le prédateur"><option value="">—</option><option>facultative pour les deux</option><option>obligatoire pour le prédateur</option></select>. Le <strong>parasitisme</strong> est aussi + / − mais l'hôte <select class="bl" data-rep="reste en vie (le parasite en a besoin)"><option value="">—</option><option>meurt immédiatement</option><option>reste en vie (le parasite en a besoin)</option></select>.</p></div>
+  <div class="bstep v"><p style="font-size:.92rem"><span class="bnum v">2</span>La <strong>symbiose</strong> est une relation <select class="bl" data-rep="+ / + (bénéfique pour les deux partenaires)"><option value="">—</option><option>+ / − comme la prédation</option><option>+ / + (bénéfique pour les deux partenaires)</option></select>, <select class="bl" data-rep="obligatoire pour les deux"><option value="">—</option><option>facultative</option><option>obligatoire pour les deux</option></select>. La <strong>compétition</strong> est une relation <select class="bl" data-rep="− / − (les deux sont pénalisés — ressources limitées)"><option value="">—</option><option>+ / + (les deux profitent)</option><option>− / − (les deux sont pénalisés — ressources limitées)</option></select>.</p></div>
+  <div class="bstep b"><p style="font-size:.92rem"><span class="bnum" style="background:var(--b)">3</span>Dans un écosystème : <strong>Producteurs</strong> (P = <select class="bl" data-rep="végétaux autotrophes (photosynthèse)"><option value="">—</option><option>animaux herbivores</option><option>végétaux autotrophes (photosynthèse)</option></select>) → <strong>C1</strong> (phytophages) → <strong>C2</strong> (zoophages) → <strong>C3</strong> → <strong>Décomposeurs</strong> (transforment la MO morte en <select class="bl" data-rep="matière minérale (minéralisation)"><option value="">—</option><option>nouvelle matière organique</option><option>matière minérale (minéralisation)</option></select>).</p></div>
+  <div class="bstep o"><p style="font-size:.92rem"><span class="bnum o">4</span>Le <strong>rendement écologique Re</strong> = <select class="bl" data-rep="P / I × 100 (matière produite / matière ingérée)"><option value="">—</option><option>I / P × 100</option><option>P / I × 100 (matière produite / matière ingérée)</option></select>. Re est toujours <select class="bl" data-rep="faible (5–20%) car respiration + excréments dissipent l'énergie"><option value="">—</option><option>élevé (> 50%)</option><option>faible (5–20%) car respiration + excréments dissipent l'énergie</option></select>. La pyramide des <select class="bl" data-rep="énergies"><option value="">—</option><option>nombres</option><option>énergies</option></select> est toujours normale.</p></div>
+  <div class="bstep"><p style="font-size:.92rem"><span class="bnum">5</span>Le <strong>cycle de la matière</strong> : les <select class="bl" data-rep="producteurs"><option value="">—</option><option>consommateurs</option><option>producteurs</option></select> fixent le CO₂. Les consommateurs libèrent du CO₂. Les <select class="bl" data-rep="décomposeurs"><option value="">—</option><option>producteurs primaires</option><option>décomposeurs</option></select> minéralisent la MO morte. La matière est <select class="bl" data-rep="sans cesse recyclée (cycle fermé)"><option value="">—</option><option>définitivement perdue après usage</option><option>sans cesse recyclée (cycle fermé)</option></select>.</p></div>
+  <div style="margin-top:14px"><button class="bck" onclick="ckBilan()">✓ Vérifier tout le bilan</button><button class="brs" onclick="rsBilan()">↺</button><div class="gfb" id="bilan-fb"></div></div>
+</div>
+
+<!-- ══ 7 FC ══ -->
+<div class="pan" id="p7">
+  <h2 style="margin-bottom:12px">🃏 Flashcards</h2>
+  <div class="fa"><button class="btn bv" onclick="chkFC()">✓ Vérifier</button><button class="btn bg" onclick="rstFC()">↺</button><span id="fcs" style="display:none;padding:7px 12px;border-radius:8px;font-weight:700"></span></div>
+  <div class="fcg" id="fcg"></div>
+</div>
+
+<!-- ══ 8 QCM ══ -->
+<div class="pan" id="p8">
+  <h2 style="margin-bottom:6px">✏️ QCM CAPES</h2>
+  <p style="margin-bottom:6px;font-size:.85rem;color:var(--mu)">Questions du manuel (p.148) et complémentaires</p>
+  <div class="qcm-ctrl"><button class="btn bg" onclick="corrAllQ()" style="font-size:.78rem;">📋 Tout corriger</button><button class="btn bg" onclick="rstAllQ()" style="font-size:.78rem;">↺ Tout réinitialiser</button><span id="qcm-global-score" class="qcm-score" style="display:none;"></span></div>
+  <div id="qcm-c"></div>
+</div>
+
+<!-- ══ 9 EXERCICES ══ -->
+<div class="pan" id="p9">
+  <h2 style="margin-bottom:14px">📝 Exercices interactifs</h2>
+
+  <!-- ══ Questions du manuel p.148 en cases à cocher ══ -->
+  <div class="man-p148">
+    <div class="mpq">📖 Questions du manuel (p.148) — Cochez la (ou les) bonne(s) réponse(s)</div>
+    <p style="font-weight:700;margin:8px 0 4px;color:#37474F">Q1. La prédation est une relation trophique :</p>
+    <div class="cbox-group" id="man-q1">
+      <label><input type="checkbox" value="0"> a- bénéfique pour les deux individus</label>
+      <label><input type="checkbox" value="1" data-correct="true"> b- obligatoire pour l'un des deux individus (le prédateur)</label>
+      <label><input type="checkbox" value="2" data-correct="true"> c- bénéfique pour un individu et désastreuse pour l'autre</label>
+      <label><input type="checkbox" value="3"> d- facultative pour les deux individus</label>
+    </div>
+    <button class="btn bg" onclick="ckManQ('man-q1')" style="font-size:.76rem;margin-top:4px;">Vérifier Q1</button><span class="gfb" id="man-q1-fb" style="display:inline-block;margin-left:6px;"></span>
+
+    <p style="font-weight:700;margin:12px 0 4px;color:#37474F">Q2. La symbiose est une relation trophique :</p>
+    <div class="cbox-group" id="man-q2">
+      <label><input type="checkbox" value="0"> a- néfaste pour les deux individus</label>
+      <label><input type="checkbox" value="1" data-correct="true"> b- bénéfique pour les deux individus</label>
+      <label><input type="checkbox" value="2"> c- bénéfique pour un seul individu et sans effet pour l'autre</label>
+      <label><input type="checkbox" value="3"> d- bénéfique pour un individu et aux dépens de l'autre</label>
+    </div>
+    <button class="btn bg" onclick="ckManQ('man-q2')" style="font-size:.76rem;margin-top:4px;">Vérifier Q2</button><span class="gfb" id="man-q2-fb" style="display:inline-block;margin-left:6px;"></span>
+
+    <p style="font-weight:700;margin:12px 0 4px;color:#37474F">Q3. Dans une chaîne alimentaire, les phytophages constituent :</p>
+    <div class="cbox-group" id="man-q3">
+      <label><input type="checkbox" value="0"> a- les producteurs primaires</label>
+      <label><input type="checkbox" value="1"> b- les consommateurs II</label>
+      <label><input type="checkbox" value="2" data-correct="true"> c- les consommateurs I</label>
+      <label><input type="checkbox" value="3"> d- le premier niveau trophique</label>
+    </div>
+    <button class="btn bg" onclick="ckManQ('man-q3')" style="font-size:.76rem;margin-top:4px;">Vérifier Q3</button><span class="gfb" id="man-q3-fb" style="display:inline-block;margin-left:6px;"></span>
+
+    <p style="font-weight:700;margin:12px 0 4px;color:#37474F">Q4. L'ordre des maillons d'une chaîne alimentaire est :</p>
+    <div class="cbox-group" id="man-q4">
+      <label><input type="checkbox" value="0"> a- décomposeurs, producteurs, zoophages, phytophages</label>
+      <label><input type="checkbox" value="1"> b- producteurs, phytophages, décomposeurs, zoophages</label>
+      <label><input type="checkbox" value="2" data-correct="true"> c- producteurs, phytophages, zoophages, décomposeurs</label>
+      <label><input type="checkbox" value="3"> d- phytophages, zoophages, décomposeurs, producteurs</label>
+    </div>
+    <button class="btn bg" onclick="ckManQ('man-q4')" style="font-size:.76rem;margin-top:4px;">Vérifier Q4</button><span class="gfb" id="man-q4-fb" style="display:inline-block;margin-left:6px;"></span>
+
+    <p style="font-weight:700;margin:12px 0 4px;color:#37474F">Q5. Les décomposeurs sont des êtres vivants :</p>
+    <div class="cbox-group" id="man-q5">
+      <label><input type="checkbox" value="0" data-correct="true"> a- minéralisateurs</label>
+      <label><input type="checkbox" value="1" data-correct="true"> b- consommateurs (de matière organique morte)</label>
+      <label><input type="checkbox" value="2"> c- photosynthétiques</label>
+      <label><input type="checkbox" value="3"> d- producteurs</label>
+    </div>
+    <button class="btn bg" onclick="ckManQ('man-q5')" style="font-size:.76rem;margin-top:4px;">Vérifier Q5</button><span class="gfb" id="man-q5-fb" style="display:inline-block;margin-left:6px;"></span>
+  </div>
+
+  <!-- EX 1 : Tableau relations -->
+  <div class="tab-exo"><h3 style="color:var(--t);margin-bottom:8px">🔗 Ex.1 — Exercice intégré 3 (p.126) — Compléter le tableau des relations</h3>
+    <div class="ctx">Utiliser les symboles + (bénéfique), − (néfaste), 0 (sans effet) pour chaque organisme.</div>
+    <table><tr><th class="t">Relation</th><th class="t">A réunis</th><th class="t">B réunis</th><th class="t">A séparés</th><th class="t">B séparés</th><th class="t">Obligatoire ?</th></tr>
+      <tr><td><strong>Prédation</strong><br><small>A=Prédateur · B=Proie</small></td><td><select class="tcell" data-rep="+"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="−"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="−"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="+"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="Pour A (prédateur meurt sans proie)"><option value="">—</option><option>Non</option><option>Pour A</option><option>Pour les deux</option></select></td></tr>
+      <tr><td><strong>Parasitisme</strong><br><small>A=Hôte · B=Parasite</small></td><td><select class="tcell" data-rep="−"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="+"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="+"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="−"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="Pour B (parasite meurt sans hôte)"><option value="">—</option><option>Pour A</option><option>Pour B</option><option>Non obligatoire</option></select></td></tr>
+      <tr><td><strong>Symbiose</strong></td><td><select class="tcell" data-rep="+"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="+"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="−"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="−"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="Pour les deux (obligation mutuelle)"><option value="">—</option><option>Pour aucun</option><option>Pour les deux</option><option>Pour A uniquement</option></select></td></tr>
+      <tr><td><strong>Compétition</strong></td><td><select class="tcell" data-rep="−"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="−"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="+"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="+"><option value="">—</option><option>+</option><option>−</option><option>0</option></select></td><td><select class="tcell" data-rep="Non (les deux peuvent vivre séparément)"><option value="">—</option><option>Pour les deux</option><option>Non</option></select></td></tr>
+    </table>
+    <button class="bck" onclick="ckTabExo('ex1tab')">✓ Vérifier</button><button class="brs" onclick="rsTabExo('ex1tab')">↺</button><div class="gfb" id="ex1tab-fb"></div>
+  </div>
+
+  <!-- EX 2 : Réseau trophique forêt -->
+  <div class="tab-exo"><h3 style="color:var(--t);margin-bottom:8px">🌲 Ex.2 — Réseau trophique de l'écosystème forêt tunisienne (p.129 + exercice p.153)</h3>
+    <div class="ctx">Forêt tunisienne : rat (herbe, fruits), chouette (rat), renard (fruits, lapin, rat), lapin (herbe).</div>
+    <table><tr><th class="t">Être vivant</th><th class="t">Niveau trophique</th><th class="t">Régime alimentaire</th></tr>
+      <tr><td>Herbe</td><td><select class="tcell" data-rep="Producteur (P — autotrophe, photosynthèse)"><option value="">—</option><option>Consommateur 1 (phytophage)</option><option>Producteur (P — autotrophe, photosynthèse)</option></select></td><td><select class="tcell" data-rep="Autotrophe (CO₂ + lumière)"><option value="">—</option><option>Hétérotrophe (végétaux)</option><option>Autotrophe (CO₂ + lumière)</option></select></td></tr>
+      <tr><td>Lapin / Rat</td><td><select class="tcell" data-rep="Consommateur 1 (C1 — phytophage)"><option value="">—</option><option>Producteur primaire</option><option>Consommateur 1 (C1 — phytophage)</option></select></td><td><select class="tcell" data-rep="Herbivore (herbe, fruits)"><option value="">—</option><option>Carnivore (mange des animaux)</option><option>Herbivore (herbe, fruits)</option></select></td></tr>
+      <tr><td>Renard / Chouette</td><td><select class="tcell" data-rep="Consommateur 2 (C2 — zoophage)"><option value="">—</option><option>Consommateur 1 (phytophage)</option><option>Consommateur 2 (C2 — zoophage)</option></select></td><td><select class="tcell" data-rep="Carnivore / Omnivore (mange C1)"><option value="">—</option><option>Herbivore</option><option>Carnivore / Omnivore (mange C1)</option></select></td></tr>
+    </table>
+    <p style="font-size:.84rem;margin:9px 0 5px;font-weight:600;color:var(--t)">Si on détruit les rats → effet sur l'écosystème :</p>
+    <div id="ex2b-q">
+      <p><select class="bl" data-rep="La chouette manque de nourriture → diminution de sa population"><option value="">—</option><option>La chouette est favorisée</option><option>La chouette manque de nourriture → diminution de sa population</option></select>. Le renard <select class="bl" data-rep="se reporte sur le lapin → surexploitation du lapin"><option value="">—</option><option>disparaît immédiatement</option><option>se reporte sur le lapin → surexploitation du lapin</option></select>. L'herbe <select class="bl" data-rep="prolifère (moins de brouteurs) → déséquilibre végétal"><option value="">—</option><option>disparaît</option><option>prolifère (moins de brouteurs) → déséquilibre végétal</option></select>.</p>
+    </div>
+    <button class="bck" onclick="ckTabExoMixed('ex2tab','ex2b')">✓ Vérifier</button><button class="brs" onclick="rsTabExoMixed('ex2tab','ex2b')">↺</button><div class="gfb" id="ex2tab-fb"></div>
+  </div>
+
+  <!-- EX 3 : Calcul Re -->
+  <div class="trous"><h3 style="color:var(--vi);margin-bottom:8px">📊 Ex.3 — Calcul du rendement écologique (données prairie p.136–137)</h3>
+    <div class="ctx">Prairie pâturée : Herbe ingérée = 782 g Ms/m²/an · Accroissement bovins = 10 g Ms/m²/an · Énergie solaire = 99 000 kcal/ha/an · Production primaire = 7 215 kcal/ha/an</div>
+    <div id="ex3-q">
+      <p>1. Re = P / I × 100 = <select class="bl" data-rep="10 / 782 × 100 ≈ 1,3%"><option value="">—</option><option>782 / 10 × 100 = 7 820%</option><option>10 / 782 × 100 ≈ 1,3%</option><option>10 / 100 = 10%</option></select>. Pertes dues à <select class="bl" data-rep="respiration (énergie thermique) et excréments (non assimilés)"><option value="">—</option><option>prédation par les carnivores</option><option>respiration (énergie thermique) et excréments (non assimilés)</option></select>.</p>
+      <p>2. Efficacité photosynthétique = <select class="bl" data-rep="7 215 / 99 000 × 100 ≈ 7,3%"><option value="">—</option><option>99 000 / 7 215 ≈ 1 372%</option><option>7 215 / 99 000 × 100 ≈ 7,3%</option></select> → <select class="bl" data-rep="seuls ~7% de l'énergie solaire sont convertis en biomasse végétale"><option value="">—</option><option>les végétaux utilisent 93% efficacement</option><option>seuls ~7% de l'énergie solaire sont convertis en biomasse végétale</option></select>.</p>
+    </div>
+    <button class="bck" onclick="ckMQ('ex3')">✓ Vérifier</button><button class="brs" onclick="rsMQ('ex3')">↺</button><div class="mq-fb" id="ex3-fb"></div>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  <p>Chapitre 4 — Les Relations Trophiques d'un Écosystème · 2ème année Secondaire SVT · Programme Tunisien</p>
+  <p class="ft-sig">INGÉNIEUR Mohamed CHAGRAOUI / ENSEIGNANT SVT · CANDIDAT CAPES SVT 2026 · TUNISIE</p>
+</footer>
+
+<script>
+// ══ TABS ══
+const panels=document.querySelectorAll('.pan'),tabs=document.querySelectorAll('.t');
+const pf=document.getElementById('pf');let vis=new Set([0]);
+function showTab(n){
+  panels.forEach(p=>p.classList.remove('on'));tabs.forEach(t=>t.classList.remove('on'));
+  panels[n].classList.add('on');tabs[n].classList.add('on');
+  vis.add(n);pf.style.width=Math.round(vis.size/tabs.length*100)+'%';
+  localStorage.setItem('t2ch4tab',n);window.scrollTo({top:0,behavior:'smooth'});
+  if(n===4)setTimeout(drawPyra,80);if(n===5)setTimeout(drawCycle,80);
+}
+const sv=localStorage.getItem('t2ch4tab');
+if(sv){const n=parseInt(sv);if(n>0){panels[n].classList.add('on');panels[0].classList.remove('on');tabs[n].classList.add('on');tabs[0].classList.remove('on');vis.add(n);pf.style.width=Math.round(vis.size/tabs.length*100)+'%';}}
+
+function togTip(h){h.nextElementSibling.classList.toggle('on');}
+function showCN(id){
+  const p=document.getElementById('cn-'+id),isOn=p.classList.contains('on');
+  document.querySelectorAll('.cn-panel').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.cnode').forEach(x=>x.classList.remove('active'));
+  if(!isOn){p.classList.add('on');document.querySelector('.cnode.cn-'+id)&&document.querySelector('.cnode.cn-'+id).classList.add('active');}
+}
+function togPiege(h){const b=h.nextElementSibling;b.classList.toggle('on');h.querySelector('span').textContent=b.classList.contains('on')?'▲':'▼';}
+function togAns(b){b.nextElementSibling.classList.toggle('on');}
+
+function ckMQ(id){
+  const sels=document.querySelectorAll('#'+id+'-q select.bl');let ok=0,tot=sels.length;
+  sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  const fb=document.getElementById(id+'-fb');fb.className='mq-fb '+(ok===tot?'ok':'ko');
+  fb.textContent=ok===tot?'Parfait ! '+ok+'/'+tot:ok+'/'+tot+' — revois les réponses en rouge.';
+}
+function rsMQ(id){
+  document.querySelectorAll('#'+id+'-q select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  const fb=document.getElementById(id+'-fb');fb.className='mq-fb';fb.textContent='';
+}
+function ckTabExo(id){
+  const fb=document.getElementById(id+'-fb');if(!fb)return;
+  const block=fb.closest('.tab-exo,.trous');if(!block)return;
+  const cells=block.querySelectorAll('.tcell');let ok=0,tot=cells.length;
+  cells.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  fb.className='gfb '+(ok===tot?'ok':'ko');
+  fb.textContent=ok===tot?'Parfait ! '+ok+'/'+tot:ok+'/'+tot+' — revois les cellules en rouge.';
+}
+function ckTabExoMixed(tabId,mqId){
+  const fb=document.getElementById(tabId+'-fb');const block=fb.closest('.tab-exo');
+  const cells=block.querySelectorAll('.tcell');let ok=0,tot=cells.length;
+  cells.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  const sels=document.querySelectorAll('#'+mqId+'-q select.bl');tot+=sels.length;
+  sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  fb.className='gfb '+(ok===tot?'ok':'ko');
+  fb.textContent=ok===tot?'Parfait ! '+ok+'/'+tot:ok+'/'+tot+' — revois les erreurs en rouge.';
+}
+function rsTabExoMixed(tabId,mqId){
+  const fb=document.getElementById(tabId+'-fb');const block=fb.closest('.tab-exo');
+  block.querySelectorAll('.tcell').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  document.querySelectorAll('#'+mqId+'-q select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  fb.className='gfb';fb.textContent='';
+}
+function rsTabExo(id){
+  const fb=document.getElementById(id+'-fb');if(!fb)return;
+  const block=fb.closest('.tab-exo,.trous');if(!block)return;
+  block.querySelectorAll('.tcell').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  fb.className='gfb';fb.textContent='';
+}
+function ckBilan(){
+  const sels=document.querySelectorAll('#p6 select.bl');let ok=0,tot=sels.length;
+  sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  const fb=document.getElementById('bilan-fb');fb.className='gfb '+(ok===tot?'ok':'ko');
+  fb.textContent=ok===tot?'Bilan complet ! '+ok+'/'+tot:ok+'/'+tot+' — Revois les trous en rouge.';
+}
+function rsBilan(){
+  document.querySelectorAll('#p6 select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  const fb=document.getElementById('bilan-fb');fb.className='gfb';fb.textContent='';
+}
+
+function ckManQ(id){
+  const block=document.getElementById(id);const cbs=block.querySelectorAll('input[type="checkbox"]');let ok=true;
+  cbs.forEach(cb=>{const isCorrect=cb.dataset.correct==='true';const checked=cb.checked;if(isCorrect&&!checked)ok=false;if(!isCorrect&&checked)ok=false;});
+  const fb=document.getElementById(id+'-fb');fb.className='gfb '+(ok?'ok':'ko');fb.textContent=ok?'✓ Correct !':'✗ Incorrect — révise la réponse';
+}
+
+// ══ CANVAS ══
+function mkC(id,w,h){const c=document.getElementById(id);if(!c)return null;c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.clearRect(0,0,w,h);return ctx;}
+function drawPyra(){
+  const ctx=mkC('cgPyra',280,200);if(!ctx)return;
+  ctx.fillStyle='#f0f8ff';ctx.fillRect(0,0,280,200);
+  ctx.font='bold 10px sans-serif';ctx.fillStyle='#1565C0';ctx.textAlign='center';ctx.fillText('Pyramide des énergies (toujours normale)',140,14);
+  const levels=[{lbl:'Producteurs (P)',w:220,col:'#2E7D32',e:'7 215 kcal'},{lbl:'C1 Herbivores',w:160,col:'#F57F17',e:'3 625 kcal'},{lbl:'C2 Carnivores',w:100,col:'#E65100',e:'~362 kcal'},{lbl:'C3 Superprédateurs',w:50,col:'#B71C1C',e:'~36 kcal'}];
+  let y=170;
+  levels.forEach(({lbl,w,col,e})=>{const x=(280-w)/2;ctx.fillStyle=col;ctx.fillRect(x,y-28,w,26);ctx.fillStyle='#fff';ctx.font='bold 8px sans-serif';ctx.textAlign='center';if(w>60)ctx.fillText(lbl,140,y-14);ctx.font='7px sans-serif';if(w>80)ctx.fillText(e,140,y-5);y-=32;});
+  ctx.fillStyle='#555';ctx.font='8px sans-serif';ctx.textAlign='center';ctx.fillText('Re ≈ 10% à chaque niveau → pyramide rétrécit',140,192);
+}
+function drawCycle(){
+  const ctx=mkC('cgCycle',280,220);if(!ctx)return;
+  ctx.fillStyle='#e8f5e9';ctx.fillRect(0,0,280,220);
+  ctx.font='bold 9px sans-serif';ctx.fillStyle='#1B5E20';ctx.textAlign='center';ctx.fillText('Cycle du carbone simplifié',140,14);
+  ctx.fillStyle='#FFD54F';ctx.beginPath();ctx.arc(245,35,18,0,Math.PI*2);ctx.fill();ctx.fillStyle='#E65100';ctx.font='bold 7px sans-serif';ctx.fillText('Soleil',245,39);
+  ctx.fillStyle='#B3E5FC';ctx.fillRect(80,20,100,22);ctx.strokeStyle='#0288D1';ctx.lineWidth=1;ctx.strokeRect(80,20,100,22);ctx.fillStyle='#01579B';ctx.font='bold 8px sans-serif';ctx.fillText('CO₂ atmosphère',130,35);
+  ctx.fillStyle='#A5D6A7';ctx.fillRect(10,90,100,32);ctx.strokeStyle='#1B5E20';ctx.strokeRect(10,90,100,32);ctx.fillStyle='#1B5E20';ctx.font='bold 8px sans-serif';ctx.fillText('Producteurs',60,104);ctx.font='7px sans-serif';ctx.fillText('(photosynthèse)',60,115);
+  ctx.fillStyle='#FFCC80';ctx.fillRect(165,90,100,32);ctx.strokeStyle='#E65100';ctx.strokeRect(165,90,100,32);ctx.fillStyle='#E65100';ctx.font='bold 8px sans-serif';ctx.fillText('Consommateurs',215,104);ctx.font='7px sans-serif';ctx.fillText('(C1, C2, C3)',215,115);
+  ctx.fillStyle='#D7CCC8';ctx.fillRect(90,165,100,32);ctx.strokeStyle='#4E342E';ctx.strokeRect(90,165,100,32);ctx.fillStyle='#4E342E';ctx.font='bold 8px sans-serif';ctx.fillText('Décomposeurs',140,180);ctx.font='7px sans-serif';ctx.fillText('(bactéries, champignons)',140,191);
+  ctx.strokeStyle='#1B5E20';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(95,42);ctx.lineTo(60,90);ctx.stroke();ctx.fillStyle='#1B5E20';ctx.font='7px sans-serif';ctx.textAlign='center';ctx.fillText('Photosynth.',52,72);
+  ctx.strokeStyle='#F57F17';ctx.beginPath();ctx.moveTo(80,90);ctx.lineTo(110,42);ctx.stroke();ctx.fillStyle='#F57F17';ctx.fillText('Respiration',100,72);
+  ctx.strokeStyle='#E65100';ctx.beginPath();ctx.moveTo(110,106);ctx.lineTo(165,106);ctx.stroke();ctx.fillStyle='#E65100';ctx.fillText('Alimentation',137,100);
+  ctx.strokeStyle='#B71C1C';ctx.beginPath();ctx.moveTo(215,90);ctx.lineTo(175,42);ctx.stroke();ctx.fillStyle='#B71C1C';ctx.fillText('Respiration',195,68);
+  ctx.strokeStyle='#4E342E';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(60,122);ctx.lineTo(120,165);ctx.stroke();ctx.beginPath();ctx.moveTo(215,122);ctx.lineTo(165,165);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#4E342E';ctx.font='7px sans-serif';ctx.fillText('MO morte',90,148);
+  ctx.strokeStyle='#795548';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(140,165);ctx.lineTo(130,42);ctx.stroke();ctx.fillStyle='#795548';ctx.fillText('Minéralisation',75,135);
+}
+
+// ══ FLASHCARDS ══
+const fcData=[{p:"La [prédation] est une relation [+ / -] : bénéfique pour le [prédateur], fatale pour la [proie]. Elle est [obligatoire] pour le prédateur.",t:[{r:"prédation",o:["symbiose","parasitisme","prédation"]},{r:"+ / -",o:["+ / +","- / -","+ / -"]},{r:"prédateur",o:["proie","prédateur","décomposeur"]},{r:"proie",o:["prédateur","proie","décomposeur"]},{r:"obligatoire",o:["facultative","obligatoire"]}]},{p:"La [symbiose] est une relation [+ / +] : bénéfique pour les [deux] partenaires. Elle est [obligatoire pour les deux]. Exemples : [Rhizobium/Légumineuse] · Bactéries/Ruminants.",t:[{r:"symbiose",o:["prédation","compétition","symbiose"]},{r:"+ / +",o:["+ / -","- / -","+ / +"]},{r:"deux",o:["un seul","deux"]},{r:"obligatoire pour les deux",o:["facultative","obligatoire pour les deux"]},{r:"Rhizobium/Légumineuse",o:["Ténia/Vertébré","Rhizobium/Légumineuse"]}]},{p:"Le [parasitisme] est [+ / -] comme la prédation MAIS l'hôte [reste en vie]. La [compétition] est [- / -] : les deux espèces exploitent la même [ressource limitée].",t:[{r:"parasitisme",o:["symbiose","parasitisme","prédation"]},{r:"+ / -",o:["+ / +","+ / -","- / -"]},{r:"reste en vie",o:["meurt immédiatement","reste en vie"]},{r:"compétition",o:["prédation","symbiose","compétition"]},{r:"- / -",o:["+ / +","+ / -","- / -"]},{r:"ressource limitée",o:["prédateur commun","ressource limitée"]}]},{p:"Les niveaux trophiques : [Producteurs] (autotrophes) → [C1] (phytophages) → [C2] (zoophages) → C3. Les [décomposeurs] transforment la MO morte en [matière minérale].",t:[{r:"Producteurs",o:["Consommateurs","Décomposeurs","Producteurs"]},{r:"C1",o:["C3","C1","C2"]},{r:"C2",o:["C1","C3","C2"]},{r:"décomposeurs",o:["producteurs","décomposeurs","consommateurs"]},{r:"matière minérale",o:["nouvelle MO organique","matière minérale"]}]},{p:"Re = [P / I × 100] (matière produite / matière ingérée). Re est toujours [faible] car [respiration] et [excréments] dissipent l'énergie. La pyramide des [énergies] est toujours normale.",t:[{r:"P / I × 100",o:["I / P × 100","P / I × 100","P × I × 100"]},{r:"faible",o:["élevé (> 50%)","faible"]},{r:"respiration",o:["excrétion","respiration"]},{r:"excréments",o:["respiration","excréments"]},{r:"énergies",o:["nombres","biomasses","énergies"]}]},{p:"Le cycle du carbone : [Producteurs] fixent CO₂ → [Consommateurs] respirent → libèrent CO₂ → [Décomposeurs] minéralisent → [CO₂] restituée. Cycle [fermé].",t:[{r:"Producteurs",o:["Décomposeurs","Producteurs"]},{r:"Consommateurs",o:["Producteurs","Consommateurs"]},{r:"Décomposeurs",o:["Consommateurs","Décomposeurs"]},{r:"CO₂",o:["O₂","H₂O","CO₂"]},{r:"fermé",o:["ouvert","fermé"]}]},{p:"Les flèches indiquent le sens du [transfert de matière] (de la [proie] vers le [prédateur]), PAS qui attaque qui.",t:[{r:"transfert de matière",o:["qui attaque","transfert de matière","flux d'énergie perdue"]},{r:"proie",o:["prédateur","décomposeur","proie"]},{r:"prédateur",o:["proie","producteur","prédateur"]}]},{p:"La pyramide des [nombres] peut être [inversée]. La pyramide des [énergies] est [toujours normale] car l'énergie se [dissipe] à chaque niveau.",t:[{r:"nombres",o:["énergies","biomasses","nombres"]},{r:"inversée",o:["toujours normale","inversée"]},{r:"énergies",o:["nombres","biomasses","énergies"]},{r:"toujours normale",o:["parfois inversée","toujours normale"]},{r:"dissipe",o:["accumule","dissipe"]}]}];
+function shuffle(a){return a.slice().sort(()=>Math.random()-.5);}
+function buildFC(){
+  const c=document.getElementById('fcg');if(!c)return;c.innerHTML='';
+  fcData.forEach(fc=>{let html=fc.p;fc.t.forEach(tr=>{const opts=shuffle(tr.o).map(o=>'<option value="'+o+'">'+o+'</option>').join('');html=html.replace('['+tr.r+']','<select class="fs" data-ans="'+tr.r+'"><option value="">—</option>'+opts+'</select>');});c.innerHTML+='<div class="fcc"><div class="fcp">'+html+'</div></div>';});
+}
+function chkFC(){
+  const ins=document.querySelectorAll('.fs');let ok=0,tot=ins.length;
+  ins.forEach(i=>{i.classList.toggle('ok',i.value===i.dataset.ans);i.classList.toggle('ko',i.value!==i.dataset.ans&&i.value!=='');if(i.value===i.dataset.ans)ok++;});
+  const s=document.getElementById('fcs');s.style.display='inline-block';s.textContent='Score : '+ok+'/'+tot+' ('+Math.round(ok/tot*100)+'%)';
+  s.style.background=ok===tot?'#e8f5e9':ok>=tot*.7?'#fff8e1':'#ffebee';
+}
+function rstFC(){document.querySelectorAll('.fs').forEach(i=>{i.value='';i.classList.remove('ok','ko');});document.getElementById('fcs').style.display='none';}
+
+// ══ QCM ══
+const qcmData=[{q:"1. La prédation est une relation trophique :",opts:[{t:"A. Bénéfique pour le prédateur, désastreuse pour la proie",c:!0,ok:"Correct. + pour le prédateur / - pour la proie.",ko:""},{t:"B. Obligatoire pour le prédateur",c:!0,ok:"Correct. Le prédateur doit manger pour survivre.",ko:""},{t:"C. Bénéfique pour les deux individus",c:!1,ok:"",ko:"Incorrect. Bénéfique pour les DEUX = SYMBIOSE."},{t:"D. Facultative pour les deux individus",c:!1,ok:"",ko:"Incorrect. Obligatoire pour le prédateur."}],rep:[0,1]},{q:"2. La symbiose est une relation trophique :",opts:[{t:"A. Bénéfique pour les deux individus",c:!0,ok:"Correct. + / +.",ko:""},{t:"B. Obligatoire pour les deux partenaires",c:!0,ok:"Correct. Obligatoire mutuellement.",ko:""},{t:"C. Bénéfique pour un seul et sans effet pour l'autre",c:!1,ok:"",ko:"Incorrect. + / 0 = commensalisme."},{t:"D. Néfaste pour les deux",c:!1,ok:"",ko:"Incorrect. - / - = compétition."}],rep:[0,1]},{q:"3. Prédation vs Parasitisme — différence principale :",opts:[{t:"A. La prédation tue la proie, le parasitisme maintient l'hôte en vie",c:!0,ok:"Correct.",ko:""},{t:"B. La prédation est + / -, le parasitisme est + / +",c:!1,ok:"",ko:"Incorrect. Les deux sont + / -."},{t:"C. Le parasite est obligatoirement microscopique",c:!1,ok:"",ko:"Incorrect. Ténia, chenille = macroscopiques."},{t:"D. Les deux sont + / - obligatoires pour l'exploitant",c:!0,ok:"Correct.",ko:""}],rep:[0,3]},{q:"4. Les décomposeurs :",opts:[{t:"A. Fixent le CO₂ (producteurs primaires)",c:!1,ok:"",ko:"Incorrect. Fixer CO₂ = producteurs."},{t:"B. Minéralisent la matière organique morte",c:!0,ok:"Correct. Minéralisation.",ko:""},{t:"C. Sont indispensables au bouclage du cycle",c:!0,ok:"Correct. Sans eux, la MO s'accumule.",ko:""},{t:"D. Contrôlent les superprédateurs (C3)",c:!1,ok:"",ko:"Incorrect. Ils décomposent la MO morte."}],rep:[1,2]},{q:"5. Le rendement écologique Re :",opts:[{t:"A. Re = P / I × 100",c:!0,ok:"Correct.",ko:""},{t:"B. Est toujours > 50%",c:!1,ok:"",ko:"Incorrect. Re est faible (5-20%)."},{t:"C. Explique le rétrécissement des pyramides",c:!0,ok:"Correct. Re ≈ 10% → perte à chaque niveau.",ko:""},{t:"D. Pertes = respiration + excréments",c:!0,ok:"Correct.",ko:""}],rep:[0,2,3]},{q:"6. Pyramides écologiques :",opts:[{t:"A. Pyramide des énergies toujours normale",c:!0,ok:"Correct.",ko:""},{t:"B. Pyramide des nombres peut être inversée",c:!0,ok:"Correct. 1 chêne → milliers de chenilles.",ko:""},{t:"C. Pyramide des biomasses toujours normale",c:!1,ok:"",ko:"Incorrect. Peut être inversée (milieu marin)."},{t:"D. Pyramide des nombres = nb d'individus par niveau",c:!0,ok:"Correct.",ko:""}],rep:[0,1,3]},{q:"7. Cycle du carbone :",opts:[{t:"A. Photosynthèse : CO₂ → MO",c:!0,ok:"Correct.",ko:""},{t:"B. Respiration : MO → CO₂",c:!0,ok:"Correct.",ko:""},{t:"C. Décomposeurs ne participent pas au cycle",c:!1,ok:"",ko:"Incorrect. Rôle ESSENTIEL."},{t:"D. Le carbone est sans cesse recyclé",c:!0,ok:"Correct.",ko:""}],rep:[0,1,3]},{q:"8. Compétition :",opts:[{t:"A. Relation - / -",c:!0,ok:"Correct.",ko:""},{t:"B. Intra ou interspécifique",c:!0,ok:"Correct.",ko:""},{t:"C. Mène à la disparition des deux espèces",c:!1,ok:"",ko:"Incorrect. Une seule disparaît (exclusion)."},{t:"D. Favorise la biodiversité (spécialisation)",c:!0,ok:"Correct.",ko:""}],rep:[0,1,3]},{q:"9. Rhizobium / Légumineuse :",opts:[{t:"A. Symbiose + / +",c:!0,ok:"Correct.",ko:""},{t:"B. Rhizobium fixe N₂ atmosphérique",c:!0,ok:"Correct.",ko:""},{t:"C. Parasitisme (Rhizobium affaiblit la plante)",c:!1,ok:"",ko:"Incorrect. La plante bénéficie aussi."},{t:"D. La plante fournit des glucides en échange",c:!0,ok:"Correct.",ko:""}],rep:[0,1,3]},{q:"10. Synthèse — équilibre d'un écosystème :",opts:[{t:"A. Supprimer les prédateurs → déséquilibre en cascade",c:!0,ok:"Correct. Cas des cerfs p.133.",ko:""},{t:"B. Énergie se dégrade → nombre de niveaux limité",c:!0,ok:"Correct. Re ≈ 10%.",ko:""},{t:"C. La matière est recyclée indéfiniment",c:!0,ok:"Correct. Cycle fermé.",ko:""},{t:"D. Plus de niveaux = plus de biomasse disponible",c:!1,ok:"",ko:"Incorrect. Chaque niveau RÉDUIT la biomasse."}],rep:[0,1,2]}];
+function buildQCM(){
+  const c=document.getElementById('qcm-c');if(!c)return;c.innerHTML='';
+  qcmData.forEach((q,i)=>{const opts=q.opts.map((o,j)=>'<label class="qo" id="qo-'+i+'-'+j+'"><input type="checkbox" data-q="'+i+'" data-o="'+j+'"><span>'+o.t+'</span><div class="fb-txt" id="fb-'+i+'-'+j+'"></div></label>').join('');c.innerHTML+='<div class="qi"><div class="qq">'+q.q+'</div>'+opts+'<button class="btn bg" onclick="corrOneQ('+i+')" style="font-size:.76rem;margin-top:6px;">Vérifier Q'+(i+1)+'</button></div>';});
+}
+function corrOneQ(qi){
+  const q=qcmData[qi];let ok=!0;
+  q.opts.forEach((o,j)=>{const lbl=document.getElementById('qo-'+qi+'-'+j);const inp=lbl.querySelector('input');const fb=document.getElementById('fb-'+qi+'-'+j);const chk=inp.checked,shd=q.rep.includes(j);lbl.classList.remove('correct','wrong','missed');fb.textContent='';if(shd&&chk){lbl.classList.add('correct');fb.textContent=o.ok;}else if(!shd&&chk){lbl.classList.add('wrong');fb.textContent=o.ko;ok=!1;}else if(shd&&!chk){lbl.classList.add('missed');fb.textContent='Manquée : '+o.ok;ok=!1;}});
+  document.querySelectorAll('#qo-'+qi+'-0').forEach(el=>el.closest('.qi').querySelectorAll('.qo').forEach(x=>x.classList.add('locked')));
+  updQcmScore();
+}
+function corrAllQ(){qcmData.forEach((q,i)=>corrOneQ(i));}
+function rstAllQ(){document.querySelectorAll('.qi').forEach(qi=>{qi.querySelectorAll('input').forEach(inp=>{inp.checked=!1;inp.disabled=!1;});qi.querySelectorAll('.qo').forEach(o=>o.classList.remove('correct','wrong','missed','locked'));qi.querySelectorAll('.fb-txt').forEach(el=>el.textContent='');const fbEl=qi.querySelector('.q-feedback');if(fbEl)fbEl.remove();});document.getElementById('qcm-global-score').style.display='none';}
+function updQcmScore(){
+  let sc=0;qcmData.forEach((q,i)=>{const qi=document.getElementById('qo-'+i+'-0').closest('.qi');const checked=[...qi.querySelectorAll('input:checked')].map(c=>parseInt(c.dataset.o));if(q.rep.length===checked.length&&q.rep.every(r=>checked.includes(r)))sc++;});
+  const gs=document.getElementById('qcm-global-score');gs.style.display='inline-block';const p=Math.round(sc/qcmData.length*100);
+  gs.style.background=p>=80?'#e8f5e9':p>=50?'#fff8e1':'#ffebee';gs.style.color=p>=80?'#2E7D32':p>=50?'#E65100':'#c62828';
+  gs.textContent='Score : '+sc+'/'+qcmData.length+' ('+p+'%)';
+}
+
+window.addEventListener('load',()=>{buildFC();buildQCM();const cur=parseInt(localStorage.getItem('t2ch4tab')||'0');setTimeout(()=>{if(cur===4)drawPyra();if(cur===5)drawCycle();},150);});
+</script>
+</body>
+</html>
