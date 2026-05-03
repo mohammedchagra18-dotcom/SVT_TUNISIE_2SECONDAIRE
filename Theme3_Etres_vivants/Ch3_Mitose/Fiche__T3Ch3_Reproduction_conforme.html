@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T3-Ch3 — La Mitose, Mécanisme de la Reproduction Conforme</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --e:#B71C1C;--em:#C62828;--el:#ffebee;--ep:#fce4ec;
+  --v:#1B5E20;--vl:#e8f5e9;
+  --b:#0277BD;--bl:#e1f5fe;
+  --ar:#37474F;--arl:#eceff1;
+  --sa:#F57F17;--sal:#fffde7;
+  --r:#B71C1C;--rl:#ffebee;
+  --vi:#4A148C;--vil:#f3e5f5;
+  --j:#F9A825;--jl:#fffde7;
+  --o:#E65100;--ol:#fff3e0;
+  --bg:#ffebee;--tx:#1a1a1a;--mu:#666;
+  --brd:#ef9a9a;--sh:0 2px 12px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6;}
+header{background:linear-gradient(135deg,#7F0000,#B71C1C 50%,#E53935);color:#fff;padding:18px 26px 13px;position:sticky;top:0;z-index:100;box-shadow:0 3px 16px rgba(0,0,0,.3);}
+header h1{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:2px;}
+header p{font-size:.8rem;opacity:.85;}
+.signature-header{font-size:.7rem;opacity:.7;margin-top:3px;font-style:italic;letter-spacing:.6px;color:#ef9a9a;}
+.pb{height:4px;background:rgba(255,255,255,.3);border-radius:2px;margin-top:8px;}
+.pf{height:100%;background:#ef9a9a;border-radius:2px;transition:width .4s;width:9%;}
+.tw{background:#fff;border-bottom:2px solid var(--brd);position:sticky;top:86px;z-index:99;overflow-x:auto;}
+.ts{display:flex;min-width:max-content;}
+.t{padding:10px 9px;font-size:.7rem;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;color:var(--mu);white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;transition:all .2s;}
+.t:hover{color:var(--em);background:var(--el);}
+.t.on{color:var(--em);border-bottom-color:var(--em);}
+.content{max-width:960px;margin:0 auto;padding:18px 18px 60px;}
+.pan{display:none;}.pan.on{display:block;}
+.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:13px;box-shadow:var(--sh);border-left:5px solid var(--em);}
+.card.v{border-left-color:var(--v);}.card.r{border-left-color:var(--r);}.card.b{border-left-color:var(--b);}.card.ar{border-left-color:var(--ar);}
+h2{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:9px;color:var(--em);}
+h2.v{color:var(--v);}h2.r{color:var(--r);}h2.ar{color:var(--ar);}h2.b{color:var(--b);}
+h3{font-size:.88rem;font-weight:700;margin:9px 0 5px;color:var(--e);}
+.sech{background:linear-gradient(135deg,#7F0000,#C62828);color:#fff;padding:10px 15px;border-radius:10px;font-weight:600;margin-bottom:12px;font-size:.88rem;}
+.tip{background:#fdf6ec;border:1.5px solid var(--j);border-radius:10px;margin:8px 0;overflow:hidden;}
+.tip-head{padding:8px 13px;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:.86rem;font-weight:600;color:#7B5800;}
+.tip-head:hover{background:#fff8d6;}
+.tip-body{display:none;padding:10px 13px 12px;font-size:.85rem;line-height:1.7;color:#4a3800;border-top:1px solid #ffe082;}
+.tip-body.on{display:block;}
+.mq{background:linear-gradient(135deg,var(--vil),var(--el));border:2px solid var(--vi);border-radius:10px;padding:13px;margin:10px 0;}
+.mq-title{font-weight:700;color:var(--vi);font-size:.82rem;letter-spacing:.8px;text-transform:uppercase;margin-bottom:9px;}
+.mq p{margin-bottom:7px;font-size:.88rem;line-height:1.85;}
+select.bl{border:2px solid var(--vi);border-radius:5px;padding:2px 6px;font-size:.84rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;}
+select.bl.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.bl.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.mq-fb{font-size:.82rem;padding:6px 10px;border-radius:7px;margin-top:7px;font-weight:600;display:none;}
+.mq-fb.ok{background:#e8f5e9;color:#2E7D32;display:block;}
+.mq-fb.ko{background:#ffebee;color:#c62828;display:block;}
+.bck{background:var(--vi);color:#fff;border:none;padding:6px 13px;border-radius:7px;cursor:pointer;font-weight:700;font-size:.8rem;margin-top:8px;}
+.bck:hover{background:#311B92;}
+.brs{background:var(--brd);color:var(--tx);border:none;padding:6px 11px;border-radius:7px;cursor:pointer;font-size:.8rem;margin-top:8px;margin-left:5px;}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.83rem;}
+th{background:var(--em);color:#fff;padding:7px 9px;text-align:left;}
+th.v{background:var(--v);}th.r{background:var(--r);}th.ar{background:var(--ar);}th.b{background:var(--b);}
+td{padding:6px 9px;border-bottom:1px solid var(--brd);}
+tr:nth-child(even) td{background:var(--ep);}
+tr.hl td{background:#fff8e1 !important;font-weight:700;}
+.ret{background:var(--jl);border:1.5px solid var(--j);border-radius:9px;padding:10px 13px;margin:10px 0;}
+.ret h4{color:var(--o);font-size:.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.ret p{margin-bottom:4px;font-size:.85rem;}
+.ret dt{font-weight:700;color:var(--o);display:inline;}
+.ret dd{display:inline;margin-left:3px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:9px 0;}
+.al{list-style:none;display:grid;gap:5px;}
+.al li{padding:7px 11px;background:var(--el);border-radius:7px;border-left:4px solid var(--em);font-size:.85rem;}
+.al li::before{content:"✓ ";color:var(--em);font-weight:700;}
+.bstep{background:#fff;border-radius:11px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-top:4px solid var(--em);}
+.bstep.v{border-top-color:var(--v);}.bstep.b{border-top-color:var(--b);}.bstep.ar{border-top-color:var(--ar);}
+.bnum{display:inline-flex;align-items:center;justify-content:center;background:var(--em);color:#fff;border-radius:50%;width:26px;height:26px;font-weight:700;font-size:.88rem;margin-right:8px;flex-shrink:0;}
+.bnum.v{background:var(--v);}.bnum.b{background:var(--b);}.bnum.ar{background:var(--ar);}
+.gfb{font-size:.83rem;padding:7px 11px;border-radius:8px;margin-top:8px;font-weight:600;}
+.gfb.ok{background:#e8f5e9;color:#2E7D32;}
+.gfb.ko{background:#ffebee;color:#c62828;}
+.tab-exo{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--ar);}
+.tab-exo .ctx{background:var(--arl);border-radius:7px;padding:8px 12px;margin-bottom:9px;font-size:.84rem;border-left:3px solid var(--ar);}
+select.tcell{border:1.5px solid var(--vi);border-radius:4px;padding:2px 5px;font-size:.81rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;max-width:280px;}
+select.tcell.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.tcell.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.ord-exo{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--sa);}
+.ord-items{display:flex;flex-direction:column;gap:5px;margin:9px 0;}
+.ord-item{padding:8px 12px;background:var(--sal);border-radius:7px;cursor:grab;border:2px solid transparent;font-size:.85rem;display:flex;align-items:center;gap:8px;user-select:none;}
+.ord-item .pos-num{background:var(--sa);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;}
+.ord-item.correct-pos{background:#e8f5e9;border-color:#4CAF50;}
+.ord-item.wrong-pos{background:#ffebee;border-color:#f44336;}
+.ord-item.correct-pos .pos-num{background:#4CAF50;}
+.ord-item.wrong-pos .pos-num{background:#f44336;}
+.fcg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:10px 0;}
+.fcc{background:#fff;border-radius:9px;padding:12px;box-shadow:var(--sh);border-top:4px solid var(--em);}
+.fcp{font-size:.87rem;line-height:1.9;margin-bottom:7px;}
+select.fs{border:2px solid var(--vi);border-radius:5px;padding:2px 6px;font-size:.81rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;}
+select.fs.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.fs.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.fa{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.btn{padding:7px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:.83rem;}
+.bv{background:var(--em);color:#fff;}.bv:hover{background:var(--e);}
+.bg{background:var(--brd);color:var(--tx);}
+.qi{background:#fff;border-radius:10px;padding:13px;margin-bottom:10px;box-shadow:var(--sh);}
+.qq{font-weight:600;margin-bottom:8px;font-size:.89rem;}
+.qo{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:6px;margin-bottom:4px;cursor:pointer;font-size:.86rem;border:1.5px solid transparent;transition:background .15s;}
+.qo:hover:not(.locked){background:var(--el);}
+.qo input{accent-color:var(--em);margin-top:3px;flex-shrink:0;}
+.qo.correct{background:#e8f5e9;border-color:#4CAF50;}
+.qo.wrong{background:#ffebee;border-color:#f44336;}
+.qo.missed{background:#fff8e1;border-color:#FF9800;}
+.fb-txt{font-size:.8rem;margin-top:3px;display:none;line-height:1.5;}
+.qo.correct .fb-txt,.qo.wrong .fb-txt,.qo.missed .fb-txt{display:block;}
+.qo.correct .fb-txt{color:#2E7D32;}
+.qo.wrong .fb-txt{color:#c62828;}
+.qo.missed .fb-txt{color:#E65100;}
+img.manuel{max-width:100%;border-radius:8px;margin:9px auto;display:block;box-shadow:var(--sh);border:2px solid var(--brd);}
+img.manuel.pleine{max-width:100%;}
+img.manuel.schema{max-width:65%;}
+img.manuel.photo{max-width:80%;}
+.img-placeholder{width:100%;aspect-ratio:16/10;background:linear-gradient(135deg,var(--el),var(--arl));border-radius:8px;display:flex;align-items:center;justify-content:center;margin:9px 0;border:2px dashed var(--brd);flex-direction:column;gap:6px;}
+.img-placeholder span{font-size:.82rem;color:var(--mu);font-weight:600;}
+.img-placeholder small{font-size:.7rem;color:var(--mu);opacity:.7;}
+.pourquoi-box{background:linear-gradient(135deg,#7F0000,#B71C1C 50%,#E53935);color:#fff;border-radius:14px;padding:22px;margin-bottom:16px;}
+.pourquoi-box h2{color:#ef9a9a;font-size:1.18rem;margin-bottom:12px;}
+.pourquoi-box .obj-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.pourquoi-box .obj-item{background:rgba(255,255,255,.1);padding:10px 13px;border-radius:8px;font-size:.84rem;line-height:1.6;border-left:3px solid #ef9a9a;}
+.pourquoi-box .obj-num{display:inline-flex;align-items:center;justify-content:center;background:#ef9a9a;color:#7F0000;border-radius:50%;width:22px;height:22px;font-weight:700;font-size:.76rem;margin-right:6px;flex-shrink:0;}
+.qcm-ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.qcm-ctrl .btn{font-size:.78rem;}
+.qcm-score{font-size:.82rem;padding:6px 10px;border-radius:7px;font-weight:600;display:inline-block;margin-left:8px;}
+.bilan-rev{background:#fff;border-radius:10px;padding:16px;margin-bottom:12px;box-shadow:var(--sh);border-left:5px solid var(--em);}
+.bilan-rev h3{color:var(--em);font-size:.95rem;margin-bottom:10px;}
+.bilan-rev .obj-block{background:var(--el);border-radius:9px;padding:12px;margin-bottom:10px;border:2px solid var(--brd);}
+.bilan-rev .obj-num{display:inline-flex;align-items:center;justify-content:center;background:var(--em);color:#fff;border-radius:50%;width:24px;height:24px;font-weight:700;font-size:.78rem;margin-right:7px;flex-shrink:0;}
+.bilan-rev .obj-title{font-weight:700;font-size:.86rem;color:var(--e);margin-bottom:6px;display:flex;align-items:center;}
+.expl-text{font-size:.88rem;line-height:1.85;color:var(--tx);margin-bottom:10px;padding:10px 14px;background:var(--el);border-radius:9px;border-left:4px solid var(--em);}
+.focus-box{background:linear-gradient(135deg,var(--bl),var(--el));border:2px solid var(--b);border-radius:10px;padding:13px;margin:10px 0;font-size:.86rem;line-height:1.8;}
+.focus-box strong{color:var(--b);}
+footer{background:linear-gradient(135deg,#7F0000,#B71C1C 50%,#E53935);color:#fff;text-align:center;padding:14px 18px;font-size:.78rem;opacity:.9;margin-top:30px;border-radius:12px 12px 0 0;}
+footer .ft-sig{font-size:.76rem;opacity:.75;font-style:italic;letter-spacing:.6px;margin-top:4px;}
+.resume-hero{background:linear-gradient(135deg,#7F0000,#B71C1C 50%,#E53935);color:#fff;border-radius:14px;padding:22px;margin-bottom:16px;}
+.resume-hero h2{color:#ef9a9a;font-size:1.15rem;margin-bottom:8px;}
+.resume-hero p{font-size:.9rem;line-height:1.75;opacity:.92;}
+.resume-hero .sub{font-size:.8rem;opacity:.7;margin-top:6px;font-style:italic;}
+.concept-map{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+.cnode{border-radius:11px;padding:13px;cursor:pointer;transition:all .25s;border:2px solid transparent;}
+.cnode:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15);}
+.cnode.active{border-color:rgba(255,255,255,.5);}
+.cnode .cn-icon{font-size:1.5rem;margin-bottom:5px;}
+.cnode .cn-title{font-size:.85rem;font-weight:700;margin-bottom:3px;}
+.cnode .cn-sub{font-size:.74rem;opacity:.85;line-height:1.35;}
+.cn-a{background:linear-gradient(135deg,#B71C1C,#C62828);color:#fff;}
+.cn-b{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;}
+.cn-c{background:linear-gradient(135deg,#0277BD,#0288D1);color:#fff;}
+.cn-d{background:linear-gradient(135deg,#B71C1C,#880000);color:#fff;}
+.cn-e{background:linear-gradient(135deg,#37474F,#546E7A);color:#fff;}
+.cn-panel{display:none;background:#fff;border-radius:11px;padding:16px;margin-bottom:12px;box-shadow:var(--sh);}
+.cn-panel.on{display:block;}
+.cn-panel.a{border-left:5px solid var(--em);}
+.cn-panel.b{border-left:5px solid var(--v);}
+.cn-panel.c{border-left:5px solid var(--b);}
+.cn-panel.d{border-left:5px solid var(--r);}
+.cn-panel.e{border-left:5px solid var(--ar);}
+.connexion-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:11px 0;}
+.conn-item{border-radius:9px;padding:12px;border:2px solid;font-size:.84rem;line-height:1.6;}
+.conn-item .conn-ch{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;opacity:.75;}
+.conn-item .conn-notion{font-weight:700;margin-bottom:3px;}
+.piege-item{border-radius:10px;padding:13px;margin-bottom:9px;border:2px solid var(--r);background:var(--rl);overflow:hidden;}
+.piege-head{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:.88rem;font-weight:700;color:var(--r);}
+.piege-body{display:none;padding-top:10px;font-size:.86rem;line-height:1.7;color:var(--tx);}
+.piege-body.on{display:block;}
+.piege-body strong{color:var(--r);}
+.reflex{background:linear-gradient(135deg,var(--vil),var(--el));border:2px solid var(--vi);border-radius:11px;padding:14px;margin:12px 0;}
+.reflex h4{color:var(--vi);font-size:.85rem;font-weight:700;margin-bottom:10px;}
+.reflex-q{background:#fff;border-radius:8px;padding:11px;margin-bottom:8px;}
+.reflex-q .rq{font-size:.88rem;line-height:1.7;font-weight:600;margin-bottom:7px;}
+.rev-btn{background:var(--vi);color:#fff;border:none;padding:5px 11px;border-radius:6px;cursor:pointer;font-size:.79rem;font-weight:600;}
+.reflex-ans{display:none;margin-top:8px;padding:9px 12px;background:var(--vil);border-radius:7px;font-size:.85rem;line-height:1.7;color:#4a0080;}
+.reflex-ans.on{display:block;}
+@media(max-width:600px){
+  .g2,.concept-map,.connexion-grid,.pourquoi-box .obj-list{grid-template-columns:1fr;}
+  header h1{font-size:.85rem;}.t{padding:8px 3px;font-size:.62rem;}
+  img.manuel.schema,img.manuel.photo{max-width:100%;}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Chapitre 3 — La Mitose & la Reproduction Conforme</h1>
+  <p>2ème Secondaire SVT · Thème 3 · Pages 194–214 · 3 Activités</p>
+  <div class="signature-header">INGÉNIEUR Mohamed CHAGRAOUI / ENSEIGNANT SVT · CANDIDAT CAPES SVT 2026 · TUNISIE</div>
+  <div class="pb"><div class="pf" id="pf"></div></div>
+</header>
+
+<div class="tw"><div class="ts">
+  <button class="t on"  onclick="showTab(0)">📚 Acquis</button>
+  <button class="t"     onclick="showTab(1)">🧠 Résumé</button>
+  <button class="t"     onclick="showTab(2)">🔬 Act.1 — Reproduction conforme</button>
+  <button class="t"     onclick="showTab(3)">🧫 Act.2 — Les phases de la mitose</button>
+  <button class="t"     onclick="showTab(4)">🧬 Act.3 — Caryotype & Chromosomes</button>
+  <button class="t"     onclick="showTab(5)">📋 Bilan</button>
+  <button class="t"     onclick="showTab(6)">📝 Exercices</button>
+  <button class="t"     onclick="showTab(7)">📋 Bilan Révision</button>
+  <button class="t"     onclick="showTab(8)">🃏 Flashcards</button>
+  <button class="t"     onclick="showTab(9)">✏️ QCM</button>
+</div></div>
+
+<div class="content">
+
+<!-- ══ 0 ACQUIS ══ -->
+<div class="pan on" id="p0">
+  <div class="pourquoi-box">
+    <h2>🎯 Pourquoi ce chapitre ?</h2>
+    <p style="font-size:.88rem;line-height:1.7;margin-bottom:12px;opacity:.92;">
+      D'après le <strong>programme officiel tunisien</strong> (Thème 3, Objectif 3 — p.19), ce chapitre vise à :
+    </p>
+    <div class="obj-list">
+      <div class="obj-item"><span class="obj-num">1</span> Dégager la notion de <strong>reproduction conforme</strong></div>
+      <div class="obj-item"><span class="obj-num">2</span> Identifier les <strong>étapes de la mitose</strong> (prophase, métaphase, anaphase, télophase)</div>
+      <div class="obj-item"><span class="obj-num">3</span> Exploiter des préparations microscopiques pour <strong>observer et schématiser</strong> les stades</div>
+      <div class="obj-item"><span class="obj-num">4</span> Montrer que la mitose assure le <strong>maintien des caractères</strong> de la cellule souche</div>
+      <div class="obj-item"><span class="obj-num">5</span> Définir le <strong>caryotype</strong> et donner la signification du nombre <strong>2n chromosomes</strong></div>
+      <div class="obj-item"><span class="obj-num">6</span> Identifier les phases du <strong>cycle chromosomique</strong></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>📚 Préacquis</h2>
+    <ul class="al">
+      <li><strong>Ch.1 —</strong> La cellule eucaryote possède un noyau contenant la chromatine (ADN). Le centriole intervient dans la division cellulaire.</li>
+      <li><strong>Ch.2 —</strong> Les caractères héréditaires sont transmis des parents aux descendants via l'ADN.</li>
+      <li>Les <strong>vrais jumeaux</strong> sont identiques car issus d'une même cellule-œuf qui s'est divisée.</li>
+      <li>La <strong>colchicine</strong> bloque la mitose en métaphase → permet l'observation des chromosomes.</li>
+    </ul>
+  </div>
+  <div class="card ar">
+    <h2 class="ar">❓ 2 Questions directrices</h2>
+    <ol style="margin-left:17px;line-height:2.4;font-size:.92rem">
+      <li>Comment les <strong>divisions cellulaires</strong> assurent-elles la reproduction conforme ?</li>
+      <li>Quelle est la <strong>forme et le nombre</strong> des chromosomes dans une espèce ?</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══ 1 RÉSUMÉ ══ -->
+<div class="pan" id="p1">
+  <div class="resume-hero">
+    <h2>🧠 Comprendre avant de mémoriser</h2>
+    <p>La mitose est le mécanisme qui permet à une cellule de se diviser en <strong>deux cellules filles rigoureusement identiques</strong>. Imagine une photocopieuse qui duplique un livre page par page, puis sépare les deux exemplaires. La mitose, c'est exactement cela : d'abord, la cellule <strong>duplique son ADN</strong> (chaque chromosome devient double), puis elle <strong>répartit équitablement</strong> les chromosomes entre les deux cellules filles. Résultat : chaque cellule fille hérite du <strong>même nombre de chromosomes</strong> que la cellule mère. Ce mécanisme est à la base de la <strong>croissance</strong>, du <strong>renouvellement cellulaire</strong> et de la <strong>reproduction asexuée</strong> (bouturage, clonage).</p>
+    <p class="sub">Clique sur chaque notion · Pièges CAPES et connexions révélés</p>
+  </div>
+
+  <div class="concept-map">
+    <div class="cnode cn-a" onclick="showCN('a')"><div class="cn-icon">🔬</div><div class="cn-title">Les 4 phases</div><div class="cn-sub">Prophase → Métaphase → Anaphase → Télophase</div></div>
+    <div class="cnode cn-b" onclick="showCN('b')"><div class="cn-icon">🧬</div><div class="cn-title">Caryotype</div><div class="cn-sub">2n chromosomes · Autosomes · Gonosomes</div></div>
+    <div class="cnode cn-c" onclick="showCN('c')"><div class="cn-icon">🔄</div><div class="cn-title">Cycle chromosomique</div><div class="cn-sub">Interphase · Duplication · Condensation</div></div>
+    <div class="cnode cn-d" onclick="showCN('d')"><div class="cn-icon">⚠️</div><div class="cn-title">3 Pièges classiques</div><div class="cn-sub">Erreurs fréquentes CAPES</div></div>
+    <div class="cnode cn-e" onclick="showCN('e')"><div class="cn-icon">🔗</div><div class="cn-title">Connexions manuel</div><div class="cn-sub">Ch.1 · Ch.2 · Ch.4</div></div>
+  </div>
+
+  <!-- Panneaux conceptuels -->
+  <div class="cn-panel a" id="cn-a">
+    <h3 style="color:var(--em)">🔬 Les 4 phases de la mitose</h3>
+    <p class="expl-text">La mitose est un phénomène <strong>continu</strong> qui dure 1 à 3 heures. On la découpe artificiellement en 4 phases pour faciliter son étude. Le critère principal pour distinguer les phases est la <strong>position des chromosomes</strong> dans la cellule.</p>
+    <table>
+      <tr><th>Phase</th><th>Durée</th><th>Événements clés</th><th>État des chromosomes</th></tr>
+      <tr class="hl"><td><strong>Prophase</strong></td><td>15–60 min</td><td>Condensation chromatine · Disparition enveloppe nucléaire · Formation fuseau</td><td>2 chromatides reliées par centromère</td></tr>
+      <tr><td><strong>Métaphase</strong></td><td>Quelques min</td><td>Chromosomes alignés à l'équateur = <strong>plaque équatoriale</strong></td><td>Condensation maximale · 2 chromatides</td></tr>
+      <tr class="hl"><td><strong>Anaphase</strong></td><td>2–3 min</td><td>Séparation des chromatides · Migration vers les pôles</td><td>1 chromatide par chromosome</td></tr>
+      <tr><td><strong>Télophase</strong></td><td>30–60 min</td><td>Décondensation · Reformation enveloppe nucléaire · Division cytoplasme</td><td>Retour à l'état de chromatine</td></tr>
+    </table>
+    <div class="tip"><div class="tip-head" onclick="togTip(this)">💡 Moyen mnémotechnique pour retenir l'ordre</div><div class="tip-body"><strong>P</strong>rophase = <strong>P</strong>réparation (chromosomes se condensent)<br><strong>M</strong>étaphase = <strong>M</strong>ilieu (chromosomes au milieu)<br><strong>A</strong>naphase = <strong>A</strong>ller vers les pôles (chromatides migrent)<br><strong>T</strong>élophase = <strong>T</strong>erminer (tout se reforme)<br>→ PMAT : Pacha Mange À Table !</div></div>
+  </div>
+
+  <div class="cn-panel b" id="cn-b">
+    <h3 style="color:var(--v)">🧬 Le Caryotype — carte d'identité chromosomique</h3>
+    <p class="expl-text">Le caryotype est comme la <strong>carte d'identité génétique</strong> d'une espèce. Il représente l'ensemble des chromosomes d'une cellule, classés par <strong>taille</strong> et par <strong>position du centromère</strong>. Chaque espèce a un caryotype caractéristique. L'Homme a 46 chromosomes (2n = 46), le Renard 38, la Drosophile 8.</p>
+    <table>
+      <tr><th class="v">Type de chromosomes</th><th class="v">Définition</th><th class="v">Exemple humain</th></tr>
+      <tr class="hl"><td><strong>Autosomes</strong></td><td>Paires identiques chez les deux sexes</td><td>22 paires (paires 1 à 22)</td></tr>
+      <tr><td><strong>Gonosomes (chromosomes sexuels)</strong></td><td>Paire différente selon le sexe</td><td>XX (femme) ou XY (homme)</td></tr>
+    </table>
+    <p style="font-size:.85rem;margin-top:8px;color:var(--e)"><strong>Formule chromosomique :</strong> Homme = 2n = 46 (44 autosomes + XY) · Femme = 2n = 46 (44 autosomes + XX)</p>
+  </div>
+
+  <div class="cn-panel c" id="cn-c">
+    <h3 style="color:var(--b)">🔄 Le Cycle Chromosomique</h3>
+    <p class="expl-text">Les chromosomes ne sont pas toujours visibles. Pendant l'<strong>interphase</strong> (période entre deux mitoses), ils sont décondensés sous forme de <strong>chromatine</strong> (filaments fins et emmêlés). Ce n'est que pendant la mitose qu'ils se condensent en bâtonnets visibles. Au cours de l'interphase (phase S), l'ADN se réplique : chaque chromosome passe de 1 à 2 chromatides. C'est cette duplication qui assure que chaque cellule fille recevra une copie complète de l'information génétique.</p>
+  </div>
+
+  <div class="cn-panel d" id="cn-d">
+    <h3 style="color:var(--r)">⚠️ 3 Pièges classiques CAPES</h3>
+    <div class="piege-item"><div class="piege-head" onclick="togPiege(this)">⚠️ Piège 1 — Chromatine ≠ Chromosome <span style="margin-left:auto">▼</span></div><div class="piege-body">La <strong>chromatine</strong> = état décondensé (interphase, filaments emmêlés). Les <strong>chromosomes</strong> = état condensé (mitose, bâtonnets visibles). C'est la MÊME molécule d'ADN sous deux formes différentes. Erreur fréquente : dire que la cellule n'a pas d'ADN en interphase parce qu'on ne voit pas de chromosomes !</div></div>
+    <div class="piege-item"><div class="piege-head" onclick="togPiege(this)">⚠️ Piège 2 — 2n en métaphase ≠ 2n en anaphase <span style="margin-left:auto">▼</span></div><div class="piege-body">En <strong>métaphase</strong> : 2n chromosomes à 2 chromatides chacun = 4n ADN.<br>En <strong>anaphase</strong> : les chromatides se séparent → 4n chromosomes à 1 chromatide (2n qui migrent vers chaque pôle).<br>En <strong>télophase</strong> : 2n chromosomes à 1 chromatide dans chaque cellule fille.<br>Le nombre de chromosomes double temporairement pendant l'anaphase !</div></div>
+    <div class="piege-item"><div class="piege-head" onclick="togPiege(this)">⚠️ Piège 3 — Mitose animale ≠ Mitose végétale <span style="margin-left:auto">▼</span></div><div class="piege-body"><strong>Cellule animale :</strong> présence de centrioles (aster) · division du cytoplasme par <strong>étranglement</strong>.<br><strong>Cellule végétale :</strong> pas de centriole · division par construction d'une <strong>nouvelle paroi</strong> à l'équateur.<br>Les phases (PMAT) sont IDENTIQUES, seul le mécanisme de division du cytoplasme diffère.</div></div>
+  </div>
+
+  <div class="cn-panel e" id="cn-e">
+    <h3 style="color:var(--ar)">🔗 Connexions avec le manuel</h3>
+    <div class="connexion-grid">
+      <div class="conn-item" style="border-color:var(--em);background:var(--el)"><div class="conn-ch" style="color:var(--em)">← Chapitre 1 — La Cellule</div><p style="font-size:.82rem;margin-top:3px">Le centriole (Ch.1) forme le fuseau de division. La membrane nucléaire se désagrège puis se reforme autour de chaque lot de chromosomes.</p></div>
+      <div class="conn-item" style="border-color:var(--v);background:var(--vl)"><div class="conn-ch" style="color:var(--v)">← Chapitre 2 — Espèce & Lignée</div><p style="font-size:.82rem;margin-top:3px">Le caryotype (nombre et forme des chromosomes) est un caractère SPÉCIFIQUE de l'espèce. L'Homme a 46 chromosomes, le Renard 38.</p></div>
+      <div class="conn-item" style="border-color:var(--b);background:var(--bl)"><div class="conn-ch" style="color:var(--b)">→ Chapitre 4 — Information génétique</div><p style="font-size:.82rem;margin-top:3px">La duplication de l'ADN en interphase (phase S) est le mécanisme moléculaire de la reproduction conforme. La réplication semi-conservative expliquée en Ch.4.</p></div>
+      <div class="conn-item" style="border-color:var(--ar);background:var(--arl)"><div class="conn-ch" style="color:var(--ar)">Thème 1 — Géologie</div><p style="font-size:.82rem;margin-top:3px">La colchicine (alcaloïde extrait du colchique) bloque la mitose en métaphase. Utilisée pour réaliser les caryotypes.</p></div>
+    </div>
+  </div>
+
+  <div class="reflex"><h4>💭 Questions de réflexion</h4>
+    <div class="reflex-q"><div class="rq">1. Une cellule humaine en métaphase possède 46 chromosomes. Combien de chromatides contient-elle ? Et en anaphase ?</div><button class="rev-btn" onclick="togAns(this)">Voir</button><div class="reflex-ans"><strong>Métaphase :</strong> 46 chromosomes × 2 chromatides = <strong>92 chromatides</strong> (4n ADN).<br><strong>Anaphase :</strong> les chromatides se séparent → 92 chromosomes à 1 chromatide (46 migrent vers chaque pôle). Chaque future cellule fille héritera de 46 chromosomes. Le nombre de chromosomes est donc temporairement doublé pendant l'anaphase (4n = 92).</div></div>
+    <div class="reflex-q"><div class="rq">2. Pourquoi les cellules d'une même espèce ont-elles toutes le même caryotype ? Et pourquoi les cellules d'un même individu sont-elles identiques entre elles ?</div><button class="rev-btn" onclick="togAns(this)">Voir</button><div class="reflex-ans">Toutes les cellules d'un individu proviennent de la <strong>même cellule-œuf</strong> par mitoses successives. Comme la mitose est une reproduction conforme (maintien du nombre de chromosomes), toutes les cellules filles héritent du même caryotype que la cellule-mère. C'est le principe même de la reproduction conforme : la mitose conserve l'information génétique à l'identique de génération cellulaire en génération cellulaire.</div></div>
+  </div>
+</div>
+
+<!-- ══ 2 ACTIVITÉ 1 — REPRODUCTION CONFORME ══ -->
+<div class="pan" id="p2">
+  <div class="sech">🔬 Activité 1 — Notion de Reproduction Conforme (p.195–196)</div>
+
+  <div class="card">
+    <h2>Qu'est-ce que la reproduction conforme ?</h2>
+    <p class="expl-text">La <strong>reproduction conforme</strong> est le processus par lequel un organisme produit des descendants <strong>génétiquement identiques</strong> à lui-même, sans intervention de gamètes. Contrairement à la reproduction sexuée (qui mélange le matériel génétique de deux parents), la reproduction conforme transmet l'information génétique <strong>à l'identique</strong>. C'est le mécanisme du <strong>bouturage</strong>, du <strong>marcottage</strong>, du <strong>clonage</strong> et de la <strong>mitose</strong>.</p>
+
+    <div class="g2">
+      <div>
+        <h3>Exemples de reproduction conforme</h3>
+        <table>
+          <tr><th>Type</th><th>Exemple</th><th>Résultat</th></tr>
+          <tr class="hl"><td><strong>Multiplication végétative</strong></td><td>Bouturage, marcottage, greffage</td><td>Plants identiques au pied-mère</td></tr>
+          <tr><td><strong>Culture in vitro</strong></td><td>Microbouturage pomme de terre</td><td>Milliers de plants identiques</td></tr>
+          <tr class="hl"><td><strong>Clonage naturel</strong></td><td>Vrais jumeaux humains</td><td>Deux individus génétiquement identiques</td></tr>
+          <tr><td><strong>Culture bactérienne</strong></td><td>Souches S et R de pneumocoques</td><td>Colonies identiques à la bactérie initiale</td></tr>
+        </table>
+      </div>
+      <div>
+        <img class="manuel photo" src="images/T3Ch3_Fig1_veaux_clones.PNG" alt="Fig.1 — Veaux clonés (p.194)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.1 — Veaux clonés</span><small>p.194</small></div>
+        <img class="manuel photo" src="images/T3Ch3_Fig2_culture_in_vitro_saint_paulia.PNG" alt="Fig.2 — Culture in vitro (p.194)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.2 — Culture in vitro</span><small>p.194</small></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div><img class="manuel schema" src="images/T3Ch3_Fig3_microbouturage_pomme_terre.PNG" alt="Fig.3 — Microbouturage (p.195)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.3 — Microbouturage</span><small>p.195</small></div></div>
+      <div><img class="manuel schema" src="images/T3Ch3_Fig4_souches_bacteriennes.PNG" alt="Fig.4 — Souches bactériennes (p.196)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.4 — Souches</span><small>p.196</small></div></div>
+    </div>
+    <img class="manuel photo" src="images/T3Ch3_Fig5_vrais_jumeaux.PNG" alt="Fig.5 — Vrais jumeaux (p.196)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none"><span>📷 Fig.5 — Vrais jumeaux</span><small>p.196</small></div>
+
+    <div class="ret"><h4>📌 Retenons — Reproduction conforme</h4>
+      <p><dt>Reproduction conforme :</dt><dd>production de descendants génétiquement identiques au parent, par mitose. S'oppose à la reproduction sexuée (2 parents, brassage génétique).</dd></p>
+      <p><dt>Clone :</dt><dd>ensemble d'individus génétiquement identiques issus d'un même ancêtre par reproduction conforme.</dd></p>
+    </div>
+
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz</div>
+      <div id="mq1-q">
+        <p>1. La reproduction conforme produit des descendants <select class="bl" data-rep="génétiquement identiques au parent (par mitose)"><option value="">—</option><option>génétiquement différents (brassage)</option><option>génétiquement identiques au parent (par mitose)</option></select>.</p>
+        <p>2. Les vrais jumeaux sont un exemple de <select class="bl" data-rep="clonage naturel (reproduction conforme)"><option value="">—</option><option>reproduction sexuée (deux parents)</option><option>clonage naturel (reproduction conforme)</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq1')">✓ Vérifier</button><button class="brs" onclick="rsMQ('mq1')">↺</button><div class="mq-fb" id="mq1-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 3 ACTIVITÉ 2 — LES PHASES DE LA MITOSE ══ -->
+<div class="pan" id="p3">
+  <div class="sech">🧫 Activité 2 — Les étapes de la mitose (p.197–202)</div>
+
+  <div class="card">
+    <h2>Observer des cellules en division</h2>
+    <p class="expl-text">Pour observer la mitose, on utilise des <strong>méristèmes</strong> de racines (oignon, ail) — zones de croissance active où les cellules se divisent rapidement. On colore au <strong>carmin acétique</strong> (colorant spécifique des noyaux) qui permet de visualiser les chromosomes. La <strong>colchicine</strong> est une substance qui bloque la mitose en métaphase en empêchant la formation du fuseau, ce qui permet d'observer les chromosomes sous leur forme la plus condensée.</p>
+
+    <div class="g2">
+      <div><img class="manuel photo" src="images/T3Ch3_Fig7a_mitose_oignon_MO.PNG" alt="Fig.7a — Cellules d'oignon en mitose (p.198)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.7a — Mitose oignon</span><small>p.198</small></div></div>
+      <div><img class="manuel schema" src="images/T3Ch3_Fig7b_schemas_mitose_oignon.PNG" alt="Fig.7b — Schémas d'interprétation (p.198)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.7b — Schémas</span><small>p.198</small></div></div>
+    </div>
+
+    <img class="manuel pleine" src="images/T3Ch3_Fig8_etapes_mitose_animale.PNG" alt="Fig.8 — Étapes de la mitose animale (p.199)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none"><span>📷 Fig.8 — Étapes mitose animale</span><small>p.199</small></div>
+
+    <p class="expl-text">La mitose est un <strong>phénomène continu</strong> qu'on découpe artificiellement en 4 phases selon la position et l'aspect des chromosomes. Le critère de reconnaissance est simple : <strong>où sont les chromosomes et sous quelle forme ?</strong></p>
+
+    <table>
+      <tr><th>Phase</th><th>Ce qu'on observe</th><th>État des chromosomes</th><th>Durée</th></tr>
+      <tr class="hl"><td><strong>Prophase</strong></td><td>Chromosomes apparaissent · Enveloppe nucléaire disparaît · Fuseau se forme</td><td>2 chromatides reliées par un centromère</td><td>15–60 min</td></tr>
+      <tr><td><strong>Métaphase</strong></td><td>Chromosomes alignés au centre = <strong>plaque équatoriale</strong></td><td>Condensation maximale · 2 chromatides</td><td>Quelques min</td></tr>
+      <tr class="hl"><td><strong>Anaphase</strong></td><td>Les chromatides se séparent et migrent vers les pôles</td><td>1 chromatide = 1 chromosome</td><td>2–3 min</td></tr>
+      <tr><td><strong>Télophase</strong></td><td>Chromosomes se décondensent · Enveloppes nucléaires se reforment</td><td>Retour à la chromatine</td><td>30–60 min</td></tr>
+    </table>
+
+    <div class="g2">
+      <div><img class="manuel schema" src="images/T3Ch3_Fig10a_cellules_filles_animales.PNG" alt="Fig.10a — Cellules filles animales (p.202)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.10a — Cellules filles</span><small>p.202</small></div></div>
+      <div><img class="manuel schema" src="images/T3Ch3_Fig10b_cellules_filles_vegetales.PNG" alt="Fig.10b — Cellules filles végétales (p.202)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.10b — Cellules filles</span><small>p.202</small></div></div>
+    </div>
+
+    <div class="focus-box">
+      <strong>🔍 Focus — Différence mitose animale / végétale (fig.9, p.200-201) :</strong><br>
+      • <strong>Cellule animale :</strong> possède un <strong>centrosome</strong> (2 centrioles) qui se dédouble et migre aux pôles → forme l'<strong>aster</strong>. Division du cytoplasme par <strong>étranglement</strong>.<br>
+      • <strong>Cellule végétale :</strong> PAS de centriole. Les fibres du fuseau se forment à partir du cytoplasme. Division par construction d'une <strong>nouvelle paroi</strong> à l'équateur.<br>
+      • Les 4 phases (PMAT) sont <strong>identiques</strong> dans les deux types cellulaires.
+    </div>
+
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz — Phases</div>
+      <div id="mq2-q">
+        <p>1. En métaphase, les chromosomes sont <select class="bl" data-rep="alignés à l'équateur (plaque équatoriale)"><option value="">—</option><option>dispersés dans la cellule</option><option>alignés à l'équateur (plaque équatoriale)</option></select>.</p>
+        <p>2. La séparation des chromatides se produit en <select class="bl" data-rep="anaphase"><option value="">—</option><option>métaphase</option><option>anaphase</option><option>télophase</option></select>.</p>
+        <p>3. La cellule végétale se distingue par <select class="bl" data-rep="l'absence de centriole et la construction d'une nouvelle paroi"><option value="">—</option><option>l'absence de fuseau de division</option><option>l'absence de centriole et la construction d'une nouvelle paroi</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq2')">✓ Vérifier</button><button class="brs" onclick="rsMQ('mq2')">↺</button><div class="mq-fb" id="mq2-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 4 ACTIVITÉ 3 — CARYOTYPE ══ -->
+<div class="pan" id="p4">
+  <div class="sech">🧬 Activité 3 — Les Chromosomes : Forme et Nombre (p.203–206)</div>
+
+  <div class="card b">
+    <h2 class="b">Le Caryotype — photographie des chromosomes</h2>
+    <p class="expl-text">Un <strong>caryotype</strong> est une photographie des chromosomes d'une cellule, classés par <strong>taille décroissante</strong> et par <strong>position du centromère</strong>. Il est réalisé en bloquant la mitose en <strong>métaphase</strong> (colchicine), moment où les chromosomes sont les plus condensés donc les plus visibles. Le caryotype est <strong>caractéristique de chaque espèce</strong> : l'Homme a 46 chromosomes, le Renard 38, la Drosophile 8.</p>
+
+    <div class="g2">
+      <div><img class="manuel schema" src="images/T3Ch3_Fig1a_realisation_caryotype.PNG" alt="Fig.1a — Réalisation caryotype (p.203)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.1a — Caryotype</span><small>p.203</small></div></div>
+      <div><img class="manuel schema" src="images/T3Ch3_Fig1b_etapes_caryotype.PNG" alt="Fig.1b — Étapes (p.203)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.1b — Étapes</span><small>p.203</small></div></div>
+    </div>
+    <div class="g2">
+      <div><img class="manuel schema" src="images/T3Ch3_Fig2a_caryotype_humain_masculin.PNG" alt="Fig.2a — Caryotype homme (p.203)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.2a — Homme</span><small>p.203</small></div></div>
+      <div><img class="manuel schema" src="images/T3Ch3_Fig2b_caryotype_humain_feminin.PNG" alt="Fig.2b — Caryotype femme (p.203)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.2b — Femme</span><small>p.203</small></div></div>
+    </div>
+
+    <table>
+      <tr><th class="b">Concept</th><th class="b">Définition</th><th class="b">Exemple humain</th></tr>
+      <tr class="hl"><td><strong>2n</strong></td><td>Nombre total de chromosomes dans une cellule diploïde</td><td>2n = 46</td></tr>
+      <tr><td><strong>n</strong></td><td>Nombre de paires de chromosomes (ou nombre dans les gamètes)</td><td>n = 23</td></tr>
+      <tr class="hl"><td><strong>Autosomes</strong></td><td>Chromosomes identiques chez les deux sexes</td><td>22 paires (1 à 22)</td></tr>
+      <tr><td><strong>Gonosomes</strong></td><td>Chromosomes sexuels (déterminent le sexe)</td><td>XX (femme) ou XY (homme)</td></tr>
+      <tr class="hl"><td><strong>Chromosomes homologues</strong></td><td>Paires de chromosomes semblables (taille, centromère)</td><td>1 chromosome maternel + 1 paternel</td></tr>
+    </table>
+
+    <div class="g2">
+      <div><img class="manuel schema" src="images/T3Ch3_Fig3a_caryotype_renard_male.PNG" alt="Fig.3a — Renard mâle (p.204)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.3a — Renard ♂</span><small>p.204</small></div></div>
+      <div><img class="manuel schema" src="images/T3Ch3_Fig3b_caryotype_renard_femelle.PNG" alt="Fig.3b — Renard femelle (p.204)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.3b — Renard ♀</span><small>p.204</small></div></div>
+    </div>
+    <div class="g2">
+      <div><img class="manuel schema" src="images/T3Ch3_Fig4_caryotype_petunia.PNG" alt="Fig.4 — Pétunia (p.204)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.4 — Pétunia</span><small>p.204</small></div></div>
+      <div><img class="manuel schema" src="images/T3Ch3_Fig5_caryotype_drosophile.PNG" alt="Fig.5 — Drosophile (p.204)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="img-placeholder" style="display:none"><span>📷 Fig.5 — Drosophile</span><small>p.204</small></div></div>
+    </div>
+
+    <img class="manuel pleine" src="images/T3Ch3_Fig7_cycle_chromosomique.PNG" alt="Fig.7 — Cycle chromosomique (p.206)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none"><span>📷 Fig.7 — Cycle chromosomique</span><small>p.206</small></div>
+
+    <div class="focus-box">
+      <strong>🔍 Focus — Le cycle chromosomique (fig.7, p.206) :</strong><br>
+      • <strong>Interphase (phase S) :</strong> l'ADN se réplique → chaque chromosome passe de 1 chromatide à 2 chromatides (duplication).<br>
+      • <strong>Mitose (anaphase) :</strong> les 2 chromatides se séparent → chaque cellule fille reçoit 1 chromatide de chaque chromosome.<br>
+      • <strong>Conséquence :</strong> chaque cellule fille hérite exactement du même patrimoine génétique (mêmes chromosomes, même nombre) que la cellule mère. C'est le fondement de la reproduction conforme.
+    </div>
+
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz — Caryotype</div>
+      <div id="mq3-q">
+        <p>1. 2n = 46 signifie que l'espèce humaine possède <select class="bl" data-rep="46 chromosomes par cellule (23 paires)"><option value="">—</option><option>23 chromosomes par cellule</option><option>46 chromosomes par cellule (23 paires)</option></select>.</p>
+        <p>2. Une cellule humaine en métaphase contient <select class="bl" data-rep="46 chromosomes à 2 chromatides = 92 chromatides"><option value="">—</option><option>23 chromosomes</option><option>46 chromosomes à 2 chromatides = 92 chromatides</option></select>.</p>
+        <p>3. Les chromosomes sexuels (gonosomes) sont <select class="bl" data-rep="XX chez la femme et XY chez l'homme"><option value="">—</option><option>identiques chez l'homme et la femme</option><option>XX chez la femme et XY chez l'homme</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq3')">✓ Vérifier</button><button class="brs" onclick="rsMQ('mq3')">↺</button><div class="mq-fb" id="mq3-fb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 5 BILAN ══ -->
+<div class="pan" id="p5">
+  <div class="sech">📋 Bilan (p.207–209)</div>
+  <div class="bstep"><p style="font-size:.92rem"><span class="bnum">1</span>La mitose est un <strong>phénomène continu</strong> durant 1 à 3 heures. On distingue 4 phases : <select class="bl" data-rep="prophase, métaphase, anaphase, télophase"><option value="">—</option><option>prophase, interphase, anaphase, diplophase</option><option>prophase, métaphase, anaphase, télophase</option></select>. Chaque cellule fille hérite <select class="bl" data-rep="du même nombre de chromosomes que la cellule initiale"><option value="">—</option><option>de la moitié des chromosomes</option><option>du même nombre de chromosomes que la cellule initiale</option></select>.</p></div>
+  <div class="bstep v"><p style="font-size:.92rem"><span class="bnum v">2</span>Le <strong>caryotype</strong> est l'ensemble des chromosomes classés par <select class="bl" data-rep="taille et position du centromère"><option value="">—</option><option>couleur et fonction</option><option>taille et position du centromère</option></select>. Il est <strong>caractéristique de chaque espèce</strong>. L'Homme a <select class="bl" data-rep="2n = 46 chromosomes (22 paires d'autosomes + XX ou XY)"><option value="">—</option><option>2n = 48 chromosomes</option><option>2n = 46 chromosomes (22 paires d'autosomes + XX ou XY)</option></select>.</p></div>
+  <div class="bstep b"><p style="font-size:.92rem"><span class="bnum b">3</span>Le <strong>cycle chromosomique</strong> comprend deux événements fondamentaux : la <select class="bl" data-rep="duplication de l'ADN en interphase (phase S)"><option value="">—</option><option>disparition des chromosomes en interphase</option><option>duplication de l'ADN en interphase (phase S)</option></select> et le <select class="bl" data-rep="partage égal des chromosomes en anaphase de mitose"><option value="">—</option><option>rassemblement des chromosomes dans une cellule fille</option><option>partage égal des chromosomes en anaphase de mitose</option></select>.</p></div>
+  <div style="margin-top:14px"><button class="bck" onclick="ckBilan()">✓ Vérifier tout le bilan</button><button class="brs" onclick="rsBilan()">↺</button><div class="gfb" id="bilan-fb"></div></div>
+</div>
+
+<!-- ══ 6 EXERCICES ══ -->
+<div class="pan" id="p6">
+  <h2 style="margin-bottom:14px">📝 Exercices — Manuel p.210–214</h2>
+
+  <div class="tab-exo"><h3 style="color:var(--ar);margin-bottom:8px">📐 Ex.1 — Classer les phases de la mitose (exercice 1, p.212)</h3>
+    <div class="ctx">Des croquis de cellules en division dans l'extrémité d'une racine d'Ail sont numérotés de 1 à 9 dans le désordre. Identifier la phase correspondante.</div>
+    <table><tr><th class="ar">Croquis</th><th class="ar">Phase de la mitose</th></tr>
+      <tr><td>Chromosomes condensés visibles, enveloppe nucléaire disparaît</td><td><select class="tcell" data-rep="Prophase"><option value="">—</option><option>Interphase</option><option>Prophase</option><option>Métaphase</option><option>Anaphase</option><option>Télophase</option></select></td></tr>
+      <tr><td>Chromosomes alignés à l'équateur (plaque équatoriale)</td><td><select class="tcell" data-rep="Métaphase"><option value="">—</option><option>Prophase</option><option>Métaphase</option><option>Anaphase</option><option>Télophase</option></select></td></tr>
+      <tr><td>Deux lots de chromosomes migrent vers les pôles opposés</td><td><select class="tcell" data-rep="Anaphase"><option value="">—</option><option>Prophase</option><option>Métaphase</option><option>Anaphase</option><option>Télophase</option></select></td></tr>
+      <tr><td>Deux noyaux se reforment, cytoplasme se divise</td><td><select class="tcell" data-rep="Télophase"><option value="">—</option><option>Prophase</option><option>Métaphase</option><option>Anaphase</option><option>Télophase</option></select></td></tr>
+      <tr><td>Noyau visible, chromatine décondensée, pas de chromosomes visibles</td><td><select class="tcell" data-rep="Interphase"><option value="">—</option><option>Prophase</option><option>Métaphase</option><option>Anaphase</option><option>Télophase</option><option>Interphase</option></select></td></tr>
+    </table>
+    <button class="bck" onclick="ckTabExo('ex1tab')">✓ Vérifier</button><button class="brs" onclick="rsTabExo('ex1tab')">↺</button><div class="gfb" id="ex1tab-fb"></div>
+  </div>
+
+  <div class="tab-exo"><h3 style="color:var(--ar);margin-bottom:8px">🧬 Ex.2 — Nombre de chromosomes au cours de la mitose (exercice 4, p.227)</h3>
+    <div class="ctx">Compléter le tableau pour une cellule humaine (2n = 46).</div>
+    <table><tr><th class="ar">Phase</th><th class="ar">Nombre de chromosomes</th><th class="ar">Nombre de chromatides par chromosome</th><th class="ar">Quantité d'ADN</th></tr>
+      <tr><td><strong>G1 (interphase)</strong></td><td><select class="tcell" data-rep="2n = 46"><option value="">—</option><option>n = 23</option><option>2n = 46</option><option>4n = 92</option></select></td><td><select class="tcell" data-rep="1 chromatide (q)"><option value="">—</option><option>1 chromatide (q)</option><option>2 chromatides (2q)</option></select></td><td><select class="tcell" data-rep="q"><option value="">—</option><option>q</option><option>2q</option><option>4q</option></select></td></tr>
+      <tr><td><strong>G2 (après phase S)</strong></td><td><select class="tcell" data-rep="2n = 46"><option value="">—</option><option>n = 23</option><option>2n = 46</option><option>4n = 92</option></select></td><td><select class="tcell" data-rep="2 chromatides (2q)"><option value="">—</option><option>1 chromatide (q)</option><option>2 chromatides (2q)</option></select></td><td><select class="tcell" data-rep="2q"><option value="">—</option><option>q</option><option>2q</option><option>4q</option></select></td></tr>
+      <tr><td><strong>Métaphase</strong></td><td><select class="tcell" data-rep="2n = 46"><option value="">—</option><option>n = 23</option><option>2n = 46</option><option>4n = 92</option></select></td><td><select class="tcell" data-rep="2 chromatides (2q)"><option value="">—</option><option>1 chromatide (q)</option><option>2 chromatides (2q)</option></select></td><td><select class="tcell" data-rep="2q"><option value="">—</option><option>q</option><option>2q</option><option>4q</option></select></td></tr>
+      <tr><td><strong>Anaphase</strong></td><td><select class="tcell" data-rep="4n = 92"><option value="">—</option><option>2n = 46</option><option>4n = 92</option></select></td><td><select class="tcell" data-rep="1 chromatide (q)"><option value="">—</option><option>1 chromatide (q)</option><option>2 chromatides (2q)</option></select></td><td><select class="tcell" data-rep="2q"><option value="">—</option><option>q</option><option>2q</option><option>4q</option></select></td></tr>
+      <tr><td><strong>Télophase (1 cellule fille)</strong></td><td><select class="tcell" data-rep="2n = 46"><option value="">—</option><option>n = 23</option><option>2n = 46</option></select></td><td><select class="tcell" data-rep="1 chromatide (q)"><option value="">—</option><option>1 chromatide (q)</option><option>2 chromatides (2q)</option></select></td><td><select class="tcell" data-rep="q"><option value="">—</option><option>q</option><option>2q</option></select></td></tr>
+    </table>
+    <button class="bck" onclick="ckTabExo('ex2tab')">✓ Vérifier</button><button class="brs" onclick="rsTabExo('ex2tab')">↺</button><div class="gfb" id="ex2tab-fb"></div>
+  </div>
+
+  <div class="ord-exo"><h3 style="color:var(--sa);margin-bottom:8px">🔢 Ex.3 — Ordonner les phases de la mitose</h3>
+    <p style="font-size:.85rem;margin-bottom:9px;color:var(--mu)">Remettre les phases dans l'ordre chronologique correct :</p>
+    <div class="ord-items" id="ord1" ondragover="event.preventDefault()" ondrop="dropOrd(event,'ord1')">
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="4" data-id="o4"><div class="pos-num">?</div><span>⠿</span> Télophase — Deux noyaux se reforment, cytoplasme se divise</div>
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="1" data-id="o1"><div class="pos-num">?</div><span>⠿</span> Prophase — Chromosomes se condensent, enveloppe nucléaire disparaît</div>
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="2" data-id="o2"><div class="pos-num">?</div><span>⠿</span> Métaphase — Chromosomes s'alignent à l'équateur</div>
+      <div class="ord-item" draggable="true" ondragstart="dragOrd(event)" data-order="3" data-id="o3"><div class="pos-num">?</div><span>⠿</span> Anaphase — Chromatides se séparent et migrent vers les pôles</div>
+    </div>
+    <button class="bck" onclick="ckOrd('ord1')">✓ Vérifier</button><button class="brs" onclick="rsOrd('ord1')">↺ Mélanger</button><div class="gfb" id="ord1-fb"></div>
+  </div>
+</div>
+
+<!-- ══ 7 BILAN RÉVISION ══ -->
+<div class="pan" id="p7">
+  <div class="sech">📋 Bilan Révision — Vérifie chaque objectif du programme</div>
+  <p style="font-size:.85rem;color:var(--mu);margin-bottom:12px">Un exercice par objectif pédagogique.</p>
+  <div class="bilan-rev">
+    <div class="obj-block"><div class="obj-title"><span class="obj-num">1</span> Dégager la notion de reproduction conforme</div><p style="font-size:.85rem;margin-bottom:6px">La reproduction conforme produit <select class="bl" data-rep="des descendants génétiquement identiques au parent (par mitose)"><option value="">—</option><option>des descendants différents (brassage)</option><option>des descendants génétiquement identiques au parent (par mitose)</option></select>. Exemple : <select class="bl" data-rep="vrais jumeaux, bouturage, clonage"><option value="">—</option><option>reproduction sexuée</option><option>vrais jumeaux, bouturage, clonage</option></select>.</p><button class="bck" onclick="ckMQ('rev1')" style="font-size:.72rem;">Vérifier</button><span class="mq-fb" id="rev1-fb" style="margin-left:8px;"></span></div>
+    <div class="obj-block"><div class="obj-title"><span class="obj-num">2</span> Identifier les 4 phases de la mitose</div><p style="font-size:.85rem;margin-bottom:6px">Ordre correct : <select class="bl" data-rep="Prophase → Métaphase → Anaphase → Télophase"><option value="">—</option><option>Anaphase → Prophase → Télophase → Métaphase</option><option>Prophase → Métaphase → Anaphase → Télophase</option></select>.</p><button class="bck" onclick="ckMQ('rev2')" style="font-size:.72rem;">Vérifier</button><span class="mq-fb" id="rev2-fb" style="margin-left:8px;"></span></div>
+    <div class="obj-block"><div class="obj-title"><span class="obj-num">3</span> Définir le caryotype et la signification de 2n</div><p style="font-size:.85rem;margin-bottom:6px">2n = <select class="bl" data-rep="nombre total de chromosomes dans une cellule diploïde"><option value="">—</option><option>nombre de paires uniquement</option><option>nombre total de chromosomes dans une cellule diploïde</option></select>. L'Homme a 2n = <select class="bl" data-rep="46 (23 paires)"><option value="">—</option><option>23</option><option>46 (23 paires)</option></select>.</p><button class="bck" onclick="ckMQ('rev3')" style="font-size:.72rem;">Vérifier</button><span class="mq-fb" id="rev3-fb" style="margin-left:8px;"></span></div>
+    <div class="obj-block"><div class="obj-title"><span class="obj-num">4</span> Distinguer autosomes et gonosomes</div><p style="font-size:.85rem;margin-bottom:6px">Les autosomes sont <select class="bl" data-rep="identiques chez les deux sexes (22 paires chez l'Homme)"><option value="">—</option><option>différents selon le sexe (XX/XY)</option><option>identiques chez les deux sexes (22 paires chez l'Homme)</option></select>. Les gonosomes sont <select class="bl" data-rep="XX (femme) ou XY (homme)"><option value="">—</option><option>identiques (XX chez tous)</option><option>XX (femme) ou XY (homme)</option></select>.</p><button class="bck" onclick="ckMQ('rev4')" style="font-size:.72rem;">Vérifier</button><span class="mq-fb" id="rev4-fb" style="margin-left:8px;"></span></div>
+    <div class="obj-block"><div class="obj-title"><span class="obj-num">5</span> Identifier les phases du cycle chromosomique</div><p style="font-size:.85rem;margin-bottom:6px">La duplication de l'ADN a lieu en <select class="bl" data-rep="phase S de l'interphase"><option value="">—</option><option>métaphase</option><option>phase S de l'interphase</option></select>. La séparation des chromatides a lieu en <select class="bl" data-rep="anaphase"><option value="">—</option><option>métaphase</option><option>anaphase</option></select>.</p><button class="bck" onclick="ckMQ('rev5')" style="font-size:.72rem;">Vérifier</button><span class="mq-fb" id="rev5-fb" style="margin-left:8px;"></span></div>
+    <div class="obj-block"><div class="obj-title"><span class="obj-num">6</span> Comparer mitose animale et végétale</div><p style="font-size:.85rem;margin-bottom:6px">La cellule animale possède un <select class="bl" data-rep="centriole (aster) — étranglement"><option value="">—</option><option>centriole (aster) — étranglement</option><option>nouvelle paroi — pas de centriole</option></select>. La cellule végétale <select class="bl" data-rep="n'a pas de centriole — construction d'une nouvelle paroi"><option value="">—</option><option>a un centriole comme l'animale</option><option>n'a pas de centriole — construction d'une nouvelle paroi</option></select>.</p><button class="bck" onclick="ckMQ('rev6')" style="font-size:.72rem;">Vérifier</button><span class="mq-fb" id="rev6-fb" style="margin-left:8px;"></span></div>
+  </div>
+</div>
+
+<!-- ══ 8 FLASHCARDS ══ -->
+<div class="pan" id="p8">
+  <h2 style="margin-bottom:12px">🃏 Flashcards</h2>
+  <div class="fa"><button class="btn bv" onclick="chkFC()">✓ Vérifier tout</button><button class="btn bg" onclick="rstFC()">↺</button><span id="fcs" style="display:none;padding:7px 12px;border-radius:8px;font-weight:700"></span></div>
+  <div class="fcg" id="fcg"></div>
+</div>
+
+<!-- ══ 9 QCM ══ -->
+<div class="pan" id="p9">
+  <h2 style="margin-bottom:6px">✏️ QCM — Format CAPES (1 à 3 bonnes réponses)</h2>
+  <p style="margin-bottom:6px;font-size:.85rem;color:var(--mu)">Questions du manuel (p.210-211) et complémentaires</p>
+  <div class="qcm-ctrl"><button class="btn bg" onclick="corrAllQ()" style="font-size:.78rem;">📋 Tout corriger</button><button class="btn bg" onclick="rstAllQ()" style="font-size:.78rem;">↺ Tout réinitialiser</button><span id="qcm-global-score" class="qcm-score" style="display:none;"></span></div>
+  <div id="qcm-c"></div>
+</div>
+
+</div>
+
+<footer>
+  <p>Chapitre 3 — La Mitose & la Reproduction Conforme · 2ème année Secondaire SVT · Programme Tunisien</p>
+  <p class="ft-sig">INGÉNIEUR Mohamed CHAGRAOUI / ENSEIGNANT SVT · CANDIDAT CAPES SVT 2026 · TUNISIE</p>
+</footer>
+
+<script>
+const panels=document.querySelectorAll('.pan'),tabs=document.querySelectorAll('.t');
+const pf=document.getElementById('pf');let vis=new Set([0]);
+function showTab(n){
+  panels.forEach(p=>p.classList.remove('on'));tabs.forEach(t=>t.classList.remove('on'));
+  panels[n].classList.add('on');tabs[n].classList.add('on');
+  vis.add(n);pf.style.width=Math.round(vis.size/tabs.length*100)+'%';
+  localStorage.setItem('t3ch3tab',n);window.scrollTo({top:0,behavior:'smooth'});
+}
+const sv=localStorage.getItem('t3ch3tab');
+if(sv){const n=parseInt(sv);if(n>0){panels[n].classList.add('on');panels[0].classList.remove('on');tabs[n].classList.add('on');tabs[0].classList.remove('on');vis.add(n);pf.style.width=Math.round(vis.size/tabs.length*100)+'%';}}
+
+function togTip(h){h.nextElementSibling.classList.toggle('on');}
+function showCN(id){
+  const panel=document.getElementById('cn-'+id),isOn=panel.classList.contains('on');
+  document.querySelectorAll('.cn-panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.cnode').forEach(c=>c.classList.remove('active'));
+  if(!isOn){panel.classList.add('on');const cn=document.querySelector('.cnode.cn-'+id);if(cn)cn.classList.add('active');}
+}
+function togPiege(h){const b=h.nextElementSibling;b.classList.toggle('on');h.querySelector('span').textContent=b.classList.contains('on')?'▲':'▼';}
+function togAns(btn){btn.nextElementSibling.classList.toggle('on');}
+function ckMQ(id){
+  const sels=document.querySelectorAll('#'+id+'-q select.bl');let ok=0,tot=sels.length;
+  sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  const fb=document.getElementById(id+'-fb');fb.className='mq-fb '+(ok===tot?'ok':'ko');
+  fb.textContent=ok===tot?'Parfait ! '+ok+'/'+tot:ok+'/'+tot+' — revois les réponses en rouge.';
+}
+function rsMQ(id){document.querySelectorAll('#'+id+'-q select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});const fb=document.getElementById(id+'-fb');fb.className='mq-fb';fb.textContent='';}
+function ckTabExo(id){
+  const fb=document.getElementById(id+'-fb');if(!fb)return;const block=fb.closest('.tab-exo');if(!block)return;
+  const cells=block.querySelectorAll('.tcell');let ok=0,tot=cells.length;
+  cells.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  fb.className='gfb '+(ok===tot?'ok':'ko');fb.textContent=ok===tot?'Parfait ! '+ok+'/'+tot:ok+'/'+tot+' — revois les cellules en rouge.';
+}
+function rsTabExo(id){const fb=document.getElementById(id+'-fb');if(!fb)return;const block=fb.closest('.tab-exo');if(!block)return;block.querySelectorAll('.tcell').forEach(s=>{s.value='';s.classList.remove('ok','ko');});fb.className='gfb';fb.textContent='';}
+function ckBilan(){
+  const sels=document.querySelectorAll('#p5 select.bl');let ok=0,tot=sels.length;
+  sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  const fb=document.getElementById('bilan-fb');fb.className='gfb '+(ok===tot?'ok':'ko');
+  fb.textContent=ok===tot?'Bilan complet ! '+ok+'/'+tot:ok+'/'+tot+' — Revois les trous en rouge.';
+}
+function rsBilan(){document.querySelectorAll('#p5 select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});const fb=document.getElementById('bilan-fb');fb.className='gfb';fb.textContent='';}
+let dragItem=null;
+function dragOrd(ev){dragItem=ev.currentTarget;ev.dataTransfer.effectAllowed='move';}
+function dropOrd(ev,listId){
+  ev.preventDefault();const list=document.getElementById(listId),items=[...list.querySelectorAll('.ord-item')];
+  const target=ev.target.closest('.ord-item');if(!target||target===dragItem)return;
+  list.insertBefore(dragItem,items.indexOf(target)>items.indexOf(dragItem)?target.nextSibling:target);updOrd(listId);
+}
+function updOrd(id){document.getElementById(id).querySelectorAll('.ord-item').forEach((item,i)=>{item.querySelector('.pos-num').textContent=i+1;item.classList.remove('correct-pos','wrong-pos');});}
+function ckOrd(id){
+  const items=document.getElementById(id).querySelectorAll('.ord-item');let ok=0;
+  items.forEach((item,i)=>{item.classList.remove('correct-pos','wrong-pos');const cor=parseInt(item.dataset.order)===i+1;item.classList.add(cor?'correct-pos':'wrong-pos');item.querySelector('.pos-num').textContent=i+1;if(cor)ok++;});
+  const fb=document.getElementById(id+'-fb');fb.className='gfb '+(ok===items.length?'ok':'ko');fb.textContent=ok===items.length?'Ordre parfait !':ok+'/'+items.length+' correctes.';
+}
+function rsOrd(id){
+  const list=document.getElementById(id),items=[...list.querySelectorAll('.ord-item')];
+  items.sort(()=>Math.random()-.5);items.forEach(i=>{i.classList.remove('correct-pos','wrong-pos');list.appendChild(i);});updOrd(id);
+  const fb=document.getElementById(id+'-fb');fb.className='gfb';fb.textContent='';
+}
+
+const FC=[{t:'Mitose',d:'Division cellulaire qui produit deux cellules filles génétiquement identiques à la cellule mère. Comprend 4 phases : prophase, métaphase, anaphase, télophase.'},{t:'Prophase',d:'1ère phase : chromosomes se condensent (2 chromatides), enveloppe nucléaire disparaît, fuseau de division se forme.'},{t:'Métaphase',d:'2ème phase : chromosomes alignés à l\'équateur = plaque équatoriale. Condensation maximale.'},{t:'Anaphase',d:'3ème phase : chromatides se séparent et migrent vers les pôles opposés. Chaque chromatide devient un chromosome.'},{t:'Télophase',d:'4ème phase : chromosomes se décondensent, enveloppes nucléaires se reforment, cytoplasme se divise.'},{t:'Caryotype',d:'Représentation photographique de l\'ensemble des chromosomes d\'une cellule, classés par taille et position du centromère.'},{t:'2n',d:'Nombre total de chromosomes dans une cellule diploïde. Homme : 2n = 46. Chaque paire = 1 chromosome maternel + 1 paternel.'},{t:'Autosomes',d:'Chromosomes identiques chez les deux sexes. Homme : 22 paires (1 à 22).'},{t:'Gonosomes',d:'Chromosomes sexuels déterminant le sexe. XX = femme, XY = homme.'},{t:'Cycle chromosomique',d:'Alternance interphase (ADN décondensé) / mitose (chromosomes condensés). Phase S = duplication ADN.'},{t:'Reproduction conforme',d:'Production de descendants génétiquement identiques par mitose. Ex : bouturage, clonage, vrais jumeaux.'},{t:'Chromatide',d:'Filament d\'ADN condensé. Un chromosome peut avoir 1 chromatide (fin mitose) ou 2 chromatides (début mitose).'}];
+
+const QS=[{q:'En fin de mitose, une cellule humaine contient :',o:['23 chromosomes','46 chromosomes à 1 chromatide','46 chromosomes à 2 chromatides','92 chromosomes'],c:[1],fb:'Fin mitose = 2n = 46 chromosomes à 1 chromatide (b). 23 (a) = gamètes. 92 (d) = anaphase temporaire.'},{q:'La métaphase est caractérisée par :',o:['La condensation maximale des chromosomes','L\'alignement des chromosomes à l\'équateur','La séparation des chromatides','La reformation de l\'enveloppe nucléaire'],c:[0,1],fb:'Métaphase = condensation max (a) + alignement équateur (b). Séparation (c) = anaphase. Reformation (d) = télophase.'},{q:'Une cellule humaine en métaphase comporte :',o:['23 chromosomes','46 chromosomes','46 chromosomes à 2 chromatides = 92 chromatides','92 chromatides au total'],c:[2,3],fb:'Métaphase : 46 chr × 2 chromatides = 92 chromatides (c, d).'},{q:'Le caryotype de l\'homme se distingue de celui de la femme par :',o:['Le nombre d\'autosomes','Le nombre de chromosomes sexuels','La forme des chromosomes sexuels','Le nombre total de chromosomes'],c:[2],fb:'Même nombre (46), mêmes autosomes (22 paires). Seule différence = FORME des gonosomes (c) : XY vs XX.'},{q:'La duplication des chromosomes a lieu :',o:['En prophase','En métaphase','En interphase (phase S)','En anaphase'],c:[2],fb:'Duplication = phase S de l\'INTERPHASE (c). La mitose ne duplique pas, elle RÉPARTIT.'},{q:'La mitose végétale diffère de l\'animale par :',o:['L\'absence de prophase','L\'absence de centriole','La construction d\'une nouvelle paroi','L\'absence de fuseau de division'],c:[1,2],fb:'Végétale = pas de centriole (b) + nouvelle paroi (c). Les phases sont identiques.'},{q:'2n = 8 chez la drosophile signifie :',o:['8 paires de chromosomes','4 paires de chromosomes','8 chromosomes par cellule diploïde','4 chromosomes par gamète'],c:[1,2,3],fb:'2n=8 = 4 paires (b), 8 chr/cellule (c), n=4 dans gamètes (d). Pas 8 paires (a).'},{q:'La reproduction conforme :',o:['Produit des descendants identiques','Utilise la mitose','Est la base du clonage','Nécessite deux parents'],c:[0,1,2],fb:'Reproduction conforme = descendants identiques (a), par mitose (b), base clonage (c). Pas 2 parents (d) — c\'est la reproduction sexuée.'}];
+
+function corrOneQ(qi){const q=QS[qi],div=document.getElementById('qi'+qi),checked=[...div.querySelectorAll('input:checked')].map(c=>parseInt(c.value));div.querySelectorAll('.qo').forEach((opt,oi)=>{opt.classList.add('locked');const inp=opt.querySelector('input');if(q.c.includes(oi)&&checked.includes(oi))opt.classList.add('correct');else if(q.c.includes(oi)&&!checked.includes(oi))opt.classList.add('missed');else if(!q.c.includes(oi)&&checked.includes(oi))opt.classList.add('wrong');inp.disabled=!0;});const existingFb=div.querySelector('.q-feedback');if(existingFb)existingFb.remove();div.insertAdjacentHTML('beforeend','<div class="q-feedback" style="margin-top:8px;padding:8px 12px;background:#e8f5e9;border-radius:7px;font-size:.82rem;color:#2E7D32;font-weight:600">💡 '+q.fb+'</div>');updQcmScore();}
+function corrAllQ(){QS.forEach((q,i)=>corrOneQ(i));}
+function rstAllQ(){document.querySelectorAll('#qcm-c .qi').forEach(qi=>{qi.querySelectorAll('input').forEach(inp=>{inp.checked=!1;inp.disabled=!1;});qi.querySelectorAll('.qo').forEach(o=>o.classList.remove('correct','wrong','missed','locked'));const fb=qi.querySelector('.q-feedback');if(fb)fb.remove();});document.getElementById('qcm-global-score').style.display='none';}
+function updQcmScore(){let sc=0;QS.forEach((q,i)=>{const qi=document.getElementById('qi'+i),checked=[...qi.querySelectorAll('input:checked')].map(c=>parseInt(c.value));if(q.c.length===checked.length&&q.c.every(r=>checked.includes(r)))sc++;});const gs=document.getElementById('qcm-global-score');gs.style.display='inline-block';const p=Math.round(sc/QS.length*100);gs.style.background=p>=80?'#e8f5e9':p>=50?'#fff8e1':'#ffebee';gs.style.color=p>=80?'#2E7D32':p>=50?'#E65100':'#c62828';gs.textContent='Score : '+sc+'/'+QS.length+' ('+p+'%)';}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const fcg=document.getElementById('fcg'),defs=FC.map(c=>c.d);
+  FC.forEach((c,i)=>{const shuffled=[...defs].sort(()=>Math.random()-.5).slice(0,3);if(!shuffled.includes(c.d)){shuffled[0]=c.d;shuffled.sort(()=>Math.random()-.5);}const opts=shuffled.map(d=>`<option value="${d.replace(/"/g,'&quot;')}">${d.length>65?d.slice(0,65)+'…':d}</option>`).join('');fcg.innerHTML+=`<div class="fcc"><div class="fcp"><strong style="color:var(--em)">${c.t} :</strong><br><select class="fs" data-rep="${c.d.replace(/"/g,'&quot;')}"><option value="">— Choisir la définition</option>${opts}</select></div></div>`;});
+  const qcmc=document.getElementById('qcm-c');
+  QS.forEach((q,qi)=>{qcmc.innerHTML+=`<div class="qi" id="qi${qi}"><div class="qq">Q${qi+1}. ${q.q}</div>${q.o.map((o,oi)=>`<label class="qo" id="qo${qi}-${oi}"><input type="checkbox" name="q${qi}" value="${oi}"> <span>${o}</span><span class="fb-txt">${q.c.includes(oi)?'✓ Bonne réponse':'✗ Mauvaise réponse'}</span></label>`).join('')}<button class="btn bg" onclick="corrOneQ(${qi})" style="font-size:.76rem;margin-top:6px;">Vérifier Q${qi+1}</button></div>`;});
+});
+
+function chkFC(){let ok=0,tot=0;document.querySelectorAll('.fs').forEach(s=>{tot++;s.classList.remove('ok','ko');if(!s.value)return;if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else s.classList.add('ko');});const sc=document.getElementById('fcs');sc.style.display='inline-block';sc.style.background=ok===tot?'#e8f5e9':'#ffebee';sc.style.color=ok===tot?'#2E7D32':'#c62828';sc.textContent=ok+'/'+tot+' correctes';}
+function rstFC(){document.querySelectorAll('.fs').forEach(s=>{s.value='';s.classList.remove('ok','ko');});document.getElementById('fcs').style.display='none';}
+</script>
+</body>
+</html>
