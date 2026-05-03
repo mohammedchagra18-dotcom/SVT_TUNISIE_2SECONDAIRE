@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T2-Ch3 — La Répartition des Végétaux en Tunisie</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --e:#1B5E20;--em:#2E7D32;--el:#e8f5e9;--ep:#f1f8e9;
+  --v:#33691E;--vl:#dcedc8;
+  --b:#0277BD;--bl:#e1f5fe;
+  --ar:#37474F;--arl:#eceff1;
+  --sa:#F57F17;--sal:#fffde7;
+  --r:#B71C1C;--rl:#ffebee;
+  --vi:#4A148C;--vil:#f3e5f5;
+  --j:#F9A825;--jl:#fffde7;
+  --o:#E65100;--ol:#fff3e0;
+  --br:#4E342E;--brl:#efebe9;
+  --bg:#f1f8e9;--tx:#1a1a1a;--mu:#666;
+  --brd:#c8e6c9;--sh:0 2px 12px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.6;}
+header{background:linear-gradient(135deg,#1B5E20,#2E7D32 50%,#0277BD);color:#fff;padding:18px 26px 13px;position:sticky;top:0;z-index:100;box-shadow:0 3px 16px rgba(0,0,0,.25);}
+header h1{font-family:'Playfair Display',serif;font-size:1.35rem;margin-bottom:2px;}
+header p{font-size:.8rem;opacity:.85;}
+.signature-header{font-size:.7rem;opacity:.7;margin-top:3px;font-style:italic;letter-spacing:.6px;color:#A5D6A7;}
+.pb{height:4px;background:rgba(255,255,255,.3);border-radius:2px;margin-top:8px;}
+.pf{height:100%;background:#A5D6A7;border-radius:2px;transition:width .4s;width:10%;}
+.tw{background:#fff;border-bottom:2px solid var(--brd);position:sticky;top:86px;z-index:99;overflow-x:auto;}
+.ts{display:flex;min-width:max-content;}
+.t{padding:10px 11px;font-size:.72rem;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;color:var(--mu);white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;transition:all .2s;}
+.t:hover{color:var(--em);background:var(--el);}
+.t.on{color:var(--em);border-bottom-color:var(--em);}
+.content{max-width:960px;margin:0 auto;padding:18px 18px 60px;}
+.pan{display:none;}.pan.on{display:block;}
+.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:13px;box-shadow:var(--sh);border-left:5px solid var(--em);}
+.card.v{border-left-color:var(--v);}
+.card.r{border-left-color:var(--r);}
+.card.b{border-left-color:var(--b);}
+.card.ar{border-left-color:var(--ar);}
+.card.o{border-left-color:var(--o);}
+h2{font-family:'Playfair Display',serif;font-size:1.08rem;margin-bottom:9px;color:var(--em);}
+h2.v{color:var(--v);}h2.r{color:var(--r);}h2.ar{color:var(--ar);}h2.b{color:var(--b);}
+h3{font-size:.9rem;font-weight:700;margin:9px 0 5px;color:var(--e);}
+.sech{background:linear-gradient(135deg,#1B5E20,#0277BD);color:#fff;padding:10px 15px;border-radius:10px;font-weight:600;margin-bottom:12px;font-size:.88rem;}
+.tip{background:#fdf6ec;border:1.5px solid var(--j);border-radius:10px;margin:8px 0;overflow:hidden;}
+.tip-head{padding:8px 13px;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:.86rem;font-weight:600;color:#7B5800;}
+.tip-head:hover{background:#fff8d6;}
+.tip-body{display:none;padding:10px 13px 12px;font-size:.85rem;line-height:1.7;color:#4a3800;border-top:1px solid #ffe082;}
+.tip-body.on{display:block;}
+.mq{background:linear-gradient(135deg,var(--vil),var(--el));border:2px solid var(--vi);border-radius:10px;padding:13px;margin:10px 0;}
+.mq-title{font-weight:700;color:var(--vi);font-size:.82rem;letter-spacing:.8px;text-transform:uppercase;margin-bottom:9px;}
+.mq p{margin-bottom:7px;font-size:.88rem;line-height:1.85;}
+select.bl{border:2px solid var(--vi);border-radius:5px;padding:2px 6px;font-size:.84rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;}
+select.bl.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.bl.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.mq-fb{font-size:.82rem;padding:6px 10px;border-radius:7px;margin-top:7px;font-weight:600;display:none;}
+.mq-fb.ok{background:#e8f5e9;color:#2E7D32;display:block;}
+.mq-fb.ko{background:#ffebee;color:#c62828;display:block;}
+.bck{background:var(--vi);color:#fff;border:none;padding:6px 13px;border-radius:7px;cursor:pointer;font-weight:700;font-size:.8rem;margin-top:8px;}
+.bck:hover{background:#6A1B9A;}
+.brs{background:var(--brd);color:var(--tx);border:none;padding:6px 11px;border-radius:7px;cursor:pointer;font-size:.8rem;margin-top:8px;margin-left:5px;}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.83rem;}
+th{background:var(--em);color:#fff;padding:7px 9px;text-align:left;}
+th.v{background:var(--v);}th.r{background:var(--r);}th.ar{background:var(--ar);}th.b{background:var(--b);}
+td{padding:6px 9px;border-bottom:1px solid var(--brd);}
+tr:nth-child(even) td{background:var(--ep);}
+tr.hl td{background:#fff8e1 !important;font-weight:700;}
+.gb{background:#fafafa;border:1px solid var(--brd);border-radius:9px;padding:10px;margin:9px 0;text-align:center;}
+.gb canvas{max-width:100%;}
+.gb figcaption{font-size:.74rem;color:var(--mu);margin-top:4px;font-style:italic;}
+.ret{background:var(--jl);border:1.5px solid var(--j);border-radius:9px;padding:10px 13px;margin:10px 0;}
+.ret h4{color:var(--o);font-size:.74rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.ret p{margin-bottom:4px;font-size:.85rem;}
+.ret dt{font-weight:700;color:var(--o);display:inline;}
+.ret dd{display:inline;margin-left:3px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:9px 0;}
+.al{list-style:none;display:grid;gap:5px;}
+.al li{padding:7px 11px;background:var(--el);border-radius:7px;border-left:4px solid var(--em);font-size:.85rem;}
+.al li::before{content:"✓ ";color:var(--em);font-weight:700;}
+.bstep{background:#fff;border-radius:11px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-top:4px solid var(--em);}
+.bstep.v{border-top-color:var(--v);}
+.bstep.b{border-top-color:var(--b);}
+.bstep.ar{border-top-color:var(--ar);}
+.bnum{display:inline-flex;align-items:center;justify-content:center;background:var(--em);color:#fff;border-radius:50%;width:26px;height:26px;font-weight:700;font-size:.88rem;margin-right:8px;flex-shrink:0;}
+.bnum.v{background:var(--v);}
+.bnum.b{background:var(--b);}
+.bnum.ar{background:var(--ar);}
+.gfb{font-size:.83rem;padding:7px 11px;border-radius:8px;margin-top:8px;font-weight:600;}
+.gfb.ok{background:#e8f5e9;color:#2E7D32;}
+.gfb.ko{background:#ffebee;color:#c62828;}
+.trous{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--vi);}
+.trous .ctx{background:var(--vil);border-radius:7px;padding:8px 12px;margin-bottom:9px;font-size:.84rem;line-height:1.6;color:#4a0080;}
+.tab-exo{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--sh);border-left:4px solid var(--ar);}
+.tab-exo .ctx{background:var(--arl);border-radius:7px;padding:8px 12px;margin-bottom:9px;font-size:.84rem;border-left:3px solid var(--ar);}
+select.tcell{border:1.5px solid var(--vi);border-radius:4px;padding:2px 5px;font-size:.81rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;max-width:280px;}
+select.tcell.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.tcell.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.fcg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin:10px 0;}
+.fcc{background:#fff;border-radius:9px;padding:12px;box-shadow:var(--sh);border-top:4px solid var(--em);}
+.fcp{font-size:.87rem;line-height:1.9;margin-bottom:7px;}
+select.fs{border:2px solid var(--vi);border-radius:5px;padding:2px 6px;font-size:.81rem;background:#fff;cursor:pointer;color:var(--vi);font-weight:600;}
+select.fs.ok{border-color:#4CAF50;background:#e8f5e9;color:#2E7D32;}
+select.fs.ko{border-color:#f44336;background:#ffebee;color:#c62828;}
+.fa{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.btn{padding:7px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:.83rem;}
+.bv{background:var(--em);color:#fff;}.bv:hover{background:var(--e);}
+.bg{background:var(--brd);color:var(--tx);}
+.qi{background:#fff;border-radius:10px;padding:13px;margin-bottom:10px;box-shadow:var(--sh);}
+.qq{font-weight:600;margin-bottom:8px;font-size:.89rem;}
+.qo{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:6px;margin-bottom:4px;cursor:pointer;font-size:.86rem;border:1.5px solid transparent;transition:background .15s;}
+.qo:hover:not(.locked){background:var(--el);}
+.qo input{accent-color:var(--em);margin-top:3px;flex-shrink:0;}
+.qo.correct{background:#e8f5e9;border-color:#4CAF50;}
+.qo.wrong{background:#ffebee;border-color:#f44336;}
+.qo.missed{background:#fff8e1;border-color:#FF9800;}
+.fb-txt{font-size:.8rem;margin-top:3px;display:none;line-height:1.5;}
+.qo.correct .fb-txt,.qo.wrong .fb-txt,.qo.missed .fb-txt{display:block;}
+.qo.correct .fb-txt{color:#2E7D32;}
+.qo.wrong .fb-txt{color:#c62828;}
+.qo.missed .fb-txt{color:#E65100;}
+.resume-hero{background:linear-gradient(135deg,#1B5E20,#2E7D32 50%,#0277BD);color:#fff;border-radius:14px;padding:22px;margin-bottom:16px;}
+.resume-hero h2{color:#A5D6A7;font-size:1.18rem;margin-bottom:8px;}
+.resume-hero p{font-size:.9rem;line-height:1.75;opacity:.92;}
+.resume-hero .sub{font-size:.8rem;opacity:.7;margin-top:6px;font-style:italic;}
+.concept-map{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+.cnode{border-radius:11px;padding:14px;cursor:pointer;transition:all .25s;border:2px solid transparent;}
+.cnode:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.15);}
+.cnode.active{border-color:rgba(255,255,255,.6);}
+.cnode .cn-icon{font-size:1.55rem;margin-bottom:6px;}
+.cnode .cn-title{font-size:.86rem;font-weight:700;margin-bottom:3px;}
+.cnode .cn-sub{font-size:.75rem;opacity:.85;line-height:1.4;}
+.cn-a{background:linear-gradient(135deg,#1B5E20,#388E3C);color:#fff;}
+.cn-b{background:linear-gradient(135deg,#0277BD,#0288D1);color:#fff;}
+.cn-c{background:linear-gradient(135deg,#F57F17,#F9A825);color:#fff;}
+.cn-d{background:linear-gradient(135deg,#B71C1C,#C62828);color:#fff;}
+.cn-e{background:linear-gradient(135deg,#4A148C,#6A1B9A);color:#fff;}
+.cn-panel{display:none;background:#fff;border-radius:11px;padding:16px;margin-bottom:12px;box-shadow:var(--sh);}
+.cn-panel.on{display:block;}
+.cn-panel.a{border-left:5px solid var(--em);}
+.cn-panel.b{border-left:5px solid var(--b);}
+.cn-panel.c{border-left:5px solid var(--sa);}
+.cn-panel.d{border-left:5px solid var(--r);}
+.cn-panel.e{border-left:5px solid var(--vi);}
+.connexion-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:11px 0;}
+.conn-item{border-radius:9px;padding:12px;border:2px solid;font-size:.84rem;line-height:1.6;}
+.conn-item .conn-ch{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;opacity:.75;}
+.conn-item .conn-notion{font-weight:700;margin-bottom:3px;}
+.piege-item{border-radius:10px;padding:13px;margin-bottom:9px;border:2px solid var(--r);background:var(--rl);overflow:hidden;}
+.piege-head{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:.88rem;font-weight:700;color:var(--r);}
+.piege-body{display:none;padding-top:10px;font-size:.86rem;line-height:1.7;color:var(--tx);}
+.piege-body.on{display:block;}
+.piege-body strong{color:var(--r);}
+.reflex{background:linear-gradient(135deg,var(--vil),var(--el));border:2px solid var(--vi);border-radius:11px;padding:14px;margin:12px 0;}
+.reflex h4{color:var(--vi);font-size:.85rem;font-weight:700;margin-bottom:10px;}
+.reflex-q{background:#fff;border-radius:8px;padding:11px;margin-bottom:8px;}
+.reflex-q .rq{font-size:.88rem;line-height:1.7;font-weight:600;margin-bottom:7px;}
+.rev-btn{background:var(--vi);color:#fff;border:none;padding:5px 11px;border-radius:6px;cursor:pointer;font-size:.79rem;font-weight:600;}
+.reflex-ans{display:none;margin-top:8px;padding:9px 12px;background:var(--vil);border-radius:7px;font-size:.85rem;line-height:1.7;color:#4a0080;}
+.reflex-ans.on{display:block;}
+.data-box{background:linear-gradient(135deg,var(--el),var(--bl));border:2px solid var(--em);border-radius:11px;padding:14px;margin:10px 0;}
+.data-box h4{color:var(--em);font-size:.85rem;font-weight:700;margin-bottom:9px;}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;}
+.stat-item{background:#fff;border-radius:9px;padding:11px;text-align:center;border-top:3px solid var(--em);}
+.stat-item .val{font-size:1.25rem;font-weight:700;color:var(--em);}
+.stat-item .lbl{font-size:.75rem;color:var(--mu);margin-top:3px;}
+img.manuel{width:100%;border-radius:8px;margin:9px 0;box-shadow:var(--sh);border:2px solid var(--brd);}
+.img-placeholder{width:100%;aspect-ratio:16/10;background:linear-gradient(135deg,var(--el),var(--arl));border-radius:8px;display:flex;align-items:center;justify-content:center;margin:9px 0;border:2px dashed var(--brd);flex-direction:column;gap:6px;}
+.img-placeholder span{font-size:.82rem;color:var(--mu);font-weight:600;}
+.img-placeholder small{font-size:.7rem;color:var(--mu);opacity:.7;}
+.pourquoi-box{background:linear-gradient(135deg,#1B5E20,#2E7D32 50%,#0277BD);color:#fff;border-radius:14px;padding:22px;margin-bottom:16px;}
+.pourquoi-box h2{color:#A5D6A7;font-size:1.18rem;margin-bottom:12px;}
+.pourquoi-box .obj-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.pourquoi-box .obj-item{background:rgba(255,255,255,.1);padding:10px 13px;border-radius:8px;font-size:.84rem;line-height:1.6;border-left:3px solid #A5D6A7;}
+.pourquoi-box .obj-num{display:inline-flex;align-items:center;justify-content:center;background:#A5D6A7;color:#1B5E20;border-radius:50%;width:22px;height:22px;font-weight:700;font-size:.76rem;margin-right:6px;flex-shrink:0;}
+.qcm-ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.qcm-ctrl .btn{font-size:.78rem;}
+.qcm-score{font-size:.82rem;padding:6px 10px;border-radius:7px;font-weight:600;display:inline-block;margin-left:8px;}
+.man-p117{background:var(--arl);border-radius:9px;padding:12px;margin-bottom:9px;border-left:4px solid var(--ar);}
+.man-p117 .mpq{font-size:.86rem;font-weight:600;margin-bottom:6px;color:var(--ar);}
+.man-p117 .cbox-group{display:flex;flex-direction:column;gap:4px;margin:5px 0;}
+.man-p117 label{display:flex;align-items:flex-start;gap:7px;font-size:.84rem;cursor:pointer;padding:4px 6px;border-radius:5px;}
+.man-p117 label:hover{background:rgba(0,0,0,.03);}
+.man-p117 input[type="checkbox"]{accent-color:var(--ar);margin-top:2px;flex-shrink:0;}
+footer{background:linear-gradient(135deg,#1B5E20,#2E7D32 50%,#0277BD);color:#fff;text-align:center;padding:14px 18px;font-size:.78rem;opacity:.9;margin-top:30px;border-radius:12px 12px 0 0;}
+footer .ft-sig{font-size:.76rem;opacity:.75;font-style:italic;letter-spacing:.6px;margin-top:4px;}
+@media(max-width:600px){
+  .g2,.concept-map,.connexion-grid,.stat-grid,.pourquoi-box .obj-list{grid-template-columns:1fr;}
+  header h1{font-size:.92rem;}.t{padding:8px 4px;font-size:.66rem;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Chapitre 3 — La Répartition des Végétaux en Tunisie</h1>
+  <p>2ème Secondaire SVT · Thème 2 · Pages 110–117 · Étages bioclimatiques &amp; Quotient d'Emberger</p>
+  <div class="signature-header">INGÉNIEUR Mohamed CHAGRAOUI / ENSEIGNANT SVT · CANDIDAT CAPES SVT 2026 · TUNISIE</div>
+  <div class="pb"><div class="pf" id="pf"></div></div>
+</header>
+
+<div class="tw"><div class="ts">
+  <button class="t on"  onclick="showTab(0)">📚 Acquis</button>
+  <button class="t"     onclick="showTab(1)">🧠 Résumé</button>
+  <button class="t"     onclick="showTab(2)">🗺️ Activité — Répartition</button>
+  <button class="t"     onclick="showTab(3)">📋 Bilan</button>
+  <button class="t"     onclick="showTab(4)">🃏 Flashcards</button>
+  <button class="t"     onclick="showTab(5)">✏️ QCM</button>
+  <button class="t"     onclick="showTab(6)">📝 Exercices</button>
+</div></div>
+
+<div class="content">
+
+<!-- ══ 0 ACQUIS ══ -->
+<div class="pan on" id="p0">
+  <div class="pourquoi-box">
+    <h2>🎯 Pourquoi ce chapitre ?</h2>
+    <p style="font-size:.88rem;line-height:1.7;margin-bottom:12px;opacity:.92;">
+      D'après le <strong>programme officiel tunisien</strong> (Thème 2, Objectif 3 — p.16), ce chapitre vise à :
+    </p>
+    <div class="obj-list">
+      <div class="obj-item"><span class="obj-num">1</span> Observer une <strong>carte de la végétation</strong> naturelle de la Tunisie</div>
+      <div class="obj-item"><span class="obj-num">2</span> Établir le <strong>lien entre répartition et climat</strong> (pluviométrie, température)</div>
+      <div class="obj-item"><span class="obj-num">3</span> Dégager la notion d'<strong>étage bioclimatique</strong></div>
+      <div class="obj-item"><span class="obj-num">4</span> Introduire le <strong>quotient pluviothermique d'Emberger</strong> (Q)</div>
+      <div class="obj-item"><span class="obj-num">5</span> <strong>Calculer Q</strong> pour quelques stations tunisiennes</div>
+      <div class="obj-item"><span class="obj-num">6</span> Déterminer les <strong>séries de végétation</strong> correspondant à chaque étage</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📚 Préacquis</h2>
+    <ul class="al">
+      <li><strong>Ch.2 —</strong> Les facteurs climatiques (T°, humidité, pluviométrie) influencent le développement et la survie des végétaux.</li>
+      <li>Les plantes <strong>héliophiles</strong> exigent beaucoup de lumière ; les plantes <strong>sciaphiles</strong> tolèrent l'ombre.</li>
+      <li>Les plantes <strong>xérophytes</strong> sont adaptées aux milieux secs ; les plantes <strong>hygrophytes</strong> exigent beaucoup d'eau.</li>
+      <li>La <strong>pluviométrie</strong> (précipitations annuelles en mm) et la <strong>température</strong> sont les deux principaux facteurs climatiques qui définissent un étage bioclimatique.</li>
+      <li>En Tunisie, le climat varie du Nord humide (> 600 mm/an) au Sud saharien (< 100 mm/an).</li>
+    </ul>
+  </div>
+
+  <img class="manuel" src="images/T2Ch3_Fig1_foret_pin_alep_nahl.PNG" alt="Fig.1 — La forêt de pin d'Alep de Nahl (p.110)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+  <div class="img-placeholder" style="display:none">
+    <span>📷 Fig.1 — La forêt de pin d'Alep de Nahl</span>
+    <small>Image du manuel p.110</small>
+  </div>
+
+  <div class="card ar">
+    <h2 class="ar">❓ 2 Questions directrices</h2>
+    <ol style="margin-left:17px;line-height:2.4;font-size:.92rem">
+      <li>Comment la végétation naturelle est-elle <strong>répartie</strong> en Tunisie ?</li>
+      <li>Quels sont les principaux <strong>facteurs</strong> qui interviennent dans cette répartition ?</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══ 1 RÉSUMÉ ══ -->
+<div class="pan" id="p1">
+  <div class="resume-hero">
+    <h2>🧠 Comprendre avant de mémoriser</h2>
+    <p>Ce chapitre applique les concepts du Ch.2 à l'échelle du territoire tunisien. La logique est simple : le <strong>gradient pluvio-thermique Nord→Sud</strong> de la Tunisie détermine une succession d'<strong>étages bioclimatiques</strong>, chacun caractérisé par des espèces végétales indicatrices. Emberger a mis en équation cette relation climat/végétation avec son quotient <strong>Q</strong>. Maîtriser les étages et les espèces indicatrices est essentiel pour le CAPES.</p>
+    <p class="sub">Clique sur chaque notion · Pièges CAPES et connexions révélés</p>
+  </div>
+
+  <div class="concept-map">
+    <div class="cnode cn-a" onclick="showCN('a')"><div class="cn-icon">🗺️</div><div class="cn-title">Répartition en Tunisie</div><div class="cn-sub">Gradient Nord → Sahara · Espèces indicatrices</div></div>
+    <div class="cnode cn-b" onclick="showCN('b')"><div class="cn-icon">📐</div><div class="cn-title">Quotient d'Emberger</div><div class="cn-sub">Formule Q · Calcul · Étages</div></div>
+    <div class="cnode cn-c" onclick="showCN('c')"><div class="cn-icon">🌿</div><div class="cn-title">Étages bioclimatiques</div><div class="cn-sub">Humide → Subhumide → Semi-aride → Aride → Saharien</div></div>
+    <div class="cnode cn-d" onclick="showCN('d')"><div class="cn-icon">⚠️</div><div class="cn-title">3 Pièges classiques</div><div class="cn-sub">Erreurs fréquentes CAPES</div></div>
+    <div class="cnode cn-e" onclick="showCN('e')"><div class="cn-icon">🔗</div><div class="cn-title">Connexions manuel</div><div class="cn-sub">Ch.1 · Ch.2 · Ch.4 · Ch.5</div></div>
+  </div>
+
+  <!-- Panneaux conservés de l'original -->
+  <div class="cn-panel a" id="cn-a">
+    <h3 style="color:var(--em)">🗺️ Répartition de la végétation en Tunisie — gradient Nord→Sud</h3>
+    <table>
+      <tr><th>Zone géographique</th><th>Pluviométrie (mm/an)</th><th>Type de végétation</th><th>Espèces indicatrices</th></tr>
+      <tr class="hl"><td><strong>Extrême Nord (Tell)</strong></td><td>> 800 mm</td><td>Forêt dense</td><td>Chêne zen, Chêne liège, Pin maritime</td></tr>
+      <tr><td><strong>Nord (Kroumirie, Mogods)</strong></td><td>600–800 mm</td><td>Forêt subhumide</td><td>Chêne liège, Chêne vert, Olivier sauvage</td></tr>
+      <tr class="hl"><td><strong>Nord-Centre (Dorsale)</strong></td><td>400–600 mm</td><td>Forêt + maquis</td><td>Pin d'Alep, Chêne vert, Lentisque</td></tr>
+      <tr><td><strong>Centre (Hautes steppes)</strong></td><td>200–400 mm</td><td>Steppe</td><td>Alfa, Romarin, Armoise</td></tr>
+      <tr class="hl"><td><strong>Sud (pré-saharien)</strong></td><td>100–200 mm</td><td>Steppe dégradée</td><td>Jujubier, Acacia, Euphorbe</td></tr>
+      <tr><td><strong>Sahara (Extrême Sud)</strong></td><td>< 100 mm</td><td>Désert</td><td>Palmier dattier (oasis), Ephedra</td></tr>
+    </table>
+    <div class="tip"><div class="tip-head" onclick="togTip(this)">💡 Le Chêne liège et l'Alfa — espèces indicatrices de référence</div>
+      <div class="tip-body"><strong>Chêne liège :</strong> indicateur de climat humide. Ne se trouve que là où la pluviométrie est comprise entre <strong>600 et 1800 mm/an</strong>. Résiste aux températures basses (jusqu'à <strong>−12°C</strong>). Présent surtout en Kroumirie (Tabarka, Aïn Draham).<br><strong>Alfa :</strong> indicateur de climat semi-aride. Aire de répartition : <strong>100 à 600 mm/an</strong>. Couvre les hautes steppes du Centre tunisien (Kasserine, Sidi Bouzid, Sbeitla).</div>
+    </div>
+  </div>
+
+  <div class="cn-panel b" id="cn-b">
+    <h3 style="color:var(--b)">📐 Le Quotient Pluviothermique d'Emberger — Q</h3>
+    <div style="background:linear-gradient(135deg,var(--bl),var(--el));border-radius:10px;padding:14px;margin-bottom:12px;border:2px solid var(--b);">
+      <p style="font-weight:700;font-size:1rem;color:var(--b);text-align:center;margin-bottom:8px">Q = 2000 × P / (M² − m²)</p>
+      <p style="font-size:.87rem;text-align:center;color:var(--ar)">ou encore : Q = 2000 × P / [(M + m)(M − m)]</p>
+    </div>
+    <table>
+      <tr><th class="b">Variable</th><th class="b">Signification</th><th class="b">Unité</th></tr>
+      <tr class="hl"><td><strong>P</strong></td><td>Total des précipitations annuelles</td><td>mm</td></tr>
+      <tr><td><strong>M</strong></td><td>Moyenne des maxima du mois le plus chaud</td><td>°Kelvin = °C + 273</td></tr>
+      <tr class="hl"><td><strong>m</strong></td><td>Moyenne des minima du mois le plus froid</td><td>°Kelvin = °C + 273</td></tr>
+    </table>
+    <h3 style="margin-top:10px">Exemple de calcul — Bizerte</h3>
+    <table>
+      <tr><td><strong>P (Bizerte)</strong></td><td>653 mm/an</td></tr>
+      <tr class="hl"><td><strong>M (mois le plus chaud = août)</strong></td><td>30,9°C → 303,9°K</td></tr>
+      <tr><td><strong>m (mois le plus froid = janvier)</strong></td><td>7,7°C → 280,7°K</td></tr>
+      <tr class="hl"><td><strong>Q = 2000 × 653 / (303,9² − 280,7²)</strong></td><td>= 1 306 000 / 13 603 ≈ <strong>96</strong></td></tr>
+      <tr><td><strong>Étage bioclimatique</strong></td><td>70 &lt; Q &lt; 110 → <strong>Subhumide</strong></td></tr>
+    </table>
+    <div class="tip"><div class="tip-head" onclick="togTip(this)">💡 Conversion °C → °K et sens du quotient</div>
+      <div class="tip-body">°Kelvin = °Celsius + 273. Cette conversion est indispensable pour le calcul.<br><br>Le quotient Q augmente quand : P augmente (plus de pluie) OU quand (M − m) diminue (moins d'amplitude thermique).<br>Il diminue quand : P diminue (moins de pluie) OU quand (M − m) augmente (plus d'amplitude thermique → climat plus continental/aride).</div>
+    </div>
+  </div>
+
+  <div class="cn-panel c" id="cn-c">
+    <h3 style="color:var(--sa)">🌿 Les étages bioclimatiques et leurs espèces indicatrices</h3>
+    <table>
+      <tr><th style="background:var(--sa)">Étage bioclimatique</th><th style="background:var(--sa)">Valeur de Q</th><th style="background:var(--sa)">P (mm/an)</th><th style="background:var(--sa)">Espèces indicatrices principales</th></tr>
+      <tr class="hl"><td><strong>Humide</strong></td><td>Q > 110</td><td>> 800</td><td>Chêne zen (C.z), Chêne liège (C.l), Pin maritime (P.m)</td></tr>
+      <tr><td><strong>Subhumide</strong></td><td>70 ≤ Q ≤ 110</td><td>600–800</td><td>Olivier sauvage (O.s), Chêne vert (C.v), Lentisque (L)</td></tr>
+      <tr class="hl"><td><strong>Semi-aride supérieur</strong></td><td>50 ≤ Q &lt; 70</td><td>400–600</td><td>Pin d'Alep (P.A), Caroubier (C), Chêne kermès (C.k)</td></tr>
+      <tr><td><strong>Semi-aride inférieur</strong></td><td>35 ≤ Q &lt; 50</td><td>200–400</td><td>Thuya articulé (T.a), Genévrier de Phénicie (G.P)</td></tr>
+      <tr class="hl"><td><strong>Aride supérieur</strong></td><td>25 ≤ Q &lt; 35</td><td>150–200</td><td>Genévrier oxycèdre (G.o), Alfa</td></tr>
+      <tr><td><strong>Aride inférieur</strong></td><td>10 ≤ Q &lt; 25</td><td>100–150</td><td>Alfa, Armoise, Romarin</td></tr>
+      <tr class="hl"><td><strong>Saharien supérieur</strong></td><td>5 ≤ Q &lt; 10</td><td>50–100</td><td>Jujubier, Acacia</td></tr>
+      <tr><td><strong>Saharien inférieur</strong></td><td>Q &lt; 5</td><td>&lt; 50</td><td>Palmier dattier (oasis), végétation très clairsemée</td></tr>
+    </table>
+  </div>
+
+  <div class="cn-panel d" id="cn-d">
+    <h3 style="color:var(--r)">⚠️ 3 Pièges classiques CAPES</h3>
+    <div class="piege-item">
+      <div class="piege-head" onclick="togPiege(this)">⚠️ Piège 1 — Espèce indicatrice ≠ espèce exclusive <span style="margin-left:auto">▼</span></div>
+      <div class="piege-body">Une espèce indicatrice de climat indique un <strong>climax</strong> (végétation climacique d'un étage) mais peut se trouver ponctuellement dans d'autres zones. Le <strong>Pin d'Alep</strong> indique le semi-aride supérieur, mais on le plante aussi en zones subhumides et arides. Ce qui compte pour définir l'étage, c'est la <strong>végétation naturelle spontanée</strong>, pas les plantations humaines.</div>
+    </div>
+    <div class="piege-item">
+      <div class="piege-head" onclick="togPiege(this)">⚠️ Piège 2 — °C vs °Kelvin dans le calcul Q <span style="margin-left:auto">▼</span></div>
+      <div class="piege-body"><strong>Erreur fréquente !</strong> Dans la formule d'Emberger, M et m doivent IMPÉRATIVEMENT être en <strong>degrés Kelvin</strong> (°K = °C + 273). Si on utilise directement les °C, M² − m² donnera une valeur erronée et Q sera faux.</div>
+    </div>
+    <div class="piege-item">
+      <div class="piege-head" onclick="togPiege(this)">⚠️ Piège 3 — Étage bioclimatique ≠ zone géographique simple <span style="margin-left:auto">▼</span></div>
+      <div class="piege-body">L'étage bioclimatique est défini par le <strong>quotient Q d'Emberger</strong>, pas directement par la latitude. Ex : Thala (altitude 1000 m dans le Centre tunisien) a un Q semi-aride supérieur bien qu'elle soit géographiquement dans le Centre. À altitude égale, un versant Nord (plus humide) et un versant Sud (plus sec) peuvent appartenir à des étages différents.</div>
+    </div>
+  </div>
+
+  <div class="cn-panel e" id="cn-e">
+    <h3 style="color:var(--vi)">🔗 Connexions avec le manuel</h3>
+    <div class="connexion-grid">
+      <div class="conn-item" style="border-color:var(--em);background:var(--el)">
+        <div class="conn-ch" style="color:var(--em)">← Chapitre 2 — Adaptation</div>
+        <div class="conn-notion">Adaptations → répartition</div>
+        <p style="font-size:.82rem;margin-top:3px">Les adaptations à la température et à l'eau (Ch.2) expliquent directement pourquoi chaque espèce est présente dans un étage et absente dans un autre.</p>
+      </div>
+      <div class="conn-item" style="border-color:var(--b);background:var(--bl)">
+        <div class="conn-ch" style="color:var(--b)">← Chapitre 1 — Écosystème</div>
+        <div class="conn-notion">Facteurs abiotiques → biocénose</div>
+        <p style="font-size:.82rem;margin-top:3px">Les étages bioclimatiques définissent en quelque sorte des "biotopes régionaux". Chaque étage a sa biocénose végétale caractéristique.</p>
+      </div>
+      <div class="conn-item" style="border-color:var(--ar);background:var(--arl)">
+        <div class="conn-ch" style="color:var(--ar)">→ Chapitre 4 — Relations trophiques</div>
+        <div class="conn-notion">Végétation → faune associée</div>
+        <p style="font-size:.82rem;margin-top:3px">La flore de chaque étage bioclimatique détermine la faune associée. Les chaînes alimentaires (Ch.4) varient selon l'étage.</p>
+      </div>
+      <div class="conn-item" style="border-color:var(--r);background:var(--rl)">
+        <div class="conn-ch" style="color:var(--r)">→ Chapitre 5 — Développement durable</div>
+        <div class="conn-notion">Dégradation des étages bioclimatiques</div>
+        <p style="font-size:.82rem;margin-top:3px">L'action humaine (surpâturage, déforestation) dégrade les étages bioclimatiques. La gestion durable vise à préserver la végétation climacique de chaque étage.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="reflex">
+    <h4>💭 Questions de réflexion</h4>
+    <div class="reflex-q">
+      <div class="rq">1. La ville de Thala (Centre tunisien, altitude ~1000 m) reçoit 470 mm/an de pluie avec M = 34,4°C et m = 1,8°C. Calculez son Q d'Emberger et déterminez son étage bioclimatique.</div>
+      <button class="rev-btn" onclick="togAns(this)">Voir la réflexion</button>
+      <div class="reflex-ans">
+        <strong>Calcul :</strong> P = 470 mm · M = 34,4 + 273 = 307,4°K · m = 1,8 + 273 = 274,8°K<br>
+        M² = 94 494,76 · m² = 75 515,04 · M² − m² = 18 979,72<br>
+        Q = 2000 × 470 / 18 979,72 = 940 000 / 18 979,72 ≈ <strong>49,5</strong><br>
+        <strong>Étage :</strong> 35 ≤ Q &lt; 50 → <strong>Semi-aride inférieur</strong>
+      </div>
+    </div>
+    <div class="reflex-q">
+      <div class="rq">2. Comment expliquer que la forêt de Chêne liège se concentre en Kroumirie alors que cette région est à la même latitude que Tunis qui est en étage subhumide ?</div>
+      <button class="rev-btn" onclick="togAns(this)">Voir la réflexion</button>
+      <div class="reflex-ans">La Kroumirie reçoit des précipitations très supérieures à Tunis car elle est exposée aux <strong>vents chargés d'humidité venant de la Méditerranée occidentale</strong> (effet orographique : les reliefs forcent l'air humide à s'élever → condensation → pluies abondantes : Aïn Draham reçoit 1582 mm/an !). De plus, l'<strong>altitude</strong> (600–1200 m) abaisse les températures → moins de sécheresse estivale. Ces deux facteurs créent l'étage humide propice au Chêne liège.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2 ACTIVITÉ ══ -->
+<div class="pan" id="p2">
+  <div class="sech">🗺️ Activité — La Répartition des Végétaux et les Étages Bioclimatiques (p.111–116)</div>
+
+  <div class="card">
+    <h2>1. Facteurs climatiques et répartition des végétaux</h2>
+
+    <!-- ══ IMAGES : Carte végétation + Cartes pluviométrie et températures ══ -->
+    <img class="manuel" src="images/T2Ch3_Fig1_carte_vegetation_tunisie.PNG" alt="Fig.1 — Carte simplifiée de la végétation tunisienne (p.111)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none">
+      <span>📷 Fig.1 — Carte simplifiée de la végétation tunisienne</span>
+      <small>Image du manuel p.111</small>
+    </div>
+
+    <div class="g2">
+      <div>
+        <img class="manuel" src="images/T2Ch3_Fig2_carte_pluviometrie.PNG" alt="Fig.2 — Carte de la pluviométrie annuelle (p.112)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.2 — Carte pluviométrie</span><small>p.112</small></div>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch3_Fig3_carte_temperatures.PNG" alt="Fig.3 — Carte des températures moyennes annuelles (p.112)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.3 — Carte températures</span><small>p.112</small></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div>
+        <p style="font-size:.88rem;line-height:1.8;margin-bottom:8px">En Tunisie, la <strong>pluviométrie</strong> (précipitations annuelles) et la <strong>température</strong> sont les deux facteurs climatiques qui déterminent la répartition des végétaux.</p>
+        <table>
+          <tr><th>Végétal</th><th>Pluviométrie</th><th>Zone en Tunisie</th></tr>
+          <tr class="hl"><td><strong>Chêne liège</strong></td><td>600–1800 mm/an · résiste à −12°C</td><td>Kroumirie (Tabarka, Aïn Draham)</td></tr>
+          <tr><td><strong>Chêne vert</strong></td><td>400–600 mm/an</td><td>Dorsale tunisienne</td></tr>
+          <tr class="hl"><td><strong>Pin d'Alep</strong></td><td>300–600 mm/an</td><td>Centre-Nord (Nahli, Kesra)</td></tr>
+          <tr><td><strong>Alfa</strong></td><td>100–600 mm/an</td><td>Hautes steppes du Centre</td></tr>
+          <tr class="hl"><td><strong>Romarin</strong></td><td>150–350 mm/an</td><td>Steppe semi-aride</td></tr>
+          <tr><td><strong>Jujubier</strong></td><td>50–150 mm/an</td><td>Pré-saharien</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="gb"><canvas id="cgRepartition" width="280" height="220"></canvas>
+          <figcaption>Gradient végétal Nord→Sud en Tunisie selon la pluviométrie</figcaption>
+        </div>
+      </div>
+    </div>
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz — Répartition</div>
+      <div id="mq1-q">
+        <p>1. Le Chêne liège est une espèce indicatrice du climat <select class="bl" data-rep="humide (600–1800 mm/an)"><option value="">—</option><option>semi-aride (100–400 mm/an)</option><option>humide (600–1800 mm/an)</option><option>saharien (&lt; 100 mm/an)</option></select>.</p>
+        <p>2. L'Alfa est une espèce indicatrice du climat <select class="bl" data-rep="semi-aride (100–600 mm/an) des hautes steppes du Centre"><option value="">—</option><option>humide de la Kroumirie</option><option>semi-aride (100–600 mm/an) des hautes steppes du Centre</option><option>saharien du Sud tunisien</option></select>.</p>
+        <p>3. Les végétaux qui permettent de définir un étage bioclimatique sont appelés des <select class="bl" data-rep="espèces indicatrices de climat"><option value="">—</option><option>espèces xérophytes dominantes</option><option>espèces indicatrices de climat</option><option>espèces endémiques tunisiennes</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq1')">✓ Vérifier</button>
+      <button class="brs" onclick="rsMQ('mq1')">↺</button>
+      <div class="mq-fb" id="mq1-fb"></div>
+    </div>
+  </div>
+
+  <div class="card b">
+    <h2 class="b">2. Notion d'étages bioclimatiques et Quotient d'Emberger</h2>
+    <p style="font-size:.88rem;line-height:1.8;margin-bottom:10px">Un <strong>étage bioclimatique</strong> est une subdivision géographique définie par un climat particulier et abritant des végétaux indicateurs particuliers. Pour délimiter précisément ces étages, Emberger a mis au point un <strong>quotient pluviothermique Q</strong>.</p>
+
+    <!-- ══ IMAGE : Fig4 Graphique étages bioclimatiques ══ -->
+    <img class="manuel" src="images/T2Ch3_Fig4_etages_bioclimatiques.PNG" alt="Fig.4 — Les différents étages bioclimatiques (p.114)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <div class="img-placeholder" style="display:none">
+      <span>📷 Fig.4 — Les différents étages bioclimatiques</span>
+      <small>Image du manuel p.114</small>
+    </div>
+
+    <div style="background:linear-gradient(135deg,var(--bl),var(--el));border-radius:10px;padding:14px;margin-bottom:12px;border:2px solid var(--b);text-align:center;">
+      <p style="font-weight:700;font-size:1.1rem;color:var(--b)">Q = 2000 × P / (M² − m²)</p>
+      <p style="font-size:.85rem;color:var(--ar);margin-top:6px">P = précipitations annuelles (mm) · M et m en °Kelvin (°C + 273)</p>
+    </div>
+
+    <div class="g2">
+      <div>
+        <h3>Données — Stations tunisiennes</h3>
+        <table>
+          <tr><th class="b">Station</th><th class="b">P (mm)</th><th class="b">M (°C)</th><th class="b">m (°C)</th></tr>
+          <tr class="hl"><td><strong>Bizerte</strong></td><td>653</td><td>30,9</td><td>7,7</td></tr>
+          <tr><td><strong>Kairouan</strong></td><td>298</td><td>37,6</td><td>4,6</td></tr>
+          <tr class="hl"><td><strong>Rémada</strong></td><td>70</td><td>37,4</td><td>5,2</td></tr>
+        </table>
+        <h3 style="margin-top:10px">Résultats Q calculés</h3>
+        <table>
+          <tr><th class="b">Station</th><th class="b">Q calculé</th><th class="b">Étage bioclimatique</th></tr>
+          <tr class="hl"><td><strong>Bizerte</strong></td><td>≈ 96</td><td><strong>Subhumide</strong> (70&lt;Q&lt;110)</td></tr>
+          <tr><td><strong>Kairouan</strong></td><td>≈ 30</td><td><strong>Aride supérieur</strong> (25&lt;Q&lt;35)</td></tr>
+          <tr class="hl"><td><strong>Rémada</strong></td><td>≈ 8</td><td><strong>Saharien supérieur</strong> (5&lt;Q&lt;10)</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="gb"><canvas id="cgEmberger" width="280" height="220"></canvas>
+          <figcaption>Quotient Q d'Emberger pour les 3 stations tunisiennes — étages bioclimatiques</figcaption>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ IMAGES : Tableaux P, m, M et répartition végétaux ══ -->
+    <div class="g2">
+      <div>
+        <img class="manuel" src="images/T2Ch3_Fig5_tableau_pluviometrie.PNG" alt="Fig.5 — Pluviométrie moyenne en mm (p.115)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.5 — Tableau pluviométrie</span><small>p.115</small></div>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch3_Fig6_tableau_temperatures_m.PNG" alt="Fig.6 — Moyenne des minima en °C (m) (p.115)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.6 — Tableau températures (m)</span><small>p.115</small></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div>
+        <img class="manuel" src="images/T2Ch3_Fig7_tableau_maximas_M.PNG" alt="Fig.7 — Moyenne des maxima en °C (M) (p.116)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.7 — Tableau maxima (M)</span><small>p.116</small></div>
+      </div>
+      <div>
+        <img class="manuel" src="images/T2Ch3_Fig8_repartition_vegetaux_etages.PNG" alt="Fig.8 — Répartition de quelques végétaux selon l'étage bioclimatique (p.116)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none"><span>📷 Fig.8 — Végétaux par étage</span><small>p.116</small></div>
+      </div>
+    </div>
+
+    <div class="tip"><div class="tip-head" onclick="togTip(this)">💡 Étape par étape : calcul Q pour Kairouan</div>
+      <div class="tip-body">
+        <strong>Données :</strong> P = 298 mm · M = 37,6°C → 310,6°K · m = 4,6°C → 277,6°K<br>
+        <strong>M² =</strong> 310,6² = 96 472,36<br>
+        <strong>m² =</strong> 277,6² = 77 061,76<br>
+        <strong>M² − m² =</strong> 96 472,36 − 77 061,76 = 19 410,60<br>
+        <strong>Q =</strong> 2000 × 298 / 19 410,60 = 596 000 / 19 410,60 ≈ <strong>30,7</strong><br>
+        <strong>Étage :</strong> 25 ≤ Q &lt; 35 → <strong>Aride supérieur</strong><br>
+        <strong>Végétation indicatrice :</strong> Genévrier oxycèdre, Alfa en limite.
+      </div>
+    </div>
+
+    <div class="mq"><div class="mq-title">✏️ Mini-quiz — Quotient d'Emberger</div>
+      <div id="mq2-q">
+        <p>1. Dans la formule d'Emberger, M et m doivent être exprimés en <select class="bl" data-rep="degrés Kelvin (°C + 273)"><option value="">—</option><option>degrés Celsius (°C)</option><option>degrés Kelvin (°C + 273)</option></select>.</p>
+        <p>2. La station de Bizerte avec Q ≈ 96 appartient à l'étage bioclimatique <select class="bl" data-rep="subhumide (70 &lt; Q &lt; 110)"><option value="">—</option><option>humide (Q &gt; 110)</option><option>subhumide (70 &lt; Q &lt; 110)</option><option>semi-aride supérieur (50 &lt; Q &lt; 70)</option></select>.</p>
+        <p>3. Rémada (Q ≈ 8) appartient à l'étage <select class="bl" data-rep="saharien supérieur (5 &lt; Q &lt; 10)"><option value="">—</option><option>aride inférieur (10 &lt; Q &lt; 25)</option><option>saharien supérieur (5 &lt; Q &lt; 10)</option><option>aride supérieur (25 &lt; Q &lt; 35)</option></select>.</p>
+      </div>
+      <button class="bck" onclick="ckMQ('mq2')">✓ Vérifier</button>
+      <button class="brs" onclick="rsMQ('mq2')">↺</button>
+      <div class="mq-fb" id="mq2-fb"></div>
+    </div>
+
+    <div class="ret"><h4>📌 Retenons — Étages bioclimatiques et végétation</h4>
+      <p><dt>Étage bioclimatique :</dt><dd>subdivision géographique définie par un climat particulier et des végétaux indicateurs spécifiques.</dd></p>
+      <p><dt>Espèce indicatrice :</dt><dd>végétal dont la présence indique un étage climatique précis. Ex : Chêne liège → humide ; Alfa → semi-aride.</dd></p>
+      <p><dt>Quotient d'Emberger (Q) :</dt><dd>formule mathématique Q = 2000P/(M²−m²) permettant de définir avec précision l'étage bioclimatique d'une région.</dd></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 3 BILAN ══ -->
+<div class="pan" id="p3">
+  <div class="sech">📋 Bilan (p.117)</div>
+
+  <div class="bstep">
+    <p style="font-size:.92rem"><span class="bnum">1</span>Les facteurs climatiques, principalement les <select class="bl" data-rep="précipitations et la température"><option value="">—</option><option>la lumière et le vent</option><option>précipitations et la température</option></select>, influent sur la répartition des végétaux. Certains végétaux occupent des aires de répartition bien délimitées correspondant à des étages climatiques particuliers : ce sont des <select class="bl" data-rep="espèces indicatrices de climat"><option value="">—</option><option>espèces envahissantes</option><option>espèces indicatrices de climat</option></select>.</p>
+  </div>
+
+  <div class="bstep v">
+    <p style="font-size:.92rem"><span class="bnum v">2</span>Le Chêne liège est indicateur d'un climat <select class="bl" data-rep="humide (600–1800 mm/an)"><option value="">—</option><option>semi-aride (100–400 mm/an)</option><option>humide (600–1800 mm/an)</option></select>. L'Alfa est indicateur d'un climat <select class="bl" data-rep="semi-aride (100–600 mm/an)"><option value="">—</option><option>humide (&gt; 600 mm/an)</option><option>semi-aride (100–600 mm/an)</option></select>. Le Jujubier est indicateur d'un climat <select class="bl" data-rep="saharien (&lt; 100 mm/an)"><option value="">—</option><option>subhumide (400–600 mm/an)</option><option>saharien (&lt; 100 mm/an)</option></select>.</p>
+  </div>
+
+  <div class="bstep b">
+    <p style="font-size:.92rem"><span class="bnum b">3</span>Les étages bioclimatiques peuvent être déterminés mathématiquement en utilisant le quotient pluviométrique d'<select class="bl" data-rep="Emberger"><option value="">—</option><option>Bergmann</option><option>Emberger</option></select>. La formule est : Q = <select class="bl" data-rep="2000 × P / (M² − m²)"><option value="">—</option><option>P × T / (M + m)</option><option>2000 × P / (M² − m²)</option></select> où M et m sont exprimés en degrés <select class="bl" data-rep="Kelvin (°C + 273)"><option value="">—</option><option>Celsius (°C)</option><option>Kelvin (°C + 273)</option></select>.</p>
+  </div>
+
+  <div class="bstep ar">
+    <p style="font-size:.92rem"><span class="bnum ar">4</span>Selon la valeur de Q : Q > 110 → étage <select class="bl" data-rep="humide"><option value="">—</option><option>subhumide</option><option>humide</option></select> ; 70 &lt; Q &lt; 110 → étage <select class="bl" data-rep="subhumide"><option value="">—</option><option>semi-aride</option><option>subhumide</option></select> ; 50 &lt; Q &lt; 70 → étage <select class="bl" data-rep="semi-aride supérieur"><option value="">—</option><option>aride supérieur</option><option>semi-aride supérieur</option></select> ; Q &lt; 10 → étage <select class="bl" data-rep="saharien"><option value="">—</option><option>aride</option><option>saharien</option></select>.</p>
+  </div>
+
+  <div style="margin-top:14px">
+    <button class="bck" onclick="ckBilan()">✓ Vérifier tout le bilan</button>
+    <button class="brs" onclick="rsBilan()">↺ Réinitialiser</button>
+    <div class="gfb" id="bilan-fb"></div>
+  </div>
+</div>
+
+<!-- ══ 4 FLASHCARDS ══ -->
+<div class="pan" id="p4">
+  <h2 style="margin-bottom:12px">🃏 Flashcards — Vocabulaire clé du chapitre</h2>
+  <div class="fa">
+    <button class="btn bv" onclick="chkFC()">✓ Vérifier tout</button>
+    <button class="btn bg" onclick="rstFC()">↺ Recommencer</button>
+    <span id="fcs" style="display:none;padding:7px 12px;border-radius:8px;font-weight:700"></span>
+  </div>
+  <div class="fcg" id="fcg"></div>
+</div>
+
+<!-- ══ 5 QCM — Question par question ══ -->
+<div class="pan" id="p5">
+  <h2 style="margin-bottom:6px">✏️ QCM — Format CAPES (1 à 3 bonnes réponses)</h2>
+  <p style="margin-bottom:6px;font-size:.85rem;color:var(--mu)">Questions du manuel et questions CAPES sur les étages bioclimatiques</p>
+  <div class="qcm-ctrl">
+    <button class="btn bg" onclick="corrAllQ()" style="font-size:.78rem;">📋 Tout corriger</button>
+    <button class="btn bg" onclick="rstAllQ()" style="font-size:.78rem;">↺ Tout réinitialiser</button>
+    <span id="qcm-global-score" class="qcm-score" style="display:none;"></span>
+  </div>
+  <div id="qcm-c"></div>
+</div>
+
+<!-- ══ 6 EXERCICES ══ -->
+<div class="pan" id="p6">
+  <h2 style="margin-bottom:14px">📝 Exercices interactifs</h2>
+
+  <!-- ══ AMÉLIORATION 5 : Questions du manuel en cases à cocher ══ -->
+  <div class="man-p117">
+    <div class="mpq">📖 Questions du manuel — Cochez la (ou les) bonne(s) réponse(s)</div>
+
+    <p style="font-weight:700;margin:8px 0 4px;color:var(--ar)">Q1. Les facteurs qui influencent principalement la répartition des végétaux en Tunisie sont :</p>
+    <div class="cbox-group" id="man-q1">
+      <label><input type="checkbox" value="0" data-correct="true"> a- La pluviométrie (précipitations annuelles)</label>
+      <label><input type="checkbox" value="1"> b- La nature du sol (calcaire, argile, sable)</label>
+      <label><input type="checkbox" value="2" data-correct="true"> c- La température moyenne annuelle</label>
+      <label><input type="checkbox" value="3"> d- La luminosité (durée d'ensoleillement)</label>
+    </div>
+    <button class="btn bg" onclick="ckManQ('man-q1')" style="font-size:.76rem;margin-top:4px;">Vérifier Q1</button>
+    <span class="gfb" id="man-q1-fb" style="display:inline-block;margin-left:6px;"></span>
+
+    <p style="font-weight:700;margin:12px 0 4px;color:var(--ar)">Q2. Le Chêne liège est une espèce indicatrice du climat :</p>
+    <div class="cbox-group" id="man-q2">
+      <label><input type="checkbox" value="0"> a- Saharien (< 100 mm/an)</label>
+      <label><input type="checkbox" value="1"> b- Semi-aride (200–400 mm/an)</label>
+      <label><input type="checkbox" value="2" data-correct="true"> c- Humide (600–1800 mm/an)</label>
+      <label><input type="checkbox" value="3"> d- Aride (100–200 mm/an)</label>
+    </div>
+    <button class="btn bg" onclick="ckManQ('man-q2')" style="font-size:.76rem;margin-top:4px;">Vérifier Q2</button>
+    <span class="gfb" id="man-q2-fb" style="display:inline-block;margin-left:6px;"></span>
+
+    <p style="font-weight:700;margin:12px 0 4px;color:var(--ar)">Q3. Dans la formule Q = 2000P/(M²−m²), M et m sont exprimés en :</p>
+    <div class="cbox-group" id="man-q3">
+      <label><input type="checkbox" value="0"> a- Degrés Celsius (°C)</label>
+      <label><input type="checkbox" value="1" data-correct="true"> b- Degrés Kelvin (°K = °C + 273)</label>
+    </div>
+    <button class="btn bg" onclick="ckManQ('man-q3')" style="font-size:.76rem;margin-top:4px;">Vérifier Q3</button>
+    <span class="gfb" id="man-q3-fb" style="display:inline-block;margin-left:6px;"></span>
+  </div>
+
+  <!-- EX 1 : Associer végétaux et étages -->
+  <div class="tab-exo">
+    <h3 style="color:var(--ar);margin-bottom:8px">🌿 Ex.1 — Associer chaque végétal à son étage bioclimatique</h3>
+    <div class="ctx">Utiliser le tableau du manuel (document 8, p.116) pour associer chaque végétal à son étage bioclimatique.</div>
+    <table>
+      <tr><th class="ar">Espèce indicatrice</th><th class="ar">Code</th><th class="ar">Étage bioclimatique</th></tr>
+      <tr><td>Chêne zen</td><td>C.z</td><td><select class="tcell" data-rep="Humide supérieur"><option value="">—</option><option>Subhumide</option><option>Humide supérieur</option><option>Semi-aride supérieur</option></select></td></tr>
+      <tr><td>Chêne liège</td><td>C.l</td><td><select class="tcell" data-rep="Humide (supérieur et inférieur)"><option value="">—</option><option>Semi-aride supérieur</option><option>Humide (supérieur et inférieur)</option><option>Subhumide</option></select></td></tr>
+      <tr><td>Olivier sauvage</td><td>O.s</td><td><select class="tcell" data-rep="Subhumide et Semi-aride supérieur"><option value="">—</option><option>Humide uniquement</option><option>Subhumide et Semi-aride supérieur</option><option>Aride supérieur</option></select></td></tr>
+      <tr><td>Pin d'Alep</td><td>P.A</td><td><select class="tcell" data-rep="Semi-aride (supérieur, inférieur) + Aride supérieur"><option value="">—</option><option>Humide et Subhumide</option><option>Semi-aride (supérieur, inférieur) + Aride supérieur</option><option>Saharien uniquement</option></select></td></tr>
+      <tr><td>Genévrier de Phénicie</td><td>G.P</td><td><select class="tcell" data-rep="Semi-aride inférieur et Aride supérieur"><option value="">—</option><option>Humide uniquement</option><option>Semi-aride inférieur et Aride supérieur</option><option>Subhumide</option></select></td></tr>
+    </table>
+    <button class="bck" onclick="ckTabExo('ex1tab')">✓ Vérifier</button>
+    <button class="brs" onclick="rsTabExo('ex1tab')">↺</button>
+    <div class="gfb" id="ex1tab-fb"></div>
+  </div>
+
+  <!-- EX 2 : Calcul Q Emberger -->
+  <div class="trous">
+    <h3 style="color:var(--vi);margin-bottom:8px">📐 Ex.2 — Calculer le quotient Q d'Emberger pour Kairouan</h3>
+    <div class="ctx">Données Kairouan : P = 298 mm/an · M (mois le plus chaud = juillet) = 37,6°C · m (mois le plus froid = janvier) = 4,6°C</div>
+    <div id="ex2-q">
+      <p>On convertit d'abord en Kelvin : M = 37,6 + <select class="bl" data-rep="273"><option value="">—</option><option>0</option><option>273</option><option>100</option></select> = 310,6°K et m = 4,6 + 273 = <select class="bl" data-rep="277,6°K"><option value="">—</option><option>4,6°K</option><option>277,6°K</option><option>278,6°K</option></select>.</p>
+      <p>On calcule M² − m² = 310,6² − 277,6² = 96 472 − 77 062 = <select class="bl" data-rep="19 410"><option value="">—</option><option>895</option><option>19 410</option><option>173 534</option></select>.</p>
+      <p>Q = 2000 × 298 / 19 410 = 596 000 / 19 410 ≈ <select class="bl" data-rep="30,7"><option value="">—</option><option>666</option><option>30,7</option><option>3,07</option></select>.</p>
+      <p>Kairouan appartient à l'étage bioclimatique <select class="bl" data-rep="aride supérieur (25 ≤ Q &lt; 35)"><option value="">—</option><option>semi-aride inférieur (35 ≤ Q &lt; 50)</option><option>aride supérieur (25 ≤ Q &lt; 35)</option><option>saharien supérieur (5 ≤ Q &lt; 10)</option></select>.</p>
+      <p>La végétation indicatrice attendue à Kairouan est <select class="bl" data-rep="Genévrier oxycèdre, Alfa (limite aride)"><option value="">—</option><option>Chêne liège, Pin maritime (humide)</option><option>Genévrier oxycèdre, Alfa (limite aride)</option><option>Palmier dattier (saharien)</option></select>.</p>
+    </div>
+    <button class="bck" onclick="ckMQ('ex2')">✓ Vérifier</button>
+    <button class="brs" onclick="rsMQ('ex2')">↺</button>
+    <div class="mq-fb" id="ex2-fb"></div>
+  </div>
+
+  <!-- EX 3 : Classement étages Nord→Sud -->
+  <div class="tab-exo">
+    <h3 style="color:var(--ar);margin-bottom:8px">🗺️ Ex.3 — Classer les étages du Nord au Sud de la Tunisie</h3>
+    <div class="ctx">Associer chaque ville tunisienne à son étage bioclimatique et à la végétation indicatrice correspondante, en suivant le gradient Nord→Sud.</div>
+    <table>
+      <tr><th class="ar">Ville / Région</th><th class="ar">Pluviométrie approx.</th><th class="ar">Étage bioclimatique</th><th class="ar">Végétation indicatrice</th></tr>
+      <tr><td><strong>Aïn Draham</strong></td><td>1582 mm/an</td><td><select class="tcell" data-rep="Humide (Q > 110)"><option value="">—</option><option>Subhumide (70&lt;Q&lt;110)</option><option>Humide (Q &gt; 110)</option></select></td><td><select class="tcell" data-rep="Chêne liège, Chêne zen"><option value="">—</option><option>Alfa, Romarin</option><option>Chêne liège, Chêne zen</option></select></td></tr>
+      <tr><td><strong>Bizerte</strong></td><td>653 mm/an</td><td><select class="tcell" data-rep="Subhumide (Q ≈ 96)"><option value="">—</option><option>Humide (Q &gt; 110)</option><option>Subhumide (Q ≈ 96)</option><option>Semi-aride</option></select></td><td><select class="tcell" data-rep="Olivier sauvage, Chêne vert"><option value="">—</option><option>Chêne liège, Pin maritime</option><option>Olivier sauvage, Chêne vert</option></select></td></tr>
+      <tr><td><strong>Kairouan</strong></td><td>298 mm/an</td><td><select class="tcell" data-rep="Aride supérieur (Q ≈ 30)"><option value="">—</option><option>Semi-aride (Q ≈ 50)</option><option>Aride supérieur (Q ≈ 30)</option></select></td><td><select class="tcell" data-rep="Genévrier oxycèdre, Alfa en limite"><option value="">—</option><option>Pin d'Alep, Chêne vert</option><option>Genévrier oxycèdre, Alfa en limite</option></select></td></tr>
+      <tr><td><strong>Rémada</strong></td><td>70 mm/an</td><td><select class="tcell" data-rep="Saharien supérieur (Q ≈ 8)"><option value="">—</option><option>Aride inférieur (Q ≈ 15)</option><option>Saharien supérieur (Q ≈ 8)</option></select></td><td><select class="tcell" data-rep="Végétation très clairsemée, Acacia"><option value="">—</option><option>Alfa, Armoise</option><option>Végétation très clairsemée, Acacia</option></select></td></tr>
+    </table>
+    <button class="bck" onclick="ckTabExo('ex3tab')">✓ Vérifier</button>
+    <button class="brs" onclick="rsTabExo('ex3tab')">↺</button>
+    <div class="gfb" id="ex3tab-fb"></div>
+  </div>
+</div>
+
+</div>
+
+<!-- ══ FOOTER avec signature ══ -->
+<footer>
+  <p>Chapitre 3 — La Répartition des Végétaux en Tunisie · 2ème année Secondaire SVT · Programme Tunisien</p>
+  <p class="ft-sig">INGÉNIEUR Mohamed CHAGRAOUI / ENSEIGNANT SVT · CANDIDAT CAPES SVT 2026 · TUNISIE</p>
+</footer>
+
+<script>
+// ══ TABS ══
+const panels=document.querySelectorAll('.pan'),tabs=document.querySelectorAll('.t');
+const pf=document.getElementById('pf');let vis=new Set([0]);
+function showTab(n){
+  panels.forEach(p=>p.classList.remove('on'));tabs.forEach(t=>t.classList.remove('on'));
+  panels[n].classList.add('on');tabs[n].classList.add('on');
+  vis.add(n);pf.style.width=Math.round(vis.size/tabs.length*100)+'%';
+  localStorage.setItem('t2ch3tab',n);window.scrollTo({top:0,behavior:'smooth'});
+  if(n===2)setTimeout(()=>{drawRepartition();drawEmberger();},80);
+}
+const sv=localStorage.getItem('t2ch3tab');
+if(sv){const n=parseInt(sv);if(n>0){panels[n].classList.add('on');panels[0].classList.remove('on');tabs[n].classList.add('on');tabs[0].classList.remove('on');vis.add(n);pf.style.width=Math.round(vis.size/tabs.length*100)+'%';}}
+
+function togTip(h){h.nextElementSibling.classList.toggle('on');}
+function showCN(id){
+  const panel=document.getElementById('cn-'+id);const isOn=panel.classList.contains('on');
+  document.querySelectorAll('.cn-panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.cnode').forEach(c=>c.classList.remove('active'));
+  if(!isOn){panel.classList.add('on');const cn=document.querySelector('.cnode.cn-'+id);if(cn)cn.classList.add('active');}
+}
+function togPiege(h){const b=h.nextElementSibling;b.classList.toggle('on');h.querySelector('span').textContent=b.classList.contains('on')?'▲':'▼';}
+function togAns(btn){btn.nextElementSibling.classList.toggle('on');}
+
+function ckMQ(id){
+  const sels=document.querySelectorAll('#'+id+'-q select.bl');let ok=0,tot=sels.length;
+  sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  const fb=document.getElementById(id+'-fb');
+  if(ok===tot){fb.className='mq-fb ok';fb.textContent='Parfait ! '+ok+'/'+tot;}
+  else{fb.className='mq-fb ko';fb.textContent=ok+'/'+tot+' — revois les réponses en rouge.';}
+}
+function rsMQ(id){
+  document.querySelectorAll('#'+id+'-q select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  const fb=document.getElementById(id+'-fb');fb.className='mq-fb';fb.textContent='';
+}
+function ckTabExo(id){
+  const fb=document.getElementById(id+'-fb');if(!fb)return;
+  const block=fb.closest('.tab-exo');if(!block)return;
+  const cells=block.querySelectorAll('.tcell');let ok=0,tot=cells.length;
+  cells.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  fb.className='gfb '+(ok===tot?'ok':'ko');
+  fb.textContent=ok===tot?'Parfait ! '+ok+'/'+tot:ok+'/'+tot+' — revois les cellules en rouge.';
+}
+function rsTabExo(id){
+  const fb=document.getElementById(id+'-fb');if(!fb)return;
+  const block=fb.closest('.tab-exo');if(!block)return;
+  block.querySelectorAll('.tcell').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  fb.className='gfb';fb.textContent='';
+}
+function ckBilan(){
+  const sels=document.querySelectorAll('#p3 select.bl');let ok=0,tot=sels.length;
+  sels.forEach(s=>{s.classList.remove('ok','ko');if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else if(s.value)s.classList.add('ko');});
+  const fb=document.getElementById('bilan-fb');
+  fb.className='gfb '+(ok===tot?'ok':'ko');
+  fb.textContent=ok===tot?'Bilan complet ! '+ok+'/'+tot:ok+'/'+tot+' — Revois les trous en rouge.';
+}
+function rsBilan(){
+  document.querySelectorAll('#p3 select.bl').forEach(s=>{s.value='';s.classList.remove('ok','ko');});
+  const fb=document.getElementById('bilan-fb');fb.className='gfb';fb.textContent='';
+}
+
+function mkC(id,w,h){const c=document.getElementById(id);if(!c)return null;c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.clearRect(0,0,w,h);return ctx;}
+
+function drawRepartition(){
+  const ctx=mkC('cgRepartition',280,220);if(!ctx)return;
+  const etages=[
+    {label:'HUMIDE',p:'>800mm',veg:'Chêne liège · Pin maritime',color:'#1B5E20',h:32},
+    {label:'SUBHUMIDE',p:'600–800',veg:'Chêne vert · Olivier sauvage',color:'#2E7D32',h:28},
+    {label:'SEMI-ARIDE SUP.',p:'400–600',veg:'Pin d\'Alep · Caroubier',color:'#558B2F',h:26},
+    {label:'SEMI-ARIDE INF.',p:'200–400',veg:'Thuya · Genévrier',color:'#8BC34A',h:24},
+    {label:'ARIDE',p:'100–200',veg:'Alfa · Armoise · Romarin',color:'#F9A825',h:24},
+    {label:'SAHARIEN',p:'<100mm',veg:'Jujubier · Acacia',color:'#E65100',h:22},
+  ];
+  ctx.font='bold 9px sans-serif';ctx.fillStyle='#37474F';ctx.textAlign='center';
+  ctx.fillText('Gradient végétal Nord → Sud (Tunisie)',140,12);
+  let y=22;
+  etages.forEach(e=>{
+    ctx.fillStyle=e.color;ctx.fillRect(5,y,130,e.h);
+    ctx.fillStyle='#fff';ctx.font='bold 7px sans-serif';ctx.textAlign='left';
+    ctx.fillText(e.label,8,y+10);
+    ctx.font='6px sans-serif';ctx.fillText(e.p,8,y+e.h-4);
+    ctx.fillStyle='#333';ctx.font='6.5px sans-serif';ctx.textAlign='left';
+    ctx.fillText(e.veg,140,y+e.h/2+2);
+    y+=e.h+3;
+  });
+  ctx.strokeStyle='#0277BD';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(270,22);ctx.lineTo(270,210);ctx.stroke();
+  ctx.fillStyle='#0277BD';ctx.font='7px sans-serif';ctx.textAlign='center';
+  ctx.fillText('N',270,18);ctx.fillText('S',270,218);
+  ctx.fillStyle='#0277BD';ctx.beginPath();ctx.moveTo(267,205);ctx.lineTo(270,213);ctx.lineTo(273,205);ctx.fill();
+}
+
+function drawEmberger(){
+  const ctx=mkC('cgEmberger',280,220);if(!ctx)return;
+  ctx.fillStyle='#f1f8e9';ctx.fillRect(0,0,280,220);
+  ctx.font='bold 9px sans-serif';ctx.fillStyle='#1B5E20';ctx.textAlign='center';
+  ctx.fillText('Quotient Q d\'Emberger — 3 stations tunisiennes',140,14);
+  const stations=[
+    {name:'Bizerte',q:96,color:'#1565C0',etage:'Subhumide'},
+    {name:'Kairouan',q:31,color:'#F57F17',etage:'Aride sup.'},
+    {name:'Rémada',q:8,color:'#C62828',etage:'Saharien sup.'},
+  ];
+  const bw=55,xStart=25,yBase=175,maxH=140,maxQ=110;
+  const zones=[
+    {qMin:110,qMax:150,color:'#C8E6C9',label:'Humide'},
+    {qMin:70,qMax:110,color:'#DCEDC8',label:'Subhumide'},
+    {qMin:50,qMax:70,color:'#FFF9C4',label:'Semi-aride'},
+    {qMin:25,qMax:50,color:'#FFE0B2',label:'Aride'},
+    {qMin:0,qMax:25,color:'#FFCCBC',label:'Saharien'},
+  ];
+  zones.forEach(z=>{
+    const y1=yBase-(Math.min(z.qMax,maxQ)/maxQ)*maxH;
+    const y2=yBase-(z.qMin/maxQ)*maxH;
+    ctx.fillStyle=z.color;ctx.fillRect(10,y1,220,y2-y1);
+    ctx.fillStyle='#795548';ctx.font='7px sans-serif';ctx.textAlign='right';
+    ctx.fillText(z.label,232,(y1+y2)/2+3);
+  });
+  ctx.strokeStyle='#333';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(18,20);ctx.lineTo(18,yBase);ctx.lineTo(240,yBase);ctx.stroke();
+  ctx.fillStyle='#546E7A';ctx.font='8px sans-serif';ctx.textAlign='center';
+  ctx.fillText('Q →',240,yBase+12);
+  [0,25,50,70,110].forEach(q=>{
+    const y=yBase-(q/maxQ)*maxH;
+    ctx.strokeStyle='#B0BEC5';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(18,y);ctx.lineTo(240,y);ctx.stroke();
+    ctx.fillStyle='#546E7A';ctx.font='7px sans-serif';ctx.textAlign='right';
+    ctx.fillText(q,16,y+3);
+  });
+  stations.forEach((s,i)=>{
+    const x=xStart+i*(bw+20);const h=(s.q/maxQ)*maxH;
+    ctx.fillStyle=s.color;ctx.fillRect(x,yBase-h,bw,h);
+    ctx.fillStyle='#fff';ctx.font='bold 9px sans-serif';ctx.textAlign='center';
+    ctx.fillText(s.q,x+bw/2,yBase-h-4);
+    ctx.fillStyle='#333';ctx.font='7px sans-serif';
+    ctx.fillText(s.name,x+bw/2,yBase+12);
+    ctx.fillStyle=s.color;ctx.font='bold 7px sans-serif';
+    ctx.fillText(s.etage,x+bw/2,yBase+22);
+  });
+}
+
+const FC=[
+  {t:'Étage bioclimatique',d:'Subdivision géographique définie par un climat particulier (température + pluviométrie) et abritant des végétaux indicateurs spécifiques.'},
+  {t:'Espèce indicatrice de climat',d:'Végétal dont la présence spontanée dans une région indique un étage bioclimatique particulier. Ex : Chêne liège → humide ; Alfa → semi-aride.'},
+  {t:'Quotient d\'Emberger (Q)',d:'Formule mathématique : Q = 2000 × P / (M² − m²). M et m doivent être en degrés Kelvin (°K = °C + 273).'},
+  {t:'Étage humide',d:'Q > 110, pluviométrie > 800 mm/an. Espèces indicatrices : Chêne zen, Chêne liège, Pin maritime. Ex : Kroumirie (Aïn Draham, Tabarka).'},
+  {t:'Étage subhumide',d:'Q entre 70 et 110, pluviométrie 600–800 mm/an. Espèces : Olivier sauvage, Chêne vert, Lentisque. Ex : Bizerte (Q ≈ 96).'},
+  {t:'Étage semi-aride',d:'Q entre 35 et 70, pluviométrie 200–600 mm/an. Espèces : Pin d\'Alep, Caroubier, Thuya articulé. Étage le plus vaste en Tunisie.'},
+  {t:'Étage aride',d:'Q entre 10 et 35, pluviométrie 100–200 mm/an. Espèces : Alfa en limite, Armoise, Genévrier oxycèdre. Ex : Kairouan (Q ≈ 30).'},
+  {t:'Étage saharien',d:'Q < 10, pluviométrie < 100 mm/an. Végétation clairsemée : Jujubier, Acacia. Ex : Rémada (Q ≈ 8).'},
+  {t:'Chêne liège',d:'Espèce indicatrice du climat humide. Aire : 600–1800 mm/an, résiste à −12°C. Concentré en Kroumirie. Produit le liège tunisien.'},
+  {t:'Alfa',d:'Graminée indicatrice du climat semi-aride. Aire : 100–600 mm/an. Couvre les hautes steppes du Centre tunisien (Kasserine, Sidi Bouzid).'},
+  {t:'Gradient pluvio-thermique',d:'Variation progressive des précipitations et des températures du Nord vers le Sud de la Tunisie, déterminant la succession des étages bioclimatiques.'},
+  {t:'Série de végétation',d:'Ensemble des végétaux naturels caractéristiques d\'un étage bioclimatique. Ex : Bizerte (subhumide) → Olivier sauvage, Chêne vert, Lentisque.'},
+];
+
+const QS=[
+  {q:'Les facteurs qui influencent principalement la répartition des végétaux en Tunisie sont :',o:['La pluviométrie','La nature du sol','La température moyenne annuelle','La luminosité'],c:[0,2],fb:'La pluviométrie (a) et la température (c) sont les deux facteurs déterminants. C\'est ce que mesure le quotient d\'Emberger Q.'},
+  {q:'Le Chêne liège est une espèce indicatrice du climat :',o:['Saharien','Semi-aride','Humide (600–1800 mm/an)','Aride'],c:[2],fb:'Le Chêne liège est indicateur du climat HUMIDE. Il exige 600–1800 mm/an de pluie et résiste à −12°C.'},
+  {q:'Dans la formule Q = 2000P/(M²−m²), M et m sont en :',o:['°Celsius','°Kelvin (°C + 273)','°Fahrenheit','Degrés quelconques'],c:[1],fb:'M et m doivent IMPÉRATIVEMENT être en degrés Kelvin (°K = °C + 273). C\'est une erreur classique au CAPES.'},
+  {q:'Bizerte (P=653 mm, M=30,9°C, m=7,7°C) a un Q ≈ 96. Étage :',o:['Humide','Subhumide','Semi-aride supérieur','Semi-aride inférieur'],c:[1],fb:'Q ≈ 96 → 70 < Q < 110 → SUBHUMIDE. Végétation : Olivier sauvage, Chêne vert, Lentisque.'},
+  {q:'L\'Alfa est indicatrice de l\'étage :',o:['Humide','Subhumide','Semi-aride et aride','Saharien'],c:[2],fb:'L\'Alfa couvre les hautes steppes semi-arides (100–600 mm/an). Elle est absente de la forêt humide et du Sahara.'},
+  {q:'Rémada (P=70 mm, Q≈8) appartient à l\'étage :',o:['Aride inférieur','Aride supérieur','Saharien supérieur','Saharien inférieur'],c:[2],fb:'Q ≈ 8 → 5 < Q < 10 → SAHARIEN SUPÉRIEUR.'},
+  {q:'Un étage bioclimatique est défini par :',o:['Un climat particulier','Des végétaux indicateurs spécifiques','La nature géologique','La faune associée'],c:[0,1],fb:'Un étage bioclimatique = CLIMAT particulier (a) + VÉGÉTAUX INDICATEURS spécifiques (b).'},
+  {q:'Quel végétal est présent du semi-aride supérieur à l\'aride supérieur ?',o:['Chêne liège','Pin d\'Alep','Chêne zen','Palmier dattier'],c:[1],fb:'Le Pin d\'Alep est l\'espèce la plus plastique : présent du semi-aride supérieur à l\'aride supérieur.'},
+];
+
+function ckManQ(id){
+  const block=document.getElementById(id);const cbs=block.querySelectorAll('input[type="checkbox"]');let ok=true;
+  cbs.forEach(cb=>{const isCorrect=cb.dataset.correct==='true';const checked=cb.checked;if(isCorrect&&!checked)ok=false;if(!isCorrect&&checked)ok=false;});
+  const fb=document.getElementById(id+'-fb');fb.className='gfb '+(ok?'ok':'ko');fb.textContent=ok?'✓ Correct !':'✗ Incorrect — révise la réponse';
+}
+
+function corrOneQ(qi){
+  const q=QS[qi];const div=document.getElementById('qi'+qi);
+  const checked=[...div.querySelectorAll('input:checked')].map(c=>parseInt(c.value));
+  div.querySelectorAll('.qo').forEach((opt,oi)=>{
+    opt.classList.add('locked');const inp=opt.querySelector('input');
+    if(q.c.includes(oi)&&checked.includes(oi))opt.classList.add('correct');
+    else if(q.c.includes(oi)&&!checked.includes(oi))opt.classList.add('missed');
+    else if(!q.c.includes(oi)&&checked.includes(oi))opt.classList.add('wrong');
+    inp.disabled=true;
+  });
+  const existingFb=div.querySelector('.q-feedback');if(existingFb)existingFb.remove();
+  div.insertAdjacentHTML('beforeend','<div class="q-feedback" style="margin-top:8px;padding:8px 12px;background:#e8f5e9;border-radius:7px;font-size:.82rem;color:#2E7D32;font-weight:600">💡 '+q.fb+'</div>');
+  updQcmScore();
+}
+function corrAllQ(){QS.forEach((q,i)=>corrOneQ(i));}
+function rstAllQ(){
+  document.querySelectorAll('#qcm-c .qi').forEach((qi)=>{
+    qi.querySelectorAll('input').forEach(inp=>{inp.checked=false;inp.disabled=false;});
+    qi.querySelectorAll('.qo').forEach(o=>o.className='qo');
+    const fb=qi.querySelector('.q-feedback');if(fb)fb.remove();
+  });
+  const gs=document.getElementById('qcm-global-score');gs.style.display='none';gs.textContent='';
+}
+function updQcmScore(){
+  let total=0,correct=0;
+  QS.forEach((q,i)=>{total++;const qi=document.getElementById('qi'+i);const checked=[...qi.querySelectorAll('input:checked')].map(c=>parseInt(c.value));if(q.c.length===checked.length&&q.c.every(c=>checked.includes(c)))correct++;});
+  const gs=document.getElementById('qcm-global-score');gs.style.display='inline-block';
+  const pct=Math.round(correct/total*100);
+  gs.style.background=pct>=70?'#e8f5e9':'#ffebee';gs.style.color=pct>=70?'#2E7D32':'#c62828';
+  gs.textContent='Score : '+correct+'/'+total+' ('+pct+'%)';
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const fcg=document.getElementById('fcg');const defs=FC.map(c=>c.d);
+  FC.forEach((c,i)=>{
+    const shuffled=[...defs].sort(()=>Math.random()-.5).slice(0,3);
+    if(!shuffled.includes(c.d)){shuffled[0]=c.d;shuffled.sort(()=>Math.random()-.5);}
+    const opts=shuffled.map(d=>`<option value="${d.replace(/"/g,'&quot;')}">${d.length>65?d.slice(0,65)+'…':d}</option>`).join('');
+    fcg.innerHTML+=`<div class="fcc"><div class="fcp"><strong style="color:var(--em)">${c.t} :</strong><br><select class="fs" data-rep="${c.d.replace(/"/g,'&quot;')}"><option value="">— Choisir la définition</option>${opts}</select></div></div>`;
+  });
+  const qcmc=document.getElementById('qcm-c');
+  QS.forEach((q,qi)=>{
+    qcmc.innerHTML+=`<div class="qi" id="qi${qi}"><div class="qq">Q${qi+1}. ${q.q}</div>${q.o.map((o,oi)=>`<label class="qo" id="qo${qi}-${oi}"><input type="checkbox" name="q${qi}" value="${oi}"> <span>${o}</span><span class="fb-txt">${q.c.includes(oi)?'✓ Bonne réponse':'✗ Mauvaise réponse'}</span></label>`).join('')}<button class="btn bg" onclick="corrOneQ(${qi})" style="font-size:.76rem;margin-top:6px;">Vérifier Q${qi+1}</button></div>`;
+  });
+});
+
+function chkFC(){
+  let ok=0,tot=0;document.querySelectorAll('.fs').forEach(s=>{tot++;s.classList.remove('ok','ko');if(!s.value)return;if(s.value===s.dataset.rep){s.classList.add('ok');ok++;}else s.classList.add('ko');});
+  const sc=document.getElementById('fcs');sc.style.display='inline-block';
+  sc.style.background=ok===tot?'#e8f5e9':'#ffebee';sc.style.color=ok===tot?'#2E7D32':'#c62828';
+  sc.textContent=ok+'/'+tot+' correctes';
+}
+function rstFC(){document.querySelectorAll('.fs').forEach(s=>{s.value='';s.classList.remove('ok','ko');});document.getElementById('fcs').style.display='none';}
+</script>
+</body>
+</html>
